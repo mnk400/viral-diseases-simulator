@@ -2,3 +2,6 @@
 *.DS_Store
 Desktop.ini
 .vscode
+*.pyc
+src/__pycache__
+test/__pycache__
