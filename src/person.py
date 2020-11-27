@@ -6,7 +6,7 @@ class Person(object):
     """
 
     def __init__(self):
-        self.persons = pd.DataFrame(columns=['age', 'x_axis', 'y_axis'])
+        self.persons = pd.DataFrame(columns=['age', 'x_axis', 'y_axis', 'current_state'])
 
     def setAge(self, data : list):
         self.persons['age'] = data

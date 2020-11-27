@@ -13,11 +13,15 @@ import logging
 #Calling and initializing a logger instance
 logging.getLogger("configlog")                          
 
-class configutil(object):
+class ConfigUtil(object):
     '''
      his class is responsible for reading and parsing the configuration files.
      Apache.commons.configuration is used to parse the files.
     '''
+
+    _instance = ()
+    def getInstance():
+        return ConfigUtil._instance
     
     def __init__(self, path_param):
         '''
