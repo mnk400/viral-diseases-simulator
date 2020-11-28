@@ -1,7 +1,9 @@
 from pandas.core.tools.numeric import to_numeric
 from config_util import ConfigUtil
 from person import Person
+import numpy as np
 import math
+import random
 
 class Virus():
     """
@@ -23,21 +25,49 @@ class Virus():
 
     def infect(self, persons: Person):
 
+        #Store the persons dataframe in a temporary variable
         tmp_df = persons.get_dataframe()
 
         #Get the index of all the people who were infected in the previous step
         infected_idx = persons.get_all_infected()
+        
+        infected_to_be = []
 
         #Get the index of all the people within the infection range of the infected persons
         for idx in infected_idx:
-
+            print(idx)
             x_bounds = [tmp_df.loc[idx]['x_axis'] - math.sqrt(self.infection_range), 
                             tmp_df.loc[idx]['x_axis'] + math.sqrt(self.infection_range)]
-            y_bounds = [persons.get_dataframe().loc[idx]['y_axis'] - math.sqrt(self.infection_range), 
+            y_bounds = [tmp_df.loc[idx]['y_axis'] - math.sqrt(self.infection_range), 
                             tmp_df.loc[idx]['y_axis'] + math.sqrt(self.infection_range)]
             
             #Find the nearby people in the infected person's range
             nearby_idx = self.find_nearby(persons, x_bounds, y_bounds)
+            print(nearby_idx)
+            #Check other healthy and infected in the infection range
+            healthy_index = []
+            infected_index = []       #1 person is already infected
+            
+            for nearby_people in nearby_idx:
+                if tmp_df.loc[nearby_people]['current_state'] == 1:
+                    infected_index.append(nearby_people)
+                elif tmp_df.loc[nearby_people]['current_state'] == 0:
+                    healthy_index.append(nearby_people)
+
+
+            effective_g_value = int(np.sum(tmp_df.iloc[infected_index]['g_value'].to_numpy()))
+            print("g-value " + str(effective_g_value))
+            if(len(healthy_index) <= effective_g_value):
+                infected_to_be += healthy_index
+            elif(len(healthy_index) > effective_g_value):
+                infected_to_be += random.sample(healthy_index,effective_g_value)
+
+        print(infected_to_be)
+            
+        tmp_df.loc[infected_to_be, 'current_state'] = 1
+        print(tmp_df.loc[infected_to_be])
+        return tmp_df
+                
     
     def find_nearby(self, person: Person, x_bounds: list, y_bounds: list) -> list:
         """

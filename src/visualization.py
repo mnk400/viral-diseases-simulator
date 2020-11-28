@@ -6,14 +6,14 @@ from matplotlib.animation import FuncAnimation
 class Visualization():
 
     def __init__(self):
-        self.putil = putil(2000, [0,1], [0,1])
+        self.putil = putil(2000, [0,1], [0,1], 3, 0.5)
 
     def update(self):
-        self.putil = putil(2000, [0,1], [0,1])
         plt.xlim(self.putil.x_bounds[0] , self.putil.x_bounds[1])
         plt.ylim(self.putil.y_bounds[0] , self.putil.y_bounds[1])
-        plt.scatter(self.putil.person.get_x_axis(), self.putil.person.get_y_axis(), s = 10)
         
+        plt.scatter(self.putil.person.get_x_axis(), self.putil.person.get_y_axis(), s = 10)
+        self.putil.move()
     
     def animate(self):
         fig = plt.figure(figsize=(10,10))

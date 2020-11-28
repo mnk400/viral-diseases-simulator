@@ -36,14 +36,35 @@ class Population(object):
         self.person.set_y_axis(y_bound_list)
         self.person.set_g_value(g_value)
 
+        x_bound_list_future = np.random.uniform(low=self.x_bounds[0] + 0.1, 
+                                            high=self.x_bounds[1] - 0.1, size=self.size)
+        y_bound_list_future = np.random.uniform(low=self.y_bounds[0] + 0.1, 
+                                            high=self.y_bounds[1] - 0.1, size=self.size)
+
+        self.person.set_next_x_axis(x_bound_list_future)
+        self.person.set_next_y_axis(y_bound_list_future)
+
         #Infect a random person
         infected_index = random.randint(0, self.size)
-        self.person.get_dataframe().iloc[infected_index] = 1
+        self.person.get_dataframe().loc[infected_index,'current_state'] = 1
 
+    def move(self):
+        rand_sample = random.sample(list(range(1, self.size)), int(0.3*self.size)) 
+        self.person.get_dataframe().loc[rand_sample,'x_axis'] = self.person.get_dataframe().loc[rand_sample,'next_x_axis']
+        self.person.get_dataframe().loc[rand_sample,'y_axis'] = self.person.get_dataframe().loc[rand_sample,'next_y_axis']
+        x_bound_list_future = np.random.uniform(low=self.x_bounds[0] + 0.1, 
+                                            high=self.x_bounds[1] - 0.1, size=self.size)
+        y_bound_list_future = np.random.uniform(low=self.y_bounds[0] + 0.1, 
+                                            high=self.y_bounds[1] - 0.1, size=self.size)
+
+        self.person.set_next_x_axis(x_bound_list_future)
+        self.person.set_next_y_axis(y_bound_list_future)
+        
 if __name__ == "__main__":
     p = Population(100, [0, 1], [0, 1], 3, 0.5)
-    #virus = Virus()
-    #print(virus.find_nearby(p.person, [0.2, 0.4], [0.3, 0.5]))
+    p.move()
+    virus = Virus()
+    p.person = virus.infect(p.person)
     
 
 

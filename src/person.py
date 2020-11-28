@@ -118,6 +118,28 @@ class Person(object):
     
     def set_g_value(self, data):
         self.persons['g_value'] = data
+    
+    def set_next_x_axis(self, data : list):
+        """
+        Sets the x coordinate of each person on the map 
+
+        Parameters
+        ----------
+        data : list
+            Column containing all the x coordinates on the space for each person in the population
+        """   
+        self.persons['next_x_axis'] = data
+    
+    def set_next_y_axis(self, data : list):
+        """
+        Sets the x coordinate of each person on the map 
+
+        Parameters
+        ----------
+        data : list
+            Column containing all the x coordinates on the space for each person in the population
+        """   
+        self.persons['next_y_axis'] = data
 
  
 
