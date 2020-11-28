@@ -15,7 +15,7 @@ class Person(object):
         y_axis:             Depends on the y bounds of the population
         current_state:      0: Healthy, 1: Infected, 2: Immune, 3: Dead
         """        
-        self.persons = pd.DataFrame(columns=['age', 'x_axis', 'y_axis', 'current_state'])
+        self.persons = pd.DataFrame(columns=['age', 'x_axis', 'y_axis', 'current_state', 'next_x_axis', 'next_y_axis', 'g_value'])
 
     def set_age(self, data : list):
         """
@@ -115,6 +115,10 @@ class Person(object):
            Returns the index of all persons in the population who are infected
         """        
         return self.persons.index[self.persons['current_state'] == 1].tolist()
+    
+    def set_g_value(self, data):
+        self.persons['g_value'] = data
+
  
 
 if __name__ == "__main__":
