@@ -115,6 +115,17 @@ class Person(object):
            Returns the index of all persons in the population who are infected
         """        
         return self.persons.index[self.persons['current_state'] == 1].tolist()
+
+    def get_all_healthy(self) -> list:
+        """
+        Returns the index for all healthy individuals in the persons dataframe
+
+        Returns
+        -------
+        list
+           Returns the index of all persons in the population who are healthy
+        """        
+        return self.persons.index[self.persons['current_state'] == 0].tolist()
     
     def set_g_value(self, data):
         self.persons['g_value'] = data

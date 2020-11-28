@@ -12,7 +12,8 @@ class Visualization():
         plt.xlim(self.putil.x_bounds[0] , self.putil.x_bounds[1])
         plt.ylim(self.putil.y_bounds[0] , self.putil.y_bounds[1])
         
-        plt.scatter(self.putil.person.get_x_axis(), self.putil.person.get_y_axis(), s = 10)
+        plt.scatter(self.putil.person.get_dataframe().loc[self.putil.person.get_all_healthy()]['x_axis'], self.putil.person.get_dataframe().loc[self.putil.person.get_all_healthy()]['y_axis'], s = 10, color = 'gray')
+        plt.scatter(self.putil.person.get_dataframe().loc[self.putil.person.get_all_infected()]['x_axis'], self.putil.person.get_dataframe().loc[self.putil.person.get_all_infected()]['y_axis'], s = 10, color = 'red')
         self.putil.move()
     
     def animate(self):
@@ -21,7 +22,7 @@ class Visualization():
         for i in range(15):
             plt.clf()
             self.update()
-            plt.pause(0.5)
+            plt.pause(1)
         
         plt.show()
         

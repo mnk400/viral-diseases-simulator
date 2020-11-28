@@ -14,6 +14,7 @@ class Population(object):
 
     def __init__(self, size: int, x_bounds: list, y_bounds: list, r: float, k: float):
         self.person = Person() 
+        self.virus  = Virus()
         self.size         = size
         self.x_bounds     = x_bounds
         self.y_bounds     = y_bounds
@@ -49,7 +50,7 @@ class Population(object):
         self.person.get_dataframe().loc[infected_index,'current_state'] = 1
 
     def move(self):
-        rand_sample = random.sample(list(range(1, self.size)), int(0.3*self.size)) 
+        rand_sample = random.sample(list(range(1, self.size)), int(0.1*self.size)) 
         self.person.get_dataframe().loc[rand_sample,'x_axis'] = self.person.get_dataframe().loc[rand_sample,'next_x_axis']
         self.person.get_dataframe().loc[rand_sample,'y_axis'] = self.person.get_dataframe().loc[rand_sample,'next_y_axis']
         x_bound_list_future = np.random.uniform(low=self.x_bounds[0] + 0.1, 
@@ -59,7 +60,8 @@ class Population(object):
 
         self.person.set_next_x_axis(x_bound_list_future)
         self.person.set_next_y_axis(y_bound_list_future)
-        
+        self.person.persons = self.virus.infect(self.person)
+
 if __name__ == "__main__":
     p = Population(100, [0, 1], [0, 1], 3, 0.5)
     p.move()

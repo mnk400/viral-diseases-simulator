@@ -32,10 +32,9 @@ class Virus():
         infected_idx = persons.get_all_infected()
         
         infected_to_be = []
-
+        print("Number of infected: " + str(len(infected_idx)))
         #Get the index of all the people within the infection range of the infected persons
         for idx in infected_idx:
-            print(idx)
             x_bounds = [tmp_df.loc[idx]['x_axis'] - math.sqrt(self.infection_range), 
                             tmp_df.loc[idx]['x_axis'] + math.sqrt(self.infection_range)]
             y_bounds = [tmp_df.loc[idx]['y_axis'] - math.sqrt(self.infection_range), 
@@ -43,7 +42,7 @@ class Virus():
             
             #Find the nearby people in the infected person's range
             nearby_idx = self.find_nearby(persons, x_bounds, y_bounds)
-            print(nearby_idx)
+
             #Check other healthy and infected in the infection range
             healthy_index = []
             infected_index = []       #1 person is already infected
@@ -55,17 +54,19 @@ class Virus():
                     healthy_index.append(nearby_people)
 
 
-            effective_g_value = int(np.sum(tmp_df.iloc[infected_index]['g_value'].to_numpy()))
-            print("g-value " + str(effective_g_value))
+            #effective_g_value = int(np.sum(tmp_df.iloc[infected_index]['g_value'].to_numpy()))
+            effective_g_value = 3
+
             if(len(healthy_index) <= effective_g_value):
                 infected_to_be += healthy_index
             elif(len(healthy_index) > effective_g_value):
                 infected_to_be += random.sample(healthy_index,effective_g_value)
-
-        print(infected_to_be)
+        
+        infected_to_be = set(infected_to_be)
+        print("Number of people to infect in this turn : " + str(len(infected_to_be)))
             
-        tmp_df.loc[infected_to_be, 'current_state'] = 1
-        print(tmp_df.loc[infected_to_be])
+        tmp_df.loc[list(infected_to_be), 'current_state'] = 1
+        #print(tmp_df.loc[infected_to_be])
         return tmp_df
                 
     
