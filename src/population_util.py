@@ -36,6 +36,10 @@ class Population(object):
         self.person.set_y_axis(y_bound_list)
         self.person.set_g_value(g_value)
 
+        #Infect a random person
+        infected_index = random.randint(0, self.size)
+        self.person.get_dataframe().iloc[infected_index] = 1
+
 if __name__ == "__main__":
     p = Population(100, [0, 1], [0, 1], 3, 0.5)
     #virus = Virus()

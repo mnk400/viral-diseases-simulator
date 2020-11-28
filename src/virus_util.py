@@ -37,7 +37,7 @@ class Virus():
                             tmp_df.loc[idx]['y_axis'] + math.sqrt(self.infection_range)]
             
             #Find the nearby people in the infected person's range
-            self.find_nearby(persons, x_bounds, y_bounds)
+            nearby_idx = self.find_nearby(persons, x_bounds, y_bounds)
     
     def find_nearby(self, person: Person, x_bounds: list, y_bounds: list) -> list:
         """
