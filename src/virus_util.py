@@ -2,10 +2,14 @@ from config_util import ConfigUtil
 from person import Person
 
 class Virus():
+    """
+    This class provides abstraction to all virus related properties and methods such as 
+    infecting, healing and dying
+    """    
 
     def __init__(self):
         """
-        [summary]
+        The constructor is responsible for loading the virus statistics from the config file
         """  
         config = ConfigUtil("config/config.ini")
         self.infection_range        = config.getFloatValue("virus.stats", "infection_range")
@@ -17,5 +21,10 @@ class Virus():
 
     def infect(self, persons: Person):
 
-        infected_idx = persons.get_dataframe().index[persons.get_dataframe()['current_state'] == 1].tolist()
+        #Get the index of all the people who were infected in the previous step
+        infected_idx = persons.get_all_infected()
+
+        healthy_atrisk = []        
+        #Get the index of all the people within the infection range of the infected persons
+
 

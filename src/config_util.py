@@ -18,20 +18,6 @@ class ConfigUtil(object):
     This class is responsible for reading and parsing the configuration files.
     Apache.commons.configuration is used to parse the files.
     '''
-
-    #Singleton instance for ConfigUtil class
-    _instance = ()          
-
-    def getInstance():
-        """
-        This class returns the singleton instance of the ConfigUtil class
-
-        Returns
-        -------
-        ConfigUtil
-            The singleton instance of the ConfigUtil class
-        """        
-        return ConfigUtil._instance
     
     def __init__(self, path_param: str):
         """
