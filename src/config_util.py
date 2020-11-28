@@ -15,32 +15,58 @@ logging.getLogger("configlog")
 
 class ConfigUtil(object):
     '''
-     his class is responsible for reading and parsing the configuration files.
-     Apache.commons.configuration is used to parse the files.
+    This class is responsible for reading and parsing the configuration files.
+    Apache.commons.configuration is used to parse the files.
     '''
 
-    _instance = ()
+    #Singleton instance for ConfigUtil class
+    _instance = ()          
+
     def getInstance():
+        """
+        This class returns the singleton instance of the ConfigUtil class
+
+        Returns
+        -------
+        ConfigUtil
+            The singleton instance of the ConfigUtil class
+        """        
         return ConfigUtil._instance
     
-    def __init__(self, path_param):
-        '''
-         Constructor
-         Responsible for calling the load function to load configuration data from the file.
-         This constructor loads the default specified path as the config file if no other file path is input.
-        '''
+    def __init__(self, path_param: str):
+        """
+        Constructor responsible for calling the load function to load configuration data from the file.
+        This constructor loads the default specified path as the config file if no other file path is input.
+
+        Parameters
+        ----------
+        path_param : str
+            Relative path to the configuration file
+        """        
         self.parser = configparser.ConfigParser()
         self.filepath = path_param
-        # Path to the configuration file from current Dir
+
+        # Path to the configuration file from current dir
         self.configLoaded = False
         self.loadConfigData()
 
-    def getValue(self, section_str, key_str):
-        '''
-         GetValue method
-         Responsible for returning String values from the configuration file
-         Returns the retrieved value if form of a String
-        '''
+    def getValue(self, section_str: str, key_str: str) -> str:
+        """
+        Responsible for returning string values from the configuration file
+
+        Parameters
+        ----------
+        section_str : str
+            The section in the configuration file to get the value from
+        key_str : str
+            The corresponding key to get the value from
+
+        Returns
+        -------
+        str
+            The string value corresponding to the section and key
+        """        
+
         if self.configLoaded == True:
             # parser helps us retrieve the key for the specified section
             try:
@@ -56,28 +82,60 @@ class ConfigUtil(object):
             return False    
   
     def getIntegerValue(self, section_str, key_str) -> int:
-        '''
-         GetIntegerValue method
-         Responsible for returning Integer values from the configuration file
-         Returns the retrieved value if it is a Integer, otherwise throws an exception
-        '''
+        """
+        Responsible for returning int values from the configuration file, throws an exception
+        if the value is not an integer
+
+        Parameters
+        ----------
+        section_str : str
+            The section in the configuration file to get the value from
+        key_str : str
+            The corresponding key to get the value from
+
+        Returns
+        -------
+        int
+            The integer value corresponding to the section and key
+        """ 
         return int(self.getValue(section_str, key_str))  
     
     def getFloatValue(self, section_str, key_str) -> float:
-        '''
-         GetDoubleValue method
-         Responsible for returning floating point values from the configuration file
-         Returns the retrieved value if it is a Integer, otherwise throws an exception
-        '''
+        """
+        Responsible for returning float values from the configuration file, throws an exception
+        if the value is not a float
+
+        Parameters
+        ----------
+        section_str : str
+            The section in the configuration file to get the value from
+        key_str : str
+            The corresponding key to get the value from
+
+        Returns
+        -------
+        float
+            The float value corresponding to the section and key
+        """ 
         return float(self.getValue(section_str, key_str))
 
+    def getBooleanValue(self, section_str, key_str) -> bool:
+        """
+        Responsible for returning bool values from the configuration file, throws an exception
+        if the value is not a bool
 
-    def getBooleanValue(self, section_str, key_str):
-        '''
-         GetBooleanValue method
-         Responsible for returning Boolean values from the configuration file
-         Returns the retrieved value if it is a Boolean, otherwise returns a null
-        '''
+        Parameters
+        ----------
+        section_str : str
+            The section in the configuration file to get the value from
+        key_str : str
+            The corresponding key to get the value from
+
+        Returns
+        -------
+        float
+            The bool value corresponding to the section and key
+        """ 
         if self.configLoaded == True:
             # parser helps us retrieve the key for the specified section
             # using parser.getboolean we can retrieve a boolean object directly
@@ -93,11 +151,15 @@ class ConfigUtil(object):
             logging.error("Config File not loaded")
             return None                 
             
-    def hasConfigData(self):
-        '''
+    def hasConfigData(self) -> bool:
+        """
         Method checks if any section in the config has any key.
-        Returns a true if yes, else returns a false.
-        '''
+
+        Returns
+        -------
+        bool
+            Returns if any section in the config file is non-empty
+        """ 
         if self.configLoaded != False:
             self.sections = list(self.parser.sections())
             # converting the list of key values
@@ -116,10 +178,14 @@ class ConfigUtil(object):
             return False   
              
     def loadConfigData(self):
-        '''
-         LoadConfigData
-         This method is responsible for loading the configuration file into the parser
-        '''          
+        """
+        Method responsible for loading the config file
+
+        Returns
+        -------
+        bool
+            Indicates whether loading the config file was successful or not
+        """          
         # checking if the file exists                                         
         if os.path.exists(self.filepath):      
             # Loading the file into the parser if it exists then logging and then returning a true                     

@@ -18,15 +18,15 @@ class PersonTest(unittest.TestCase):
         pass
 
     def testSetAge(self):
-        self.person.setAge(self.ages)
+        self.person.set_age(self.ages)
         self.assertEquals(self.ages.all(), self.person.persons['age'].to_numpy().all())
 
     def testSetXAxis(self):
-        self.person.setXAxis(self.x_values)
+        self.person.set_x_axis(self.x_values)
         self.assertEqual(self.x_values.all(), self.person.persons['x_axis'].to_numpy().all())
     
     def testSetYAxis(self):
-        self.person.setYAxis(self.y_values)
+        self.person.set_y_axis(self.y_values)
         self.assertEqual(self.y_values.all(), self.person.persons['y_axis'].to_numpy().all())
 
     # def testGetAge(self):
@@ -34,12 +34,12 @@ class PersonTest(unittest.TestCase):
     #     self.assertEqual(self.ages.all(), self.person.getAge.all())
     
     def testGetXAxis(self):
-        self.person.setXAxis(self.x_values)
-        self.assertEqual(self.x_values.all(), self.person.getXAxis().all())
+        self.person.set_x_axis(self.x_values)
+        self.assertEqual(self.x_values.all(), self.person.get_x_axis().all())
     
     def testGetYAxis(self):
-        self.person.setYAxis(self.y_values)
-        self.assertEqual(self.y_values.all(), self.person.getYAxis().all())
+        self.person.set_y_axis(self.y_values)
+        self.assertEqual(self.y_values.all(), self.person.get_y_axis().all())
 
 
 if __name__ == "__main__":
