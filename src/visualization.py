@@ -12,7 +12,7 @@ class Visualization():
         self.putil = putil(2000, [0,1], [0,1])
         plt.xlim(self.putil.x_bounds[0] , self.putil.x_bounds[1])
         plt.ylim(self.putil.y_bounds[0] , self.putil.y_bounds[1])
-        plt.scatter(self.putil.person.getXAxis(), self.putil.person.getYAxis())
+        plt.scatter(self.putil.person.getXAxis(), self.putil.person.getYAxis(), s = 10)
         
     
     def animate(self):
