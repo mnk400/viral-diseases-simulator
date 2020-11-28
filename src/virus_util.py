@@ -1,5 +1,7 @@
+from pandas.core.tools.numeric import to_numeric
 from config_util import ConfigUtil
 from person import Person
+import math
 
 class Virus():
     """
@@ -21,10 +23,46 @@ class Virus():
 
     def infect(self, persons: Person):
 
+        tmp_df = persons.get_dataframe()
+
         #Get the index of all the people who were infected in the previous step
         infected_idx = persons.get_all_infected()
 
-        healthy_atrisk = []        
         #Get the index of all the people within the infection range of the infected persons
+        for idx in infected_idx:
 
+            x_bounds = [tmp_df.loc[idx]['x_axis'] - math.sqrt(self.infection_range), 
+                            tmp_df.loc[idx]['x_axis'] + math.sqrt(self.infection_range)]
+            y_bounds = [persons.get_dataframe().loc[idx]['y_axis'] - math.sqrt(self.infection_range), 
+                            tmp_df.loc[idx]['y_axis'] + math.sqrt(self.infection_range)]
+            
+            #Find the nearby people in the infected person's range
+            self.find_nearby(persons, x_bounds, y_bounds)
+    
+    def find_nearby(self, person: Person, x_bounds: list, y_bounds: list) -> list:
+        """
+        Find the nearby per
 
+        Parameters
+        ----------
+        person : Person
+            [description]
+        x_bounds : list
+            [description]
+        y_bounds : list
+            [description]
+
+        Returns
+        -------
+        list
+            [description]
+        """        
+        tmp_df = person.get_dataframe()
+        filter1 = tmp_df['x_axis'].gt(x_bounds[0])
+        filter2 = tmp_df['x_axis'].lt(x_bounds[1])
+        filter3 = tmp_df['y_axis'].gt(y_bounds[0])
+        filter4 = tmp_df['y_axis'].lt(y_bounds[1])
+        
+        index_list = tmp_df.index[filter1 & filter2 & filter3 & filter4].tolist()       
+        return index_list
+    

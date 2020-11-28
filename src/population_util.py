@@ -35,8 +35,7 @@ if __name__ == "__main__":
     p = Population(100, [0, 1], [0, 1])
     p.initialize_persons()
     virus = Virus()
-    print(p.person.persons)
-    virus.infect(p.person)
+    print(virus.find_nearby(p.person, [0.2, 0.4], [0.3, 0.5]))
     
 
 
