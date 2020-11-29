@@ -36,7 +36,6 @@ class Visualization():
         #self.ax.set_offset(self.putil.person.get_dataframe().loc[self.putil.person.get_all_infected()]['x_axis'], self.putil.person.get_dataframe().loc[self.putil.person.get_all_infected()]['y_axis'], s = 10, color = 'red')
         return self.scat, self.scat2, 
 
-        return self.scat, self.scat2, 
 
         
 
