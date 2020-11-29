@@ -37,10 +37,8 @@ class Population(object):
         self.person.set_y_axis(y_bound_list)
         self.person.set_g_value(g_value)
 
-        x_bound_list_future = np.random.uniform(low=self.x_bounds[0] + 0.1, 
-                                            high=self.x_bounds[1] - 0.1, size=self.size)
-        y_bound_list_future = np.random.uniform(low=self.y_bounds[0] + 0.1, 
-                                            high=self.y_bounds[1] - 0.1, size=self.size)
+        x_bound_list_future = np.add(x_bound_list, np.random.uniform(low=-self.x_bounds[1]/8, high=self.x_bounds[1]/8, size=self.size))
+        y_bound_list_future = np.add(y_bound_list, np.random.uniform(low=-self.y_bounds[1]/8, high=self.y_bounds[1]/8, size=self.size))
 
         self.person.set_next_x_axis(x_bound_list_future)
         self.person.set_next_y_axis(y_bound_list_future)
@@ -53,14 +51,21 @@ class Population(object):
         rand_sample = random.sample(list(range(1, self.size)), int(0.1*self.size)) 
         self.person.get_dataframe().loc[rand_sample,'x_axis'] = self.person.get_dataframe().loc[rand_sample,'next_x_axis']
         self.person.get_dataframe().loc[rand_sample,'y_axis'] = self.person.get_dataframe().loc[rand_sample,'next_y_axis']
-        x_bound_list_future = np.random.uniform(low=self.x_bounds[0] + 0.1, 
-                                            high=self.x_bounds[1] - 0.1, size=self.size)
-        y_bound_list_future = np.random.uniform(low=self.y_bounds[0] + 0.1, 
-                                            high=self.y_bounds[1] - 0.1, size=self.size)
 
-        self.person.set_next_x_axis(x_bound_list_future)
-        self.person.set_next_y_axis(y_bound_list_future)
-        #self.person.persons = self.virus.infect(self.person)
+        x_bound_list_future = np.add(self.person.get_dataframe().loc[rand_sample,'x_axis'].to_numpy(),
+                        np.random.normal(loc=0.1, scale=0.3, size=len(rand_sample)))
+        y_bound_list_future = np.add(self.person.get_dataframe().loc[rand_sample,'y_axis'].to_numpy(),
+                    np.random.normal(loc=0.1, scale=0.3, size=len(rand_sample)))
+        x_bound_list_future[x_bound_list_future > 0.95] = np.random.uniform(low=0.90, high=0.95, size=1)
+        x_bound_list_future[x_bound_list_future < 0.05] = np.random.uniform(low=0.05, high=0.1, size=1)
+        y_bound_list_future[y_bound_list_future > 0.95] = np.random.uniform(low=0.90, high=0.95, size=1)
+        y_bound_list_future[y_bound_list_future < 0.05] = np.random.uniform(low=0.05, high=0.1, size=1)
+
+
+        self.person.get_dataframe().loc[rand_sample, 'next_x_axis'] = x_bound_list_future
+        self.person.get_dataframe().loc[rand_sample, 'next_y_axis'] = y_bound_list_future
+        #print(self.person.persons)
+        self.person.persons = self.virus.infect(self.person)
 
 if __name__ == "__main__":
     p = Population(100, [0, 1], [0, 1], 3, 0.5)

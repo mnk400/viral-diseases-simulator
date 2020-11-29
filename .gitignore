@@ -5,3 +5,4 @@ Desktop.ini
 *.pyc
 src/__pycache__
 test/__pycache__
+src/try.py
