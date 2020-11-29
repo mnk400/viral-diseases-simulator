@@ -15,7 +15,7 @@ class Person(object):
         y_axis:             Depends on the y bounds of the population
         current_state:      0: Healthy, 1: Infected, 2: Immune, 3: Dead
         """        
-        self.persons = pd.DataFrame(columns=['age', 'x_axis', 'y_axis', 'current_state', 'next_x_axis', 'next_y_axis', 'g_value'])
+        self.persons = pd.DataFrame(columns=['age', 'x_axis', 'y_axis', 'current_state', 'destination_x', 'destination_y', 'g_value', 'speed', 'wander_x', 'wander_y'])
 
     def set_age(self, data : list):
         """
