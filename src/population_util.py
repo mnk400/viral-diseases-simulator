@@ -60,7 +60,7 @@ class Population(object):
 
         self.person.set_next_x_axis(x_bound_list_future)
         self.person.set_next_y_axis(y_bound_list_future)
-        self.person.persons = self.virus.infect(self.person)
+        #self.person.persons = self.virus.infect(self.person)
 
 if __name__ == "__main__":
     p = Population(100, [0, 1], [0, 1], 3, 0.5)
