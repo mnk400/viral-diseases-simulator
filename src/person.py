@@ -7,15 +7,30 @@ class Person(object):
     holding all persons
     """
 
-    def __init__(self):
+    def __init__(self, size):
         """
         Initializes the dataframe holding all persons with their specific properties
         Age:                1 - 100
         x_axis:             Depends on the x bounds of the population
         y_axis:             Depends on the y bounds of the population
         current_state:      0: Healthy, 1: Infected, 2: Immune, 3: Dead
+        
+        0 - ID
+        1 - age
+        2 - x axis
+        3 - y axis 
+        4 - x direction
+        5 - y direction
+        6 - speed
+        7 - currently active
+        8 - at destination
+        9 - current state
+        10 - wander_x
+        11 - wander_y
         """        
-        self.persons = pd.DataFrame(columns=['age', 'x_axis', 'y_axis', 'current_state', 'destination_x', 'destination_y', 'g_value', 'speed', 'wander_x', 'wander_y'])
+        #self.persons = pd.DataFrame(columns=['age', 'x_axis', 'y_axis', 'current_state', 'destination_x', 'destination_y', 'g_value', 'speed', 'wander_x', 'wander_y', 'at_destination', 'currently_moving'])
+        
+        self.persons = np.zeros((size, 12))
 
     def set_age(self, data : list):
         """
@@ -26,7 +41,7 @@ class Person(object):
         data : list
             Column containing all the ages for each person in the population
         """        
-        self.persons['age'] = data
+        self.persons[:,1] = data
     
     def set_x_axis(self, data : list):
         """
@@ -37,7 +52,7 @@ class Person(object):
         data : list
             Column containing all the x coordinates on the space for each person in the population
         """   
-        self.persons['x_axis'] = data
+        self.persons[:,2] = data
 
     def get_x_axis(self) -> list:
         """
@@ -48,7 +63,7 @@ class Person(object):
         list
             The list containing the current x coordinate of all the persons in the population
         """        
-        return self.persons['x_axis'].to_numpy()
+        return self.persons[:,2]
     
     def get_y_axis(self) -> list:
         """
@@ -59,7 +74,7 @@ class Person(object):
         list
             The list containing the current y coordinate of all the persons in the population
         """ 
-        return self.persons['y_axis'].to_numpy()
+        return self.persons[:,3]
 
     def set_y_axis(self, data : list):
         """
@@ -70,7 +85,7 @@ class Person(object):
         data : list
             Column containing all the y coordinates on the space for each person in the population
         """ 
-        self.persons['y_axis'] = data
+        self.persons[:,3] = data
 
     def get_current_state(self) -> np.array:
         """
@@ -81,7 +96,7 @@ class Person(object):
         np.array
             The current state of all the persons in the population
         """     
-        return self.persons['current_state'].to_numpy
+        return self.persons[:,9]
 
     def set_current_state(self, data: list):
         """
@@ -92,9 +107,9 @@ class Person(object):
         data : list
             Column containing the updated state for each person in the population
         """ 
-        self.persons['current_state'] = data
+        self.persons[:,8] = data
 
-    def get_dataframe(self) -> pd.DataFrame:
+    def get_person(self):
         """
         Returns the dataframe containing all information about all the persons in the population
 
@@ -114,7 +129,7 @@ class Person(object):
         list
            Returns the index of all persons in the population who are infected
         """        
-        return self.persons.index[self.persons['current_state'] == 1].tolist()
+        return self.persons[self.persons[:,9] == 1]
 
     def get_all_healthy(self) -> list:
         """
@@ -125,33 +140,25 @@ class Person(object):
         list
            Returns the index of all persons in the population who are healthy
         """        
-        return self.persons.index[self.persons['current_state'] == 0].tolist()
+        return self.persons[self.persons[:,9] == 0]
     
     def set_g_value(self, data):
         self.persons['g_value'] = data
     
-    def set_next_x_axis(self, data : list):
-        """
-        Sets the x coordinate of each person on the map 
-
-        Parameters
-        ----------
-        data : list
-            Column containing all the x coordinates on the space for each person in the population
-        """   
-        self.persons['next_x_axis'] = data
+    def set_speed(self, data):
+        self.persons[:,6] = data
     
-    def set_next_y_axis(self, data : list):
-        """
-        Sets the x coordinate of each person on the map 
+    def set_at_destination(self, data):
+        self.persons[:,8] = data
+    
+    def set_active(self, data):
+        self.persons[:,7] = data
+    
+    def set_x_dir(self, data):
+        self.persons[:,4] = data
 
-        Parameters
-        ----------
-        data : list
-            Column containing all the x coordinates on the space for each person in the population
-        """   
-        self.persons['next_y_axis'] = data
-
+    def set_y_dir(self, data):
+        self.persons[:,5] = data
  
 
 if __name__ == "__main__":

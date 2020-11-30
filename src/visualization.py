@@ -11,53 +11,26 @@ class Visualization():
         self.fig, self.ax = plt.subplots()
         self.ax.set_xlim(self.putil.x_bounds[0] , self.putil.x_bounds[1])
         self.ax.set_ylim(self.putil.y_bounds[0] , self.putil.y_bounds[1])
-        self.ani = FuncAnimation(self.fig, self.update, interval=100, 
+        self.ani = FuncAnimation(self.fig, self.update, interval=33, 
                                           init_func=self.setup_plot, blit=False)
         #self.ani.save("try.mp4", fps=30, dpi=120)
         plt.show()
 
     def setup_plot(self):
-        self.scat = self.ax.scatter(self.putil.person.get_dataframe().loc[self.putil.person.get_all_healthy()]['x_axis'],
-                         self.putil.person.get_dataframe().loc[self.putil.person.get_all_healthy()]['y_axis'], vmin=0, vmax=1,
-                                    cmap="jet", edgecolor="k")
-        self.scat2 = self.ax.scatter(self.putil.person.get_dataframe().loc[self.putil.person.get_all_infected()]['x_axis'], 
-                        self.putil.person.get_dataframe().loc[self.putil.person.get_all_infected()]['y_axis'], vmin=0, vmax=1,
-                                    cmap="jet", edgecolor="k")
-        return self.scat, self.scat2
+        self.scat = self.ax.scatter(self.putil.person.persons[:,2],
+                                        self.putil.person.persons[:,3], vmin=0, vmax=1,
+                                                cmap="jet", edgecolor="k")
+
+        return self.scat
 
     def update(self, i):
         if(i % 1 == 0):    
             self.putil.move()
-            data1 = np.c_[self.putil.person.get_dataframe().loc[self.putil.person.get_all_healthy()]['x_axis'],  self.putil.person.get_dataframe().loc[self.putil.person.get_all_healthy()]['y_axis']]
-            data2 = np.c_[self.putil.person.get_dataframe().loc[self.putil.person.get_all_infected()]['x_axis'],  self.putil.person.get_dataframe().loc[self.putil.person.get_all_infected()]['y_axis']]
+            data1 = np.c_[self.putil.person.persons[:,2],  self.putil.person.persons[:,3]]
             self.scat.set_offsets(data1)
-            self.scat2.set_offsets(data2)
-        # self.scat.set_offsets([self.putil.person.get_dataframe().loc[self.putil.person.get_all_healthy()]['x_axis'], self.putil.person.get_dataframe().loc[self.putil.person.get_all_healthy()]['y_axis']])
-        #self.ax.set_offset(self.putil.person.get_dataframe().loc[self.putil.person.get_all_infected()]['x_axis'], self.putil.person.get_dataframe().loc[self.putil.person.get_all_infected()]['y_axis'], s = 10, color = 'red')
-        return self.scat, self.scat2, 
-
-    # def animate(self):
-    #     fig = plt.figure(figsize=(10,10))
-    #     plt.xlim(self.putil.x_bounds[0] , self.putil.x_bounds[1])
-    #     plt.ylim(self.putil.y_bounds[0] , self.putil.y_bounds[1])
-    #     scatter1 = plt.scatter(self.putil.person.get_dataframe().loc[self.putil.person.get_all_healthy()]['x_axis'], self.putil.person.get_dataframe().loc[self.putil.person.get_all_healthy()]['y_axis'], s = 10, color = 'gray')
-    #     scatter2 = plt.scatter(self.putil.person.get_dataframe().loc[self.putil.person.get_all_infected()]['x_axis'], self.putil.person.get_dataframe().loc[self.putil.person.get_all_infected()]['y_axis'], s = 10, color = 'red')
         
-    #     # def update(frame):
-    #     #     data1 = np.c_[self.putil.person.get_dataframe().loc[self.putil.person.get_all_healthy()]['x_axis'],  self.putil.person.get_dataframe().loc[self.putil.person.get_all_healthy()]['y_axis']]
-    #     #     scatter1.set_offsets(data1)
-    #     #     data2 = np.c_[self.putil.person.get_dataframe().loc[self.putil.person.get_all_infected()]['x_axis'],  self.putil.person.get_dataframe().loc[self.putil.person.get_all_infected()]['y_axis']]
-    #     #     scatter2.set_offsets(data2)
-    #     #     self.putil.move()
-    #     #     return scatter1, scatter2
+        return self.scat, 
 
-    #     ani = FuncAnimation(fig, func = update, frames=500, interval=33, blit=True)
-    #     # for i in range(15):
-    #     #     plt.clf()
-    #     #     self.update()
-    #     #     plt.pause(1)
-        
-    #     plt.show()
         
 
 if __name__ == "__main__":
