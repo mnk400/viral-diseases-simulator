@@ -1,6 +1,6 @@
 from pandas.core.tools.numeric import to_numeric
 from config_util import ConfigUtil
-from person import Person
+from population import Population
 import numpy as np
 import math
 import random
@@ -22,8 +22,8 @@ class Virus():
         self.mortality_rate         = config.getFloatValue("virus.stats", "mortality_rate")
         self.mask_effectiveness     = config.getFloatValue("virus.stats", "mask_effectiveness")
         self.recovery_time          = config.getFloatValue("virus.stats", "recovery_time")
-
-    def infect(self, persons: Person):
+        
+    def infect(self, persons: np.ndarray):
 
         #Store the persons dataframe in a temporary variable
         tmp_df = persons.get_dataframe()
@@ -70,7 +70,7 @@ class Virus():
         return tmp_df
                 
     
-    def find_nearby(self, person: Person, x_bounds: list, y_bounds: list) -> list:
+    def find_nearby(self, person: np.ndarray, x_bounds: list, y_bounds: list) -> list:
         """
         Find the nearby per
 

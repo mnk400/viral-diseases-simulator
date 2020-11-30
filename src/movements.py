@@ -2,31 +2,237 @@
 File with classes and code which control how a particular person
 will move and to where
 '''
-from person import Person
+from population import Population
 import pandas as pd
 import numpy as np
+import person_properties_util as idx_helper
 
 class Movement():
     """
     Class providing abstraction into each movement of the population
     """    
     
-    def move(self, person : Person):
+    def update_persons(self, persons: np.ndarray, size: int, speed: float = 0.1, heading_update_chance: float = 0.02) -> np.ndarray:
+        """
+        Randomly updates/initializes the destination each person is headed to and corresponding speed randomly
 
-        x = person.get_dataframe()['x_axis'].to_numpy()
-        y = person.get_dataframe()['y_axis'].to_numpy()
+        Parameters
+        ----------
+        person : np.ndarray
+            The NumPy array containing the details of the persons to be updated
+        size : int
+            The size of the array of the persons to be updated to 
+        speed : float, optional
+            Mean of the speed to be generated randomly, by default 0.1
+        heading_update_chance : float, optional
+            The odds of updating the destination of each person, by default 0.02
 
-        x1 = person.get_dataframe()['destination_x'].to_numpy()
-        y1 = person.get_dataframe()['destination_y'].to_numpy()
+        Returns
+        -------
+        np.ndarray
+            The upated NumPy array with updated values
+        """  
 
-        slope = np.divide((y - y1), (x - x1))
+        #For updating the x position 
+        #Generate a random array with update chance for each person in the population      
+        update = np.random.random(size=(size,))
 
-        b = y1 - np.multiply(slope,x1)
+        #Get the persons in the population who have a lower or equal to chance of getting updated in this epoch
+        shp = update[update <= heading_update_chance].shape
 
-        speed = person.get_dataframe()['speed'].to_numpy()
+        #Update the position for the direction in which they are heading
+        persons[:,idx_helper.x_direction_idx][update <= heading_update_chance] = np.random.normal(loc = 0, scale = 1/3, size = shp)
 
-        x = x + speed
-        y = np.multiply(slope,x) + b
+        #For updating the y position, do the same
+        update = np.random.random(size=(size,))
+        shp = update[update <= heading_update_chance].shape
+        persons[:,idx_helper.y_direction_idx][update <= heading_update_chance] = np.random.normal(loc = 0, scale = 1/3, size = shp)
+        
+        #Update the speed by generating a random normal distribution using the argument speed as the parameter
+        update = np.random.random(size=(size,))
+        shp = update[update <= heading_update_chance].shape
+        persons[:,idx_helper.speed_idx][update <= heading_update_chance] = np.random.normal(loc = speed, scale = speed / 3, size = shp)
+        persons[:,idx_helper.speed_idx] = np.clip(persons[:,idx_helper.speed_idx], a_min=0.0005, a_max=0.01)
+        
+        #Return the updated array
+        return persons
 
-        person.set_x_axis(x)
-        person.set_y_axis(y)
+    def set_destination(self, persons: np.ndarray, destinations: np.ndarray, population: Population) -> np.ndarray:
+        """
+        Sets destination of the persons in the population who are not currently at their destinations, i.e traveling there
+
+        Parameters
+        ----------
+        persons : np.ndarray
+            The NumPy array containing the details of the persons to be updated
+        destinations : np.ndarray
+            The NumPy array containing the information regarding each person's destination used for updating
+
+        Returns
+        -------
+        np.ndarray
+            The upated NumPy array with updated values
+        """  
+
+        #Get all the persons who are currently traveling to their destinations              
+        currently_traveling = np.unique(persons[:, idx_helper.currently_active_idx][persons[:,idx_helper.currently_active_idx] != 0])
+        # currently_traveling = np.unique(population.get_currently_active_info()[population.get_currently_active_info() != 0])
+
+        #Update the destinations for all the persons who are currently traveling
+        for d in currently_traveling:
+
+            #Get the destination information for each person from the destination array
+            destination_x = destinations[:,int((d - 1) * 2)]
+            destination_y = destinations[:,int(((d - 1) * 2) + 1)]
+
+            #Using the destination information gathered above, calculate the next step where the person should travel to
+            head_x = destination_x - persons[:,idx_helper.x_axis_idx]
+            head_y = destination_y - persons[:,idx_helper.y_axis_idx]
+
+            #Update the travel information for each person who are currently traveling to their destination
+            persons[:,idx_helper.x_direction_idx][(persons[:,idx_helper.currently_active_idx] == d) &
+                            (persons[:,idx_helper.at_destination_idx] == 0)] = head_x[(persons[:,idx_helper.currently_active_idx] == d) &
+                                                                (persons[:,idx_helper.at_destination_idx] == 0)]
+            persons[:,idx_helper.y_direction_idx][(persons[:,idx_helper.currently_active_idx] == d) &
+                            (persons[:,idx_helper.at_destination_idx] == 0)] = head_y[(persons[:,idx_helper.currently_active_idx] == d) &
+                                                                (persons[:,idx_helper.at_destination_idx] == 0)]
+            
+            #Update the speed of the people currently traveling 
+            persons[:,idx_helper.speed_idx][(persons[:,idx_helper.currently_active_idx] == d) &
+                            (persons[:,idx_helper.at_destination_idx] == 0)] = 0.02
+        
+        #Return the updated array
+        return persons
+
+
+    def check_at_destination(self, persons: np.ndarray, destinations, wander_factor=1.5, speed = 0.01):
+        
+        active_dests = np.unique(persons[:,7][(persons[:,7] != 0)])
+
+        #see who is at destination
+        for d in active_dests:
+            dest_x = destinations[:,int((d - 1) * 2)]
+            dest_y = destinations[:,int(((d - 1) * 2) + 1)]
+
+            #see who arrived at destination and filter out who already was there
+            at_dest = persons[(np.abs(persons[:,2] - dest_x) < (persons[:,10] * wander_factor)) & 
+                                    (np.abs(persons[:,3] - dest_y) < (persons[:,11] * wander_factor)) &
+                                    (persons[:,8] == 0)]
+
+            if len(at_dest) > 0:
+
+                #mark those as arrived
+                at_dest[:,7] = 0
+                at_dest[:,8] = 1
+
+                #insert random headings and speeds for those at destination
+                #at_dest = self.update_persons(at_dest, size = len(at_dest), speed = speed,
+                #                        heading_update_chance = 1)
+
+                #at_dest[:,6] = 0.001
+
+                #reinsert into self.person.persons
+                persons[(np.abs(persons[:,2] - dest_x) < (persons[:,10] * wander_factor)) & 
+                           (np.abs(persons[:,3] - dest_y) < (persons[:,11] * wander_factor)) &
+                           (persons[:,8] == 0)] = at_dest
+                
+
+        return persons
+
+    def keep_at_destination(self, persons: np.ndarray, destinations, wander_factor=1.0):
+        print("here")
+        active_dests = np.unique(persons[:,11][(persons[:,7] != 0) &
+                                                (persons[:,8] == 1)])
+
+        for d in active_dests:
+            dest_x = destinations[:,int((d - 1) * 2)][(persons[:,8] == 1) &
+                                                        (persons[:,7] == d)]
+            dest_y = destinations[:,int(((d - 1) * 2) + 1)][(persons[:,8] == 1) &
+                                                            (persons[:,7] == d)]
+
+            #see who is marked as arrived
+            arrived = persons[(persons[:,8] == 1) &
+                                    (persons[:,7] == d)]
+
+            ids = np.int32(arrived[:,0]) # find unique IDs of arrived persons
+            
+            #check if there are those out of bounds
+            #replace x oob
+            #where x larger than destination + wander, AND heading wrong way, set heading negative
+            shp = arrived[:,4][arrived[:,2] > (dest_x + (arrived[:,10] * wander_factor))].shape
+
+            arrived[:,4][arrived[:,2] > (dest_x + (arrived[:,10] * wander_factor))] = -np.random.normal(loc = 0.5,
+                                                                    scale = 0.5 / 3,
+                                                                    size = shp)
+
+
+            #where x smaller than destination - wander, set heading positive
+            shp = arrived[:,4][arrived[:,2] < (dest_x - (arrived[:,10] * wander_factor))].shape
+            arrived[:,4][arrived[:,2] < (dest_x - (arrived[:,10] * wander_factor))] = np.random.normal(loc = 0.5,
+                                                                scale = 0.5 / 3,
+                                                                size = shp)
+            #where y larger than destination + wander, set heading negative
+            shp = arrived[:,5][arrived[:,3] > (dest_y + (arrived[:,11] * wander_factor))].shape
+            arrived[:,5][arrived[:,3] > (dest_y + (arrived[:,11] * wander_factor))] = -np.random.normal(loc = 0.5,
+                                                                    scale = 0.5 / 3,
+                                                                    size = shp)
+
+            #where y smaller than destination - wander, set heading positive
+            shp = arrived[:,5][arrived[:,3] < (dest_y - (arrived[:,11] * wander_factor))].shape
+            arrived[:,5][arrived[:,3] < (dest_y - (arrived[:,11] * wander_factor))] = np.random.normal(loc = 0.5,
+                                                                scale = 0.5 / 3,
+                                                                size = shp)
+
+            #slow speed
+            arrived[:,6] = np.random.normal(loc = 0.005,
+                                            scale = 0.005 / 3, 
+                                            size = arrived[:,6].shape)
+
+            #reinsert into self.person.persons
+            persons[(persons[:,8] == 1) &
+                        (persons[:,7] == d)] = arrived
+        return persons
+    
+    def out_of_bounds(self, persons: np.ndarray, xbounds, ybounds):
+        shp = persons[:,4][(persons[:,2] <= xbounds[:,0]) &
+                            (persons[:,4] < 0)].shape
+        persons[:,4][(persons[:,2] <= xbounds[:,0]) &
+                        (persons[:,4] < 0)] = np.clip(np.random.normal(loc = 0.5, 
+                                                                            scale = 0.5/3,
+                                                                            size = shp),
+                                                            a_min = 0.05, a_max = 1)
+
+        shp = persons[:,4][(persons[:,2] >= xbounds[:,1]) &
+                                (persons[:,4] > 0)].shape
+        persons[:,4][(persons[:,2] >= xbounds[:,1]) &
+                        (persons[:,4] > 0)] = np.clip(-np.random.normal(loc = 0.5, 
+                                                                            scale = 0.5/3,
+                                                                            size = shp),
+                                                            a_min = -1, a_max = -0.05)
+
+        #update y heading
+        shp = persons[:,5][(persons[:,3] <= ybounds[:,0]) &
+                                (persons[:,5] < 0)].shape
+        persons[:,5][(persons[:,3] <= ybounds[:,0]) &
+                        (persons[:,5] < 0)] = np.clip(np.random.normal(loc = 0.5, 
+                                                                            scale = 0.5/3,
+                                                                            size = shp),
+                                                            a_min = 0.05, a_max = 1)
+
+        shp = persons[:,5][(persons[:,3] >= ybounds[:,1]) &
+                                (persons[:,5] > 0)].shape
+        persons[:,5][(persons[:,3] >= ybounds[:,1]) &
+                        (persons[:,5] > 0)] = np.clip(-np.random.normal(loc = 0.5, 
+                                                                            scale = 0.5/3,
+                                                                            size = shp),
+                                                            a_min = -1, a_max = -0.05)
+        
+        return persons
+
+    def update_pop(self, persons):
+                 #x
+        persons[:,2] = persons[:,2] + (persons[:,4] * persons[:,6])
+                    #y
+        persons[:,3] = persons[:,3] + (persons [:,5] * persons[:,6])
+
+        return persons
