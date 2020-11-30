@@ -25,11 +25,10 @@ class Virus():
         self.mask_effectiveness     = config.getFloatValue("virus.stats", "mask_effectiveness")
         self.recovery_time          = config.getFloatValue("virus.stats", "recovery_time")
         
-    def infect(self, population: Population):
+    def infect(self, population: Population, frame):
 
         #Get the index of all the people who were infected in the previous step
         infected_idx = population.get_all_infected()
-        
         persons = population.get_person()
         
         infected_to_be = []
@@ -37,18 +36,25 @@ class Virus():
         #print(population.persons[62][index.g_value])
 
         for idx in infected_idx:
+            if(population.get_time_infected(int(idx[0]), frame) > 100):
+                chance = np.random.uniform(low = 0.001, high = 1)
+                if(chance < 0.03):
+                    population.persons[int(idx[0])][9] = 3
+                    population.persons[int(idx[0])][index.speed] = 0
+                    population.persons[int(idx[0])][index.x_dir] = 0
+                    population.persons[int(idx[0])][index.y_dir] = 0
+                else:
+                    population.persons[int(idx[0])][9] = 2
+                break         
             x_bounds = [persons[int(idx[0])][index.x_axis] - math.sqrt(self.infection_range), persons[int(idx[0])][index.x_axis] + math.sqrt(self.infection_range)]
             y_bounds = [persons[int(idx[0])][index.y_axis] - math.sqrt(self.infection_range), persons[int(idx[0])][index.y_axis] + math.sqrt(self.infection_range)]
-            #print(x_bounds)
-            #print(y_bounds)
-            
+            # print(population.get_time_infected(int(idx[0]), frame))
             tmp = self.find_nearby(persons, x_bounds, y_bounds)
-            #print(tmp)
-
             for i in tmp:
-                chance = np.random.uniform(low = 0, high = 1)
+                chance = np.random.uniform(low = 0.001, high = 1)
                 if chance<persons[int(idx[0])][13] and persons[int(idx[0])][index.g_value] > 0:
                     population.persons[int(i)][9] = 1
+                    population.set_infected_at(int(i), frame)
                     population.persons[int(idx[0])][index.g_value] -= 1
         return population
 
@@ -76,8 +82,11 @@ class Virus():
                                         (x_bounds[1]>persons[:, index.x_axis]) &
                                         (y_bounds[0]<persons[:, index.y_axis]) &
                                         (y_bounds[1]>persons[:, index.y_axis]) &
-                                        (persons[:, index.current_state] == 0)
+                                        (persons[:, index.current_state] == 0) &
+                                        (persons[:, index.current_state] == 0) 
                                     ]
-      
+        # print(selected_rows)
         return selected_rows
+
+    
     

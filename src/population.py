@@ -26,11 +26,12 @@ class Population(object):
         12 - g_value:                   The g value refers to the reproduction of the rate of the individual derived from the k and R value specific to the disease
         13 - susceptibility:            Individual chances of getting infected by the virus, depends on hygiene, and mask
         14 - mortality_rate:            Individual chances of dying due to the virus, depends on age
-        15 - mask effectiveness         
+        15 - mask effectiveness         Stores the effectiveness of the mask that the person is wearing, 0% if not wearing a mask at all
+        16 - infected_at                Stores the time unit (in this case a frame) at which someone got infected         
         """        
         
         #Generate the numpy array of population size = size and column size = 12
-        self.persons = np.zeros((size, 16))
+        self.persons = np.zeros((size, 17))
 
     def set_age(self, data : list):
         """
@@ -142,6 +143,19 @@ class Population(object):
             Column containing all the y coordinates of where the person is heading on the space for each person in the population
         """ 
         self.persons[:,5] = data
+
+    def set_infected_at(self, index: int, frame: int):
+        """
+        Sets the time unit (in this case, a frame) at which a person got infected
+
+        Parameters
+        ----------
+        index : int
+            The id/index of the person for which we need to set the index for
+        frame : int
+            The time frame at which the person got infected
+        """        
+        self.persons[index][16] = frame
     
     def set_mask_effectiveness(self, data):
         self.persons[:, 15] = data
@@ -212,6 +226,28 @@ class Population(object):
         """        
         return self.persons[self.persons[:,9] == 0]
 
+    def get_all_recovered(self) -> list:
+        """
+        Returns the index for all recovered individuals in the population
+
+        Returns
+        -------
+        list
+           Returns the index of all persons in the population who are recovered and are now immune
+        """        
+        return self.persons[self.persons[:,9] == 2]
+
+    def get_all_dead(self) -> list:
+        """
+        Returns the index for all dead individuals in the population
+
+        Returns
+        -------
+        list
+           Returns the index of all persons in the population who are dead
+        """        
+        return self.persons[self.persons[:,9] == 3]
+
     def get_currently_active_info(self) -> np.ndarray:
         """
         Return the column information for all persons' current travel information (whether they have reached their destinations)
@@ -221,7 +257,25 @@ class Population(object):
         np.ndarray
             The person column array containing current travel information
         """
-        return self.persons[:, 7]        
+        return self.persons[:, 7] 
+
+    def get_time_infected(self, index: int, current_frame: int) -> int:
+        """
+        Get the time units (in this case frames) elapsed since a person got infected
+
+        Parameters
+        ----------
+        index : int
+            The index for the person
+        current_frame : int
+            The current frame to get the time elapsed since the person got infected
+
+        Returns
+        -------
+        int
+            The elapsed time since person got infected
+        """               
+        return current_frame - self.persons[index][16] 
 
     def initialize_id(self, low: int, high: int):
         """

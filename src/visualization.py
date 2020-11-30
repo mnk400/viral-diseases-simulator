@@ -20,23 +20,35 @@ class Visualization():
     def setup_plot(self):
         self.scat = self.ax.scatter(self.putil.population.get_all_healthy()[:, index.x_axis],
                                         self.putil.population.get_all_healthy()[:, index.y_axis], vmin=0, vmax=1,
-                                                cmap="jet", edgecolor="k", s=10)
+                                                cmap="jet", c="gray", s=10)
         self.scat2 = self.ax.scatter(self.putil.population.get_all_infected()[:, index.x_axis],
                                         self.putil.population.get_all_infected()[:, index.y_axis], vmin=0, vmax=1,
-                                                cmap="jet", edgecolor="r", s=10)
-        return self.scat, self.scat2
+                                                cmap="jet", c="r", s=10)
+        self.scat3 = self.ax.scatter(self.putil.population.get_all_recovered()[:, index.x_axis],
+                                        self.putil.population.get_all_recovered()[:, index.y_axis], vmin=0, vmax=1,
+                                                cmap="jet", c="g", s=10)
+        self.scat4 = self.ax.scatter(self.putil.population.get_all_recovered()[:, index.x_axis],
+                                        self.putil.population.get_all_recovered()[:, index.y_axis], vmin=0, vmax=1,
+                                                cmap="jet", c="black", s=10)
+        return self.scat, self.scat2, self.scat3, self.scat4
 
-    def update(self, i):
-        if(i % 1 == 0):    
-            self.putil.move()
+    def update(self, frame):
+        if(frame % 1 == 0):    
+            self.putil.move(frame)
             data1 = np.c_[self.putil.population.get_all_healthy()[:, index.x_axis],
                                         self.putil.population.get_all_healthy()[:, index.y_axis]]
             data2 = np.c_[self.putil.population.get_all_infected()[:, index.x_axis],
                                         self.putil.population.get_all_infected()[:, index.y_axis]]
+            data3 = np.c_[self.putil.population.get_all_recovered()[:, index.x_axis],
+                                        self.putil.population.get_all_recovered()[:, index.y_axis]]
+            data4 = np.c_[self.putil.population.get_all_dead()[:, index.x_axis],
+                                        self.putil.population.get_all_dead()[:, index.y_axis]]
             self.scat.set_offsets(data1)
             self.scat2.set_offsets(data2)
+            self.scat3.set_offsets(data3)
+            self.scat4.set_offsets(data4)
         
-        return self.scat, self.scat2, 
+        return self.scat, self.scat2, self.scat3, self.scat4
 
         
 

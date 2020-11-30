@@ -71,10 +71,11 @@ class PopulationUtil(object):
         #Update the destination each person is headed to and corresponding speed randomly
         self.persons = self.movement.update_persons(self.persons, self.size, 1, 1)
         self.persons[62, index.g_value] = 3
+        self.population.set_infected_at(62, 0)
         self.persons[62, 9] = 1
 
 
-    def move(self):
+    def move(self, frame):
         # print(self.persons)
         active_dests = len(self.persons[self.persons[:,7] != 0])
  
@@ -96,7 +97,7 @@ class PopulationUtil(object):
         
         self.persons = self.movement.update_pop(self.persons)
 
-        self.population = self.virus.infect(self.population)
+        self.population = self.virus.infect(self.population, frame)
 
 if __name__ == "__main__":
     # p = Population(100, [0, 1], [0, 1], 3, 0.5)
