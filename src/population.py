@@ -24,10 +24,12 @@ class Population(object):
         10 - wander_x:                  Once at the destination, the x position to which the individual wanders
         11 - wander_y:                  Once at the destination, the y position to which the individual wanders
         12 - g_value:                   The g value refers to the reproduction of the rate of the individual derived from the k and R value specific to the disease
+        13 - susceptibility:            Individual chances of getting infected by the virus, depends on hygiene, and mask
+        14 - mortality_rate:            Individual chances of dying due to the virus, depends on age
         """        
         
         #Generate the numpy array of population size = size and column size = 12
-        self.persons = np.zeros((size, 13))
+        self.persons = np.zeros((size, 14))
 
     def set_age(self, data : list):
         """
@@ -231,20 +233,20 @@ class Population(object):
         ID = list(range(low, high))
         self.persons[:,0] = ID   
 
-    def initialize_ages(self, mean: int, std_dev: int, size: int):
+    def initialize_ages(self, min_age: int, max_age: int, size: int):
         """
-        Initialize the ages or all the individuals in the population. Uses normal distribution to generate random ages
+        Initialize the ages or all the individuals in the population. Uses uniform distribution to generate random ages
 
         Parameters
         ----------
-        mean    : int
-            Mean for the ages to be generated
-        std_dev : int
-            Standard deviation for the ages to be generated
-        size    : int
+        min_age    : int
+            Minimum age for the randomly generated ages
+        max_age    : int
+            Maximum age for the randomly generated ages
+        size       : int
             Size of the population
         """  
-        ages = np.int32(np.random.normal(loc=45, scale= 30, size=size))
+        ages = np.int32(np.random.uniform(low=min_age, high=max_age, size=size))
         self.set_age(ages)
 
     def initialize_positions(self, x_bounds: list, y_bounds: list, size: int):
@@ -260,10 +262,10 @@ class Population(object):
         size : int
             Size of the population
         """
-        x_bound_list = np.random.uniform(low=x_bounds[0] + 0.1, 
-                                            high=x_bounds[1] - 0.1, size=size)
-        y_bound_list = np.random.uniform(low=y_bounds[0] + 0.1, 
-                                            high=y_bounds[1] - 0.1, size=size)
+        x_bound_list = np.random.uniform(low=x_bounds[0], 
+                                            high=x_bounds[1], size=size)
+        y_bound_list = np.random.uniform(low=y_bounds[0], 
+                                            high=y_bounds[1], size=size)
         self.set_x_axis(x_bound_list)
         self.set_y_axis(y_bound_list)
 
@@ -283,11 +285,27 @@ class Population(object):
         """      
         g_value = np.random.normal(loc=mean, scale=std_dev,size=size)
         g_value[g_value<0] = 0.00000
-        self.set_g_value(g_value)
+        self.set_g_value(g_value.astype(int))
 
+    def initialize_susceptibility(self, mask_effectiveness: float, hygiene_effectiveness: float, size: int):
+        """
+        Initialize the susceptibilty to the virus, depends an individual wears a mask, practices good hygiene, and age
 
+        Parameters
+        ----------
+        mask_effectiveness          : float
+            Mean of the g value to be generated randomly
+        hygiene_effectiveness       : float
+            Standard deviation of the g value to be generated randomly
+        size : int
+            Size of the random g value array to be generated
+        """      
+        g_value = np.random.normal(loc=mean, scale=std_dev,size=size)
+        g_value[g_value<0] = 0.00000
+        self.set_g_value(g_value.astype(int))
 
- 
+    
+
 if __name__ == "__main__":
     # p = Person()
     # print(p.persons)

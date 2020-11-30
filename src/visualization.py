@@ -1,5 +1,6 @@
 from population_util import PopulationUtil as putil 
 import matplotlib.pyplot as plt
+import person_properties_util as index
 from time import sleep
 import numpy as np
 from matplotlib.animation import FuncAnimation
@@ -17,19 +18,25 @@ class Visualization():
         plt.show()
 
     def setup_plot(self):
-        self.scat = self.ax.scatter(self.putil.persons[:,2],
-                                        self.putil.persons[:,3], vmin=0, vmax=1,
-                                                cmap="jet", edgecolor="k")
-
-        return self.scat
+        self.scat = self.ax.scatter(self.putil.population.get_all_healthy()[:, index.x_axis],
+                                        self.putil.population.get_all_healthy()[:, index.y_axis], vmin=0, vmax=1,
+                                                cmap="jet", edgecolor="k", s=10)
+        self.scat2 = self.ax.scatter(self.putil.population.get_all_infected()[:, index.x_axis],
+                                        self.putil.population.get_all_infected()[:, index.y_axis], vmin=0, vmax=1,
+                                                cmap="jet", edgecolor="r", s=10)
+        return self.scat, self.scat2
 
     def update(self, i):
         if(i % 1 == 0):    
             self.putil.move()
-            data1 = np.c_[self.putil.persons[:,2],  self.putil.persons[:,3]]
+            data1 = np.c_[self.putil.population.get_all_healthy()[:, index.x_axis],
+                                        self.putil.population.get_all_healthy()[:, index.y_axis]]
+            data2 = np.c_[self.putil.population.get_all_infected()[:, index.x_axis],
+                                        self.putil.population.get_all_infected()[:, index.y_axis]]
             self.scat.set_offsets(data1)
+            self.scat2.set_offsets(data2)
         
-        return self.scat, 
+        return self.scat, self.scat2, 
 
         
 

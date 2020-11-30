@@ -3,7 +3,8 @@ import numpy as np
 from numpy.core.fromnumeric import size
 from config_util import ConfigUtil
 from population import Population
-# from virus_util import Virus
+import person_properties_util as index
+from virus_util import Virus
 from movements import Movement
 
 class PopulationUtil(object):
@@ -33,20 +34,20 @@ class PopulationUtil(object):
             The k value for the virus
         """        
         self.population   = Population(size) 
-        # self.virus        = Virus()
+        self.virus        = Virus()
         self.movement     = Movement()
         self.size         = size
         self.x_bounds     = x_bounds
         self.y_bounds     = y_bounds
         self.k            = k
         self.r            = r
-        self.destinations = np.random.uniform(low=0.0,high=1.0,size=(self.size,2))
+        self.destinations = np.random.uniform(low=0,high=1,size=(self.size,2))
         self.persons      = self.population.get_person()
 
         #Get population properties from config file
         self.config       = ConfigUtil('config/config.ini')
-        self.mean_age     = self.config.getIntegerValue("people", "mean_age")
-        self.std_dev      = self.config.getIntegerValue("people", "std_dev")
+        self.min_age      = self.config.getIntegerValue("people", "min_age")
+        self.max_dev      = self.config.getIntegerValue("people", "max_dev")
 
         self.initialize_persons()
 
@@ -55,8 +56,8 @@ class PopulationUtil(object):
         Method which initializes the person list in the population and further calls another method to update other 
         properties of the individual persons
         """    
-        self.population.initialize_id(1, self.size+1)
-        self.population.initialize_ages(self.mean_age, self.std_dev, self.size)
+        self.population.initialize_id(0, self.size)
+        self.population.initialize_ages(self.min_age, self.max_dev, self.size)
         self.population.initialize_positions(self.x_bounds, self.y_bounds, self.size)
         self.population.initialize_g_value(self.r, 1/self.k, self.size)
         self.persons[:, 7] = 1
@@ -65,20 +66,23 @@ class PopulationUtil(object):
 
         #Update the destination each person is headed to and corresponding speed randomly
         self.persons = self.movement.update_persons(self.persons, self.size, 1, 1)
+        self.persons[62, index.g_value] = 3
+        self.persons[62, 9] = 1
 
 
     def move(self):
         # print(self.persons)
         active_dests = len(self.persons[self.persons[:,7] != 0])
-        print(active_dests)
-        if active_dests > 0 and len(self.persons[self.persons[:,8] == 0]) > 0:
-            #print("here1")
-            self.persons = self.movement.set_destination(self.persons, self.destinations, self.population)
-            self.persons = self.movement.check_at_destination(self.persons, self.destinations)
+ 
+        #print(active_dests)
+        # if active_dests > 0 and len(self.persons[self.persons[:,8] == 0]) > 0:
+        #     #print("here1")
+        #     self.persons = self.movement.set_destination(self.persons, self.destinations, self.population)
+        #     self.persons = self.movement.check_at_destination(self.persons, self.destinations)
 
-        if active_dests > 0 and len(self.persons[self.persons[:,8] == 1]) > 0:
-            #self.persons = self.movement.keep_at_destination(self.persons, self.destinations)
-            pass
+        # if active_dests > 0 and len(self.persons[self.persons[:,8] == 1]) > 0:
+        #     self.persons = self.movement.keep_at_destination(self.persons, self.destinations)
+        #     #pass
         
         _xbounds = np.array([[0,1]] * self.size)
         _ybounds = np.array([[0,1]] * self.size)
@@ -87,6 +91,8 @@ class PopulationUtil(object):
         self.persons = self.movement.update_persons(self.persons, self.size)
         
         self.persons = self.movement.update_pop(self.persons)
+
+        self.population = self.virus.infect(self.population)
 
 if __name__ == "__main__":
     # p = Population(100, [0, 1], [0, 1], 3, 0.5)
