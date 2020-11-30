@@ -36,7 +36,7 @@ class Virus():
         #print(population.persons[62][index.g_value])
 
         for idx in infected_idx:
-            if(population.get_time_infected(int(idx[0]), frame) > 100):
+            if(population.get_time_infected(int(idx[0]), frame) > 150):
                 chance = np.random.uniform(low = 0.001, high = 1)
                 if(chance < 0.03):
                     population.persons[int(idx[0])][9] = 3

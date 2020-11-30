@@ -346,12 +346,12 @@ class Population(object):
         self.set_g_value(g_value.astype(int))
     
     def initialize_mask_eff(self, size: int):
-        mask_effective_range = [0,50,70,90]
+        mask_effective_range = [0,60,80,90]
         tmp = np.random.randint(low=0,high=4,size=size)
         
-        tmp[tmp == 0] = mask_effective_range[0]
-        tmp[tmp == 1] = mask_effective_range[1]
-        tmp[tmp == 2] = mask_effective_range[2]
+        tmp[tmp == 0] = mask_effective_range[3]
+        tmp[tmp == 1] = mask_effective_range[3]
+        tmp[tmp == 2] = mask_effective_range[3]
         tmp[tmp == 3] = mask_effective_range[3]
         #print(tmp)
         self.set_mask_effectiveness(tmp)
