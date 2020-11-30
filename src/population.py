@@ -26,10 +26,11 @@ class Population(object):
         12 - g_value:                   The g value refers to the reproduction of the rate of the individual derived from the k and R value specific to the disease
         13 - susceptibility:            Individual chances of getting infected by the virus, depends on hygiene, and mask
         14 - mortality_rate:            Individual chances of dying due to the virus, depends on age
+        15 - mask effectiveness         
         """        
         
         #Generate the numpy array of population size = size and column size = 12
-        self.persons = np.zeros((size, 14))
+        self.persons = np.zeros((size, 16))
 
     def set_age(self, data : list):
         """
@@ -141,6 +142,9 @@ class Population(object):
             Column containing all the y coordinates of where the person is heading on the space for each person in the population
         """ 
         self.persons[:,5] = data
+    
+    def set_mask_effectiveness(self, data):
+        self.persons[:, 15] = data
 
     def get_x_axis(self) -> np.array:
         """
@@ -286,8 +290,20 @@ class Population(object):
         g_value = np.random.normal(loc=mean, scale=std_dev,size=size)
         g_value[g_value<0] = 0.00000
         self.set_g_value(g_value.astype(int))
+    
+    def initialize_mask_eff(self, size: int):
+        mask_effective_range = [0,50,70,90]
+        tmp = np.random.randint(low=0,high=4,size=size)
+        
+        tmp[tmp == 0] = mask_effective_range[0]
+        tmp[tmp == 1] = mask_effective_range[1]
+        tmp[tmp == 2] = mask_effective_range[2]
+        tmp[tmp == 3] = mask_effective_range[3]
+        #print(tmp)
+        self.set_mask_effectiveness(tmp)
 
-    def initialize_susceptibility(self, mask_effectiveness: float, hygiene_effectiveness: float, size: int):
+
+    def initialize_susceptibility(self):
         """
         Initialize the susceptibilty to the virus, depends an individual wears a mask, practices good hygiene, and age
 
@@ -300,9 +316,13 @@ class Population(object):
         size : int
             Size of the random g value array to be generated
         """      
-        g_value = np.random.normal(loc=mean, scale=std_dev,size=size)
-        g_value[g_value<0] = 0.00000
-        self.set_g_value(g_value.astype(int))
+        tmp = (np.array([100]*len(self.persons)) - self.persons[:,15])/100
+        
+        tmp2 = [0.1] * len(self.persons)
+        tmp2 = np.multiply(tmp, tmp2)
+
+        self.persons[:,13] = tmp2
+
 
     
 

@@ -12,7 +12,7 @@ class Visualization():
         self.fig, self.ax = plt.subplots()
         self.ax.set_xlim(self.putil.x_bounds[0] , self.putil.x_bounds[1])
         self.ax.set_ylim(self.putil.y_bounds[0] , self.putil.y_bounds[1])
-        self.ani = FuncAnimation(self.fig, self.update, interval=33, 
+        self.ani = FuncAnimation(self.fig, self.update, interval=5, 
                                           init_func=self.setup_plot, blit=False)
         #self.ani.save("try.mp4", fps=30, dpi=120)
         plt.show()

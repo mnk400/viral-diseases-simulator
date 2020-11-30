@@ -60,6 +60,10 @@ class PopulationUtil(object):
         self.population.initialize_ages(self.min_age, self.max_dev, self.size)
         self.population.initialize_positions(self.x_bounds, self.y_bounds, self.size)
         self.population.initialize_g_value(self.r, 1/self.k, self.size)
+        self.population.initialize_mask_eff(self.size)
+
+        self.population.initialize_susceptibility()
+        # print(self.persons[:,15])
         self.persons[:, 7] = 1
         self.persons[:,10] = 0.05
         self.persons[:,11] = 0.1

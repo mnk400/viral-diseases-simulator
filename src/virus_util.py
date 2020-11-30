@@ -33,7 +33,8 @@ class Virus():
         persons = population.get_person()
         
         infected_to_be = []
-        print(len(infected_idx))
+        #print(len(population.persons[:,index.g_value == 0]))
+        #print(population.persons[62][index.g_value])
 
         for idx in infected_idx:
             x_bounds = [persons[int(idx[0])][index.x_axis] - math.sqrt(self.infection_range), persons[int(idx[0])][index.x_axis] + math.sqrt(self.infection_range)]
@@ -46,9 +47,9 @@ class Virus():
 
             for i in tmp:
                 chance = np.random.uniform(low = 0, high = 1)
-                if chance<0.06 and persons[int(idx[0])][index.g_value] > 0:
+                if chance<persons[int(idx[0])][13] and persons[int(idx[0])][index.g_value] > 0:
                     population.persons[int(i)][9] = 1
-                    persons[int(idx[0])][index.g_value] -= 1
+                    population.persons[int(idx[0])][index.g_value] -= 1
         return population
 
     
@@ -70,13 +71,6 @@ class Virus():
         list
             [description]
         """        
-        # tmp_df = person.get_dataframe()
-        # filter1 = tmp_df['x_axis'].gt(x_bounds[0])
-        # filter2 = tmp_df['x_axis'].lt(x_bounds[1])
-        # filter3 = tmp_df['y_axis'].gt(y_bounds[0])
-        # filter4 = tmp_df['y_axis'].lt(y_bounds[1])
-        #selected_rows = persons[(persons[:,index.x_axis] > x_bounds[0]) & (persons[:,index.x_axis] < x_bounds[1]) 
-        #            & (persons[:,index.y_axis] > y_bounds[0]) & (persons[:,index.y_axis] < y_bounds[1])]
         
         selected_rows = persons[:,0][(x_bounds[0]<persons[:, index.x_axis]) &
                                         (x_bounds[1]>persons[:, index.x_axis]) &
@@ -84,12 +78,6 @@ class Virus():
                                         (y_bounds[1]>persons[:, index.y_axis]) &
                                         (persons[:, index.current_state] == 0)
                                     ]
-
-        # filter1 = persons[persons[:, index.x_axis] > x_bounds[0] and persons[:, index.x_axis] < x_bounds[1] and
-                        # persons[:, index.y_axis] > y_bounds[0]  and persons[:, index.y_axis] < y_bounds[0]]
-        # filter2 = 
-        # filter3 = 
-        # filter4 = 
-        # index_list = tmp_df.index[filter1 & filter2 & filter3 & filter4].tolist()       
+      
         return selected_rows
     
