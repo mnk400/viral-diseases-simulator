@@ -5,7 +5,7 @@ will move and to where
 from population import Population
 import pandas as pd
 import numpy as np
-import person_properties_util as idx_helper
+import person_properties_util as idx
 
 class Movement():
     """
@@ -41,18 +41,18 @@ class Movement():
         shp = update[update <= heading_update_chance].shape
 
         #Update the position for the direction in which they are heading
-        persons[:,idx_helper.x_direction_idx][update <= heading_update_chance] = np.random.normal(loc = 0, scale = 1/3, size = shp)
+        persons[:,idx.x_dir][update <= heading_update_chance] = np.random.normal(loc = 0, scale = 1/3, size = shp)
 
         #For updating the y position, do the same
         update = np.random.random(size=(size,))
         shp = update[update <= heading_update_chance].shape
-        persons[:,idx_helper.y_direction_idx][update <= heading_update_chance] = np.random.normal(loc = 0, scale = 1/3, size = shp)
+        persons[:,idx.y_dir][update <= heading_update_chance] = np.random.normal(loc = 0, scale = 1/3, size = shp)
         
         #Update the speed by generating a random normal distribution using the argument speed as the parameter
         update = np.random.random(size=(size,))
         shp = update[update <= heading_update_chance].shape
-        persons[:,idx_helper.speed_idx][update <= heading_update_chance] = np.random.normal(loc = speed, scale = speed / 3, size = shp)
-        persons[:,idx_helper.speed_idx] = np.clip(persons[:,idx_helper.speed_idx], a_min=0.0005, a_max=0.01)
+        persons[:,idx.speed][update <= heading_update_chance] = np.random.normal(loc = speed, scale = speed / 3, size = shp)
+        persons[:,idx.speed] = np.clip(persons[:,idx.speed], a_min=0.0005, a_max=0.01)
         
         #Return the updated array
         return persons
@@ -75,7 +75,7 @@ class Movement():
         """  
 
         #Get all the persons who are currently traveling to their destinations              
-        currently_traveling = np.unique(persons[:, idx_helper.currently_active_idx][persons[:,idx_helper.currently_active_idx] != 0])
+        currently_traveling = np.unique(persons[:, idx.currently_active][persons[:,idx.currently_active] != 0])
         # currently_traveling = np.unique(population.get_currently_active_info()[population.get_currently_active_info() != 0])
 
         #Update the destinations for all the persons who are currently traveling
@@ -86,20 +86,20 @@ class Movement():
             destination_y = destinations[:,int(((d - 1) * 2) + 1)]
 
             #Using the destination information gathered above, calculate the next step where the person should travel to
-            head_x = destination_x - persons[:,idx_helper.x_axis_idx]
-            head_y = destination_y - persons[:,idx_helper.y_axis_idx]
+            head_x = destination_x - persons[:,idx.x_axis]
+            head_y = destination_y - persons[:,idx.y_axis]
 
             #Update the travel information for each person who are currently traveling to their destination
-            persons[:,idx_helper.x_direction_idx][(persons[:,idx_helper.currently_active_idx] == d) &
-                            (persons[:,idx_helper.at_destination_idx] == 0)] = head_x[(persons[:,idx_helper.currently_active_idx] == d) &
-                                                                (persons[:,idx_helper.at_destination_idx] == 0)]
-            persons[:,idx_helper.y_direction_idx][(persons[:,idx_helper.currently_active_idx] == d) &
-                            (persons[:,idx_helper.at_destination_idx] == 0)] = head_y[(persons[:,idx_helper.currently_active_idx] == d) &
-                                                                (persons[:,idx_helper.at_destination_idx] == 0)]
+            persons[:,idx.x_dir][(persons[:,idx.currently_active] == d) &
+                            (persons[:,idx.at_destination] == 0)] = head_x[(persons[:,idx.currently_active] == d) &
+                                                                (persons[:,idx.at_destination] == 0)]
+            persons[:,idx.y_dir][(persons[:,idx.currently_active] == d) &
+                            (persons[:,idx.at_destination] == 0)] = head_y[(persons[:,idx.currently_active] == d) &
+                                                                (persons[:,idx.at_destination] == 0)]
             
             #Update the speed of the people currently traveling 
-            persons[:,idx_helper.speed_idx][(persons[:,idx_helper.currently_active_idx] == d) &
-                            (persons[:,idx_helper.at_destination_idx] == 0)] = 0.02
+            persons[:,idx.speed][(persons[:,idx.currently_active] == d) &
+                            (persons[:,idx.at_destination] == 0)] = 0.02
         
         #Return the updated array
         return persons
