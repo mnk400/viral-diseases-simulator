@@ -17,45 +17,54 @@ class Virus():
         """
         The constructor is responsible for loading the virus statistics from the config file
         """  
-        config = ConfigUtil("config/config.ini")
-        self.infection_range        = config.getFloatValue("virus.stats", "infection_range")
-        self.k_value                = config.getFloatValue("virus.stats", "k_value")
-        self.reproduction_rate      = config.getFloatValue("virus.stats", "reproduction_rate")
-        self.mortality_rate         = config.getFloatValue("virus.stats", "mortality_rate")
-        self.mask_effectiveness     = config.getFloatValue("virus.stats", "mask_effectiveness")
-        self.recovery_time          = config.getFloatValue("virus.stats", "recovery_time")
+        self.config                    = ConfigUtil("config/config.ini")
+        self.infection_range           = self.config.getFloatValue("virus.stats", "infection_range")
+        self.k_value                   = self.config.getFloatValue("virus.stats", "k_value")
+        self.reproduction_rate         = self.config.getFloatValue("virus.stats", "reproduction_rate")
+        self.recovery_time             = self.config.getFloatValue("virus.stats", "recovery_time")
+        self.total_healthcare_capacity = self.config.getIntegerValue("people", "total_population")*(self.config.getIntegerValue("area", "healthcare_capacity_ratio")/100)
+        self.healthcare_facility_full  = False
+        print(self.total_healthcare_capacity)
         
     def infect(self, population: Population, frame):
+        print(len(population.persons[population.persons[:,index.hospitalized] == 1]))
+        #print(population.persons[population.persons[:,index.hospitalized] == 1])
 
         #Get the index of all the people who were infected in the previous step
         infected_idx = population.get_all_infected()
         persons = population.get_person()
-        
-        infected_to_be = []
+
         #print(len(population.persons[:,index.g_value == 0]))
         #print(population.persons[62][index.g_value])
-
+        infected_counter = 0
         for idx in infected_idx:
-            if(population.get_time_infected(int(idx[0]), frame) > 150):
-                chance = np.random.uniform(low = 0.001, high = 1)
-                if(chance < 0.03):
-                    population.persons[int(idx[0])][9] = 3
-                    population.persons[int(idx[0])][index.speed] = 0
-                    population.persons[int(idx[0])][index.x_dir] = 0
-                    population.persons[int(idx[0])][index.y_dir] = 0
-                else:
-                    population.persons[int(idx[0])][9] = 2
-                break         
+            infected_counter += 1
+            if(population.get_time_infected(int(idx[0]), frame) >= self.recovery_time):
+                population = self.die_or_immune(population,int(idx[0]))
+            #print(infected_counter)
+            # if(population.get_time_infected(int(idx[0]), frame) >= self.recovery_time):
+            #     if(infected_counter >= self.total_healthcare_capacity):
+            #         #print(infected_counter)
+            #         self.healthcare_facility_full = True 
+            #         population = self.die_or_immune(population, int(idx[0]), True)
+            #     else:
+            #         self.healthcare_facility_full = False
+            #         population = self.die_or_immune(population, int(idx[0]), False)
+            #     break         
             x_bounds = [persons[int(idx[0])][index.x_axis] - math.sqrt(self.infection_range), persons[int(idx[0])][index.x_axis] + math.sqrt(self.infection_range)]
             y_bounds = [persons[int(idx[0])][index.y_axis] - math.sqrt(self.infection_range), persons[int(idx[0])][index.y_axis] + math.sqrt(self.infection_range)]
             # print(population.get_time_infected(int(idx[0]), frame))
             tmp = self.find_nearby(persons, x_bounds, y_bounds)
             for i in tmp:
                 chance = np.random.uniform(low = 0.001, high = 1)
-                if chance<persons[int(idx[0])][13] and persons[int(idx[0])][index.g_value] > 0:
+                if chance<persons[int(i)][index.susceptibility] and persons[int(idx[0])][index.g_value] > 0:
                     population.persons[int(i)][9] = 1
                     population.set_infected_at(int(i), frame)
                     population.persons[int(idx[0])][index.g_value] -= 1
+                    if(len(population.persons[population.persons[:,index.hospitalized] == 1]) < self.total_healthcare_capacity):
+                        population.persons[int(i)][index.hospitalized] = 1
+                        
+
         return population
 
     
@@ -87,6 +96,39 @@ class Virus():
                                     ]
         # print(selected_rows)
         return selected_rows
+
+    def die_or_immune(self, population: Population, infected_person_idx: int) -> bool:
+        """
+        [summary]
+
+        Parameters
+        ----------
+        infected_person_idx         : np.array
+            [description]
+        healthcare_facility_full    : bool
+            [description]
+
+        Returns
+        -------
+        bool
+            [description]
+        """ 
+        chance = np.random.uniform(low = 0.001, high = 1)
+        if population.persons[infected_person_idx][index.hospitalized] == 1: 
+            population.persons[infected_person_idx][index.hospitalized] = 3
+            if(chance < population.persons[infected_person_idx][index.mortality_rate]):
+                population.persons[infected_person_idx][index.current_state] = 3
+            else:
+                population.persons[infected_person_idx][index.current_state] = 2
+        else:
+            #print('here')
+            if(chance < population.persons[infected_person_idx][index.mortality_rate] + 0.2):
+                population.persons[infected_person_idx][index.current_state] = 3
+            else:
+                population.persons[infected_person_idx][index.current_state] = 2
+        return population
+
+        
 
     
     

@@ -9,7 +9,7 @@ import matplotlib as mpl
 class Visualization():
 
     def __init__(self):
-        self.putil = putil(1000, [0,1], [0,1], 3, 0.5)
+        self.putil = putil(1000, [0,1], [0,1], 3, 0.1)
         mpl.rcParams['toolbar'] = 'None' 
         self.fig, self.ax = plt.subplots()
         self.ax.set_xlim(self.putil.x_bounds[0] , self.putil.x_bounds[1])
@@ -31,7 +31,9 @@ class Visualization():
         dead_x = self.putil.population.get_all_dead()[:, index.x_axis]
         dead_y = self.putil.population.get_all_dead()[:, index.y_axis]
 
-        self.text = self.ax.text(0, 1.02, 'Healthy: %i Infected: %i Immune: %i Dead: %i'%(len(healthy_x),len(infected_x),len(immune_x),len(dead_x)))
+        currently_hospitalized = len(self.putil.population.persons[self.putil.population.persons[:,index.hospitalized] == 1])
+
+        self.text = self.ax.text(0, 1.02, "Healthy: %i Infected: %i Immune: %i Dead: %i Hospitalized: %s" % (len(healthy_x),len(infected_x),len(immune_x),len(dead_x),currently_hospitalized))
         self.scat = self.ax.scatter(healthy_x,
                                         healthy_y, vmin=0, vmax=1,
                                                 cmap="jet", c="lightsteelblue", s=10)
@@ -58,12 +60,13 @@ class Visualization():
             immune_y = self.putil.population.get_all_recovered()[:, index.y_axis]
             dead_x = self.putil.population.get_all_dead()[:, index.x_axis]
             dead_y = self.putil.population.get_all_dead()[:, index.y_axis]
+            currently_hospitalized = len(self.putil.population.persons[self.putil.population.persons[:,index.hospitalized] == 1])
 
             data1 = np.c_[healthy_x,healthy_y]
             data2 = np.c_[infected_x,infected_y]
             data3 = np.c_[immune_x,immune_y]
             data4 = np.c_[dead_x,dead_y]
-            self.text.set_text('Healthy: %i Infected: %i Immune: %i Dead: %i'%(len(healthy_x),len(infected_x),len(immune_x),len(dead_x)))
+            self.text.set_text("Healthy: %i Infected: %i Immune: %i Dead: %i Hospitalized: %s" % (len(healthy_x),len(infected_x),len(immune_x),len(dead_x),currently_hospitalized))
             self.scat.set_offsets(data1)
             self.scat2.set_offsets(data2)
             self.scat3.set_offsets(data3)

@@ -33,21 +33,22 @@ class PopulationUtil(object):
         k : float
             The k value for the virus
         """        
-        self.population   = Population(size) 
-        self.virus        = Virus()
-        self.movement     = Movement()
-        self.size         = size
-        self.x_bounds     = x_bounds
-        self.y_bounds     = y_bounds
-        self.k            = k
-        self.r            = r
-        self.destinations = np.random.uniform(low=0,high=1,size=(self.size,2))
-        self.persons      = self.population.get_person()
+        self.population                 = Population(size) 
+        self.virus                      = Virus()
+        self.movement                   = Movement()
+        self.size                       = size
+        self.x_bounds                   = x_bounds
+        self.y_bounds                   = y_bounds
+        self.k                          = k
+        self.r                          = r
+        self.destinations               = np.random.uniform(low=0,high=1,size=(self.size,2))
+        self.persons                    = self.population.get_person()
 
         #Get population properties from config file
-        self.config       = ConfigUtil('config/config.ini')
-        self.min_age      = self.config.getIntegerValue("people", "min_age")
-        self.max_dev      = self.config.getIntegerValue("people", "max_dev")
+        self.config                     = ConfigUtil('config/config.ini')
+        self.min_age                    = self.config.getIntegerValue("people", "min_age")
+        self.max_dev                    = self.config.getIntegerValue("people", "max_dev")
+        self.mortality_rate             = self.config.getDictionary("virus.stats", "mortality_rate")
 
         self.initialize_persons()
 
@@ -61,6 +62,7 @@ class PopulationUtil(object):
         self.population.initialize_positions(self.x_bounds, self.y_bounds, self.size)
         self.population.initialize_g_value(self.r, 1/self.k, self.size)
         self.population.initialize_mask_eff(self.size)
+        self.population.initialize_mortality_rate(self.size, self.mortality_rate)
 
         self.population.initialize_susceptibility()
         # print(self.persons[:,15])

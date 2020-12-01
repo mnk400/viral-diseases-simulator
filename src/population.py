@@ -27,11 +27,12 @@ class Population(object):
         13 - susceptibility:            Individual chances of getting infected by the virus, depends on hygiene, and mask
         14 - mortality_rate:            Individual chances of dying due to the virus, depends on age
         15 - mask effectiveness         Stores the effectiveness of the mask that the person is wearing, 0% if not wearing a mask at all
-        16 - infected_at                Stores the time unit (in this case a frame) at which someone got infected         
+        16 - infected_at                Stores the time unit (in this case a frame) at which someone got infected    
+        17 - hospitalized               Stores wheather or not this person is currently hospitalized, was never, or sometime was, 0 - never, 1 - currently is, 3 - sometime was.     
         """        
         
         #Generate the numpy array of population size = size and column size = 12
-        self.persons = np.zeros((size, 17))
+        self.persons = np.zeros((size, 18))
 
     def set_age(self, data : list):
         """
@@ -276,6 +277,10 @@ class Population(object):
             The elapsed time since person got infected
         """               
         return current_frame - self.persons[index][16] 
+    
+    def get_since_infected_all(self, current_frame: int, recovery_time: int):
+        #tmp =  np.array([current_frame]*len(self.persons)) - self.persons[:, 16]
+        return self.persons[(current_frame - self.persons[:,16] > recovery_time)]
 
     def initialize_id(self, low: int, high: int):
         """
@@ -353,9 +358,7 @@ class Population(object):
         tmp[tmp == 1] = mask_effective_range[3]
         tmp[tmp == 2] = mask_effective_range[3]
         tmp[tmp == 3] = mask_effective_range[3]
-        #print(tmp)
         self.set_mask_effectiveness(tmp)
-
 
     def initialize_susceptibility(self):
         """
@@ -376,6 +379,27 @@ class Population(object):
         tmp2 = np.multiply(tmp, tmp2)
 
         self.persons[:,13] = tmp2
+
+    def initialize_mortality_rate(self, size: int, fatality_rate: dict):
+        """
+        Initialize the mortality rate of the virus, depends on the age of the person. 
+        However, may differ according to healthcare capacity
+
+        Parameters
+        ----------
+        size                : int
+            Size of the array to be generated
+        fatality_rate       : dict
+            Fatality rate risk according to the age group
+        """      
+        for age_groups in fatality_rate.keys():
+            age_group_lower_bound = int(age_groups.split("-")[0])
+            age_group_upper_bound = int(age_groups.split("-")[1])
+            self.persons[:,14][(self.persons[:, 14] < age_group_lower_bound) & 
+                    (self.persons[:, 14] > age_group_upper_bound)] = float(fatality_rate[age_groups])
+    
+    
+        
 
 
     

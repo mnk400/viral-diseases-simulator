@@ -16,5 +16,6 @@ susceptibility     = 13
 mortality_rate     = 14
 mask_effectiveness = 15
 infected_at        = 16
+hospitalized       = 17
 
 
