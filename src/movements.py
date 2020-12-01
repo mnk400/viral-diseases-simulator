@@ -230,9 +230,13 @@ class Movement():
         return persons
 
     def update_pop(self, persons):
-                 #x
-        persons[:,2][(persons[:, idx.current_state] != 3)] = persons[:,2][(persons[:, idx.current_state] != 3)] + (persons[:,4][(persons[:, idx.current_state] != 3)] * persons[:,6][(persons[:, idx.current_state] != 3)])
-                    #y
-        persons[:,3][(persons[:, idx.current_state] != 3)] = persons[:,3][(persons[:, idx.current_state] != 3)] + (persons [:,5][(persons[:, idx.current_state] != 3)] * persons[:,6][(persons[:, idx.current_state] != 3)])
+        
+        filter = (persons[:, idx.current_state] != 3) & (persons[:, idx.social_distance] == 0)
+
+
+        #x
+        persons[:,2][filter] = persons[:,2][filter] + (persons[:,4][filter] * persons[:,6][filter])
+        #y
+        persons[:,3][filter] = persons[:,3][filter] + (persons [:,5][filter] * persons[:,6][filter])
 
         return persons

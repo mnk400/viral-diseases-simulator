@@ -17,5 +17,6 @@ mortality_rate     = 14
 mask_effectiveness = 15
 infected_at        = 16
 hospitalized       = 17
+social_distance    = 18
 
 
