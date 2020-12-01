@@ -1,11 +1,10 @@
 from pandas.core.tools.numeric import to_numeric
-from config_util import ConfigUtil
-from population import Population
+from src.config_util import ConfigUtil
+from src.population import Population
 import numpy as np
 import math
-import random
 from time import sleep
-import person_properties_util as index
+import src.person_properties_util as index
 
 class Virus():
     """
@@ -13,18 +12,13 @@ class Virus():
     infecting, healing and dying
     """    
 
-    def __init__(self):
+    def __init__(self, infection_range: float, recovery_time: int, total_healthcare_capacity: int):
         """
         The constructor is responsible for loading the virus statistics from the config file
         """  
-        self.config                    = ConfigUtil("config/config.ini")
-        self.infection_range           = self.config.getFloatValue("virus.stats", "infection_range")
-        self.k_value                   = self.config.getFloatValue("virus.stats", "k_value")
-        self.reproduction_rate         = self.config.getFloatValue("virus.stats", "reproduction_rate")
-        self.recovery_time             = self.config.getFloatValue("virus.stats", "recovery_time")
-        self.total_healthcare_capacity = self.config.getIntegerValue("people", "total_population")*(self.config.getIntegerValue("area", "healthcare_capacity_ratio")/100)
-        self.healthcare_facility_full  = False
-        print(self.total_healthcare_capacity)
+        self.infection_range           = infection_range
+        self.recovery_time             = recovery_time
+        self.total_healthcare_capacity = total_healthcare_capacity
         
     def infect(self, population: Population, frame):
         #print(len(population.persons[population.persons[:,index.hospitalized] == 1]))

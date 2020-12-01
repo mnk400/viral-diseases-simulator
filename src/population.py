@@ -30,10 +30,10 @@ class Population(object):
         15 - mask effectiveness         Stores the effectiveness of the mask that the person is wearing, 0% if not wearing a mask at all
         16 - infected_at                Stores the time unit (in this case a frame) at which someone got infected    
         17 - hospitalized               Stores weather or not this person is currently hospitalized, was never, or sometime was, 0 - never, 1 - currently is, 3 - sometime was.
-        18 - social_distancing          Stores weather or not this person will socially distance
-        """
-
-        # Generate the numpy array of population size = size and column size = 12
+        18 - social_distancing          Stores weather or not this person will socially distance   
+        """        
+        
+        #Generate the numpy array of population size = size and column size = 12
         self.persons = np.zeros((size, 19))
 
     def set_age(self, data: list):
