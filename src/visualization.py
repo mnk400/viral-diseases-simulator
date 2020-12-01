@@ -18,8 +18,8 @@ class Visualization():
         mpl.rcParams['toolbar'] = 'None' 
         self.ani = FuncAnimation(self.fig, self.update, interval=5, 
                                           init_func=self.setup_plot, blit=False)
-        #self.ani.save("try.mp4", fps=30, dpi=120)
-        plt.show()
+        self.ani.save("test.gif", fps=30, dpi=120)
+        # plt.show()
 
     def setup_plot(self):
         healthy_x = self.putil.population.get_all_healthy()[:, index.x_axis]

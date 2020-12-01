@@ -10,7 +10,7 @@ import configparser
 import os
 import logging
 import json
-
+from pathlib import Path
 # Calling and initializing a logger instance
 logging.getLogger("configlog")                          
 
@@ -31,7 +31,7 @@ class ConfigUtil(object):
             Relative path to the configuration file
         """        
         self.parser = configparser.ConfigParser()
-        self.filepath = path_param
+        self.filepath = Path(__file__).parent.parent / path_param
 
         # Path to the configuration file from current dir
         self.configLoaded = False
