@@ -16,7 +16,8 @@ class PopulationUtil(object):
     #     return Population._instance
 
     def __init__(self, size: int, r: float, k: float, min_age : int, max_age: int, mortality_rate: int,
-                    social_distance_per: int, infection_range: float, recovery_time: int, total_healthcare_capacity: int):
+                    social_distance_per: int, infection_range: float, recovery_time: int, total_healthcare_capacity: int,
+                    mask_effectiveness: dict, speed: float):
         """
         Constructor used for initializing the bound for the x axis, y axis, the k and R value for the particular population
 
@@ -46,7 +47,10 @@ class PopulationUtil(object):
         self.max_age                    = max_age
         self.mortality_rate             = mortality_rate
         self.social_distance_per        = social_distance_per
+        self.mask_effectiveness         = mask_effectiveness
+        self.speed                      = speed
         self.persons                    = self.population.get_person()
+        
 
         self.initialize_persons()
 
@@ -59,22 +63,19 @@ class PopulationUtil(object):
         self.population.initialize_ages(self.min_age, self.max_age, self.size)
         self.population.initialize_positions(self.x_bounds, self.y_bounds, self.size)
         self.population.initialize_g_value(self.r, 1/self.k, self.size)
-        self.population.initialize_mask_eff(self.size)
+        self.population.initialize_mask_eff(self.size, self.mask_effectiveness)
         self.population.initialize_mortality_rate(self.size, self.mortality_rate)
-
+        self.population.initialize_social_distancing(self.social_distance_per)
+        
         self.population.initialize_susceptibility()
         # print(self.persons[:,15])
         self.persons[:, 7] = 1
         self.persons[:,10] = 0.1
         self.persons[:,11] = 0.1
 
-        choice = [0,1]
-        tmp = np.random.choice(choice, self.size, p=[1-self.social_distance_per, self.social_distance_per])
-        #print(tmp)
-
         #self.persons[:, index.social_distance] = tmp
         #Update the destination each person is headed to and corresponding speed randomly
-        self.persons = self.movement.update_persons(self.persons, self.size, 0.01, 1)
+        self.persons = self.movement.update_persons(self.persons, self.size, self.speed, 1)
         self.persons[62, index.g_value] = 3
         self.population.set_infected_at(62, 0)
         self.persons[62, index.social_distance] = 0
@@ -99,7 +100,7 @@ class PopulationUtil(object):
         _ybounds = np.array([[0,1]] * self.size)
         self.persons = self.movement.out_of_bounds(self.persons, _xbounds, _ybounds)
 
-        self.persons = self.movement.update_persons(self.persons, self.size, 0.01)
+        self.persons = self.movement.update_persons(self.persons, self.size, self.speed)
         
         self.persons = self.movement.update_pop(self.persons)
 

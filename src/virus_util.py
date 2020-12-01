@@ -49,8 +49,8 @@ class Virus():
             # print(population.get_time_infected(int(idx[0]), frame))
             tmp = self.find_nearby(persons, x_bounds, y_bounds)
             for i in tmp:
-                chance = np.random.uniform(low = 0.001, high = 1)
-                if chance<persons[int(i)][index.susceptibility] and persons[int(idx[0])][index.g_value] > 0 and persons[int(i)][index.social_distance] == 0:
+                chance = np.random.uniform(low = 0.0001, high = 1)
+                if chance < persons[int(i)][index.susceptibility] and persons[int(idx[0])][index.g_value] > 0 and persons[int(i)][index.social_distance] == 0:
                     population.persons[int(i)][9] = 1
                     population.set_infected_at(int(i), frame)
                     population.persons[int(idx[0])][index.g_value] -= 1
