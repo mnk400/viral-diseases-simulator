@@ -2,10 +2,10 @@
 File with classes and code which control how a particular person
 will move and to where
 '''
-from population import Population
+from src.population import Population
 import pandas as pd
 import numpy as np
-import person_properties_util as idx
+import src.person_properties_util as idx
 
 class Movement():
     """
