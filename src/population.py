@@ -40,6 +40,9 @@ class Population(object):
         """
         Sets the age of all the persons in the dataframe
 
+        Parameters
+        ----------
+
         :param data: Column containing all the ages for each person in the population
         :return:
         """
@@ -48,6 +51,9 @@ class Population(object):
     def set_x_axis(self, data: list):
         """
         Sets the x coordinate of each person on the map
+
+        Parameters
+        ----------
 
         :param data: Column containing all the x coordinates on the space for each person in the population
         :return:
@@ -58,6 +64,9 @@ class Population(object):
         """
         Sets/updates the current state of each person in the population
 
+        Parameters
+        ----------
+
         :param data: Column containing the updated state for each person in the population
         :return:
         """
@@ -66,6 +75,9 @@ class Population(object):
     def set_y_axis(self, data: list):
         """
         Sets the y coordinate of each person on the map 
+
+        Parameters
+        ----------
 
         :param data: Column containing all the y coordinates on the space for each person in the population
         :return:
@@ -77,6 +89,9 @@ class Population(object):
         Set the g value for the individual; the g value refers to the reproduction of the rate of the individual
         derived from the k and R value specific to the disease
 
+        Parameters
+        ----------
+
         :param data: The g value for all the individuals in the population
         """
         self.persons[:, 12] = data
@@ -84,6 +99,9 @@ class Population(object):
     def set_speed(self, data: list):
         """
         Set the speed for the individual; the speed refers to the offset by which the indivdual moves on the space
+        
+        Parameters
+        ----------
 
         :param data: The speed for all the individuals in the population
         """
@@ -92,6 +110,9 @@ class Population(object):
     def set_at_destination(self, data: list):
         """
         Sets whether the individual is at the destination; 0: Not at Destination, 1: At Destination
+        
+        Parameters
+        ----------
 
         :param data : The value indicating whether the individual is at the destination for all individuals in the population
         """
@@ -101,6 +122,9 @@ class Population(object):
         """
         Sets whether the individual is currently moving towards destination; 0: Random Movement, 1: Towards Destination
 
+        Parameters
+        ----------
+
         :param data: The value indicating whether the individual is currently moving towards destination for all individuals in the population
         """
         self.persons[:, 7] = data
@@ -108,6 +132,9 @@ class Population(object):
     def set_x_dir(self, data):
         """
         Sets the x coordinate of where the person is heading on the space
+
+        Parameters
+        ----------
 
         :param data: Column containing all the x coordinates of where the person is heading on the space for each person in the population
         """
@@ -117,6 +144,9 @@ class Population(object):
         """
         Sets the y coordinate of where the person is heading on the space
 
+        Parameters
+        ----------
+
         :param data: Column containing all the y coordinates of where the person is heading on the space for each person in the population
         """
         self.persons[:, 5] = data
@@ -124,6 +154,9 @@ class Population(object):
     def set_infected_at(self, index: int, frame: int):
         """
         Sets the time unit (in this case, a frame) at which a person got infected
+
+        Parameters
+        ----------
 
         :param index: The id/index of the person for which we need to set the index for
         :param frame: The time frame at which the person got infected
@@ -133,6 +166,10 @@ class Population(object):
     def set_mask_effectiveness(self, data):
         """
         Sets the mask effectiveness for the persons
+
+        Parameters
+        ----------
+
         :param data:
         """
         self.persons[:, 15] = data
@@ -140,6 +177,9 @@ class Population(object):
     def get_x_axis(self) -> np.array:
         """
         Returns the current x coordinate of all the persons in the population
+
+        Parameters
+        ----------
 
         :return: The NumPy array containing the current x coordinate of all the persons in the population
         """
@@ -149,6 +189,9 @@ class Population(object):
         """
         Returns the current y coordinate of all the persons in the population
 
+        Parameters
+        ----------
+
         :return The NumPy array containing the current y coordinate of all the persons in the population
         """
         return self.persons[:, 3]
@@ -156,6 +199,9 @@ class Population(object):
     def get_current_state(self) -> np.array:
         """
         Returns the current state of all the persons in the population
+
+        Parameters
+        ----------
 
         :return The current state of all the persons in the population
         """
@@ -165,6 +211,9 @@ class Population(object):
         """
         Returns the NumPy array containing all information about all the persons in the population
 
+        Parameters
+        ----------
+
         :return The NumPy array containing all information about all the persons in the population
         """
         return self.persons
@@ -172,6 +221,9 @@ class Population(object):
     def get_all_infected(self) -> list:
         """
         Returns the index for all infected individuals in the population
+
+        Parameters
+        ----------
 
         :return Returns the index of all persons in the population who are infected
         """
@@ -181,6 +233,9 @@ class Population(object):
         """
         Returns the index for all healthy individuals in the population
 
+        Parameters
+        ----------
+
         :return Returns the index of all persons in the population who are healthy
         """
         return self.persons[self.persons[:, 9] == 0]
@@ -188,6 +243,9 @@ class Population(object):
     def get_all_recovered(self) -> list:
         """
         Returns the index for all recovered individuals in the population
+
+        Parameters
+        ----------
 
         :return Returns the index of all persons in the population who are recovered and are now immune
         """
@@ -197,6 +255,9 @@ class Population(object):
         """
         Returns the index for all dead individuals in the population
 
+        Parameters
+        ----------
+
         :return Returns the index of all persons in the population who are dead
         """
         return self.persons[self.persons[:, 9] == 3]
@@ -205,6 +266,9 @@ class Population(object):
         """
         Return the column information for all persons' current travel information (whether they have reached their destinations)
 
+        Parameters
+        ----------
+        
         :return The person column array containing current travel information
         """
         return self.persons[:, 7]
@@ -212,6 +276,9 @@ class Population(object):
     def get_time_infected(self, index: int, current_frame: int) -> int:
         """
         Get the time units (in this case frames) elapsed since a person got infected
+        
+        Parameters
+        ----------
 
         :param index: The index for the person
         :param current_frame: The current frame to get the time elapsed since the person got infected
@@ -228,6 +295,9 @@ class Population(object):
         """
         Initialize the ID for all the individuals in the population
 
+        Parameters
+        ----------
+
         :param low: Lower bound for ID
         :param high: Upper bound for ID
         """
@@ -237,6 +307,9 @@ class Population(object):
     def initialize_ages(self, min_age: int, max_age: int, size: int):
         """
         Initialize the ages of all the individuals in the population. Uses uniform distribution to generate random ages
+
+        Parameters
+        ----------
 
         :param min_age: Minimum age for the randomly generated ages
         :param max_age: Maximum age for the randomly generated ages
@@ -248,6 +321,9 @@ class Population(object):
     def initialize_positions(self, x_bounds: list, y_bounds: list, size: int):
         """
         Initialize the x positions for all persons in the population
+
+        Parameters
+        ----------
 
         :param x_bounds: List containing the lower and upper bound for the x axis
         :param y_bounds: List containing the lower and upper bound for the y axis
@@ -265,6 +341,9 @@ class Population(object):
         Initialize the g value for all persons in the population. The g value refers to the reproduction of the rate of the individual
         derived from the k and R value specific to the disease 
 
+        Parameters
+        ----------
+
         :param mean: Mean of the g value to be generated randomly
         :param std_dev: Standard deviation of the g value to be generated randomly
         :param size: Size of the random g value array to be generated
@@ -276,6 +355,10 @@ class Population(object):
     def initialize_mask_eff(self, size: int):
         """
         Initializing mask effectiveness for all the people in the population. Randomly assigning the mask effectiveness from values 0, 60, 80, 90
+
+        Parameters
+        ----------
+        
         :param size: size of the population
         :return:
         """
@@ -291,6 +374,9 @@ class Population(object):
     def initialize_susceptibility(self):
         """
         Initialize the susceptibilty to the virus, depends an individual wears a mask, practices good hygiene, and age
+
+        Parameters
+        ----------
 
         :param mask_effectiveness: Mean of the g value to be generated randomly
         :param hygiene_effectiveness: Standard deviation of the g value to be generated randomly
@@ -308,18 +394,14 @@ class Population(object):
         Initialize the mortality rate of the virus, depends on the age of the person. 
         However, may differ according to healthcare capacity
 
+        Parameters
+        ----------
+
         :param size: Size of the array to be generated
         :param fatality_rate: Fatality rate risk according to the age group
         """
         for age_groups in fatality_rate.keys():
             age_group_lower_bound = int(age_groups.split("-")[0])
             age_group_upper_bound = int(age_groups.split("-")[1])
-
             self.persons[:, 14][(self.persons[:, 1] > age_group_lower_bound) &
                                 (self.persons[:, 1] < age_group_upper_bound)] = float(fatality_rate[age_groups])
-
-
-if __name__ == "__main__":
-    # p = Person()
-    # print(p.persons)
-    pass
