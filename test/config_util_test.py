@@ -1,5 +1,8 @@
 """
 Test file for config util class
+
+Created on Dec 2nd, 2020
+@author: Yatish Pitta
 """
 import logging
 import unittest
@@ -9,7 +12,7 @@ import json
 
 class ConfigUtilClassTest(unittest.TestCase):
     """
-
+    Test cases to test the methods of the ConfigUtil class
     """
 
     def setUp(self) -> None:
@@ -22,8 +25,7 @@ class ConfigUtilClassTest(unittest.TestCase):
 
     def test_get_value(self):
         """
-        Tests the get_value method
-        :return:
+        Tests the getValue method
         """
         self.assertIsInstance(self.config_util.getValue("virus.stats", "k_value"), str)
         self.assertEqual(self.config_util.getValue("virus.stats", "k_value"), str(0.1))
@@ -44,14 +46,14 @@ class ConfigUtilClassTest(unittest.TestCase):
 
     def test_get_dictionary(self):
         """
-        Tests the get dictionary method
+        Tests the getDictionary method
         """
         self.assertIsInstance(self.config_util.getDictionary("virus.stats", "mortality_rate"), dict)
         self.assertEqual(self.config_util.getDictionary("virus.stats", "mortality_rate"), json.loads(self.config_util.getValue("virus.stats", "mortality_rate")))
 
     def test_get_boolean(self):
         """
-        Tests the get boolean value
+        Tests the getBooleanValue method
         """
         self.assertIsInstance(self.config_util.getBooleanValue("people.stats", "use_masks"), bool)
         self.assertEqual(self.config_util.getBooleanValue("people.stats", "use_masks"), True)

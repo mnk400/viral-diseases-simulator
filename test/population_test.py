@@ -1,6 +1,8 @@
 """
 Test file for population class
 
+Created on Dec 2nd, 2020
+@author: Yatish Pitta
 """
 import logging
 import unittest
