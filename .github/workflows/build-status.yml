@@ -33,4 +33,4 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Unittests
       run: |
-        python3 -m unittest discover -v -s ./test -p "*_test.py" 
+        python -m unittest discover -v -s ./test -p "test_*.py"

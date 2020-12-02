@@ -50,14 +50,13 @@ class Virus():
             tmp = self.find_nearby(persons, x_bounds, y_bounds)
             for i in tmp:
                 chance = np.random.uniform(low = 0.0001, high = 1)
-                if chance < persons[int(i)][index.susceptibility] and persons[int(idx[0])][index.g_value] > 0 and persons[int(i)][index.social_distance] == 0:
+                if chance < persons[int(i)][index.susceptibility] and persons[int(idx[0])][index.g_value] > 0 :
                     population.persons[int(i)][9] = 1
                     population.set_infected_at(int(i), frame)
                     population.persons[int(idx[0])][index.g_value] -= 1
                     if(len(population.persons[population.persons[:,index.hospitalized] == 1]) < self.total_healthcare_capacity):
                         population.persons[int(i)][index.hospitalized] = 1
                         
-
         return population
 
     
@@ -85,7 +84,8 @@ class Virus():
                                         (y_bounds[0]<persons[:, index.y_axis]) &
                                         (y_bounds[1]>persons[:, index.y_axis]) &
                                         (persons[:, index.current_state] == 0) &
-                                        (persons[:, index.current_state] == 0) 
+                                        (persons[:, index.current_state] == 0) &
+                                        (persons[:,index.social_distance] == 0)
                                     ]
         # print(selected_rows)
         return selected_rows

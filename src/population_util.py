@@ -78,10 +78,12 @@ class PopulationUtil(object):
         #self.persons[:, index.social_distance] = tmp
         #Update the destination each person is headed to and corresponding speed randomly
         self.persons = self.movement.update_persons(self.persons, self.size, self.speed, 1)
-        self.persons[62, index.g_value] = 3
+
+        self.infected_person = np.random.randint(0,self.size)
+        self.persons[self.infected_person, index.g_value] = 3
         self.population.set_infected_at(62, 0)
-        self.persons[62, index.social_distance] = 0
-        self.persons[62, 9] = 1
+        self.persons[self.infected_person, index.social_distance] = 0
+        self.persons[self.infected_person, 9] = 1
 
 
     def move(self, frame):
@@ -107,10 +109,12 @@ class PopulationUtil(object):
         
         if frame == self.enforce_social_distance_at:
             self.population.initialize_social_distancing(self.social_distance_per)
+            self.persons[self.infected_person, index.social_distance] = 0
             self.social_distancing_enforced =  True
 
         _xbounds = np.array([[0,1]] * self.size)
         _ybounds = np.array([[0,1]] * self.size)
+        
         self.persons = self.movement.out_of_bounds(self.persons, _xbounds, _ybounds)
 
         self.persons = self.movement.update_persons(self.persons, self.size, self.speed)
@@ -118,17 +122,3 @@ class PopulationUtil(object):
         self.persons = self.movement.update_pop(self.persons)
 
         self.population = self.virus.infect(self.population, frame)
-
-if __name__ == "__main__":
-    # p = Population(100, [0, 1], [0, 1], 3, 0.5)
-    #p.move()
-    #virus = Virus()
-    #p.person = virus.infect(p.person)
-    pass
-    
-
-
-
-            
-
-
