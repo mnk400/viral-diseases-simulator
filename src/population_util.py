@@ -91,10 +91,6 @@ class PopulationUtil(object):
 
 
     def move(self, frame):
-        
-
-        # print(self.persons)
-        active_dests = len(self.persons[self.persons[:,7] != 0])
  
         #print(active_dests)
         # if active_dests > 0 and len(self.persons[self.persons[:,8] == 0]) > 0:
@@ -115,6 +111,9 @@ class PopulationUtil(object):
             self.population.initialize_social_distancing(self.social_distance_per)
             self.persons[self.infected_person, index.social_distance] = 0
             self.social_distancing_enforced =  True
+
+        if frame >= self.enforce_social_distance_at and frame%300 == 0 and self.enforce_social_distance_at >= 0:
+            self.population.initialize_social_distancing(self.social_distance_per)
 
         _xbounds = np.array([[0,1]] * self.size)
         _ybounds = np.array([[0,1]] * self.size)

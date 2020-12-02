@@ -6,7 +6,7 @@ Created on Dec 2nd, 2020
 """
 import logging
 import unittest
-from config_util import ConfigUtil
+from src.config_util import ConfigUtil
 import json
 
 

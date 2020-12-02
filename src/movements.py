@@ -38,7 +38,7 @@ class Movement():
         """  
 
         #For updating the x position 
-        #Generate a random array with update chance for each person in the population      
+        #Generate a random array with update chance for each person in the population 
         update = np.random.random(size=(size,))
 
         #Get the persons in the population who have a lower or equal to chance of getting updated in this epoch
