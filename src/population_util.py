@@ -17,7 +17,7 @@ class PopulationUtil(object):
 
     def __init__(self, size: int, r: float, k: float, min_age : int, max_age: int, mortality_rate: int,
                     social_distance_per: int, infection_range: float, recovery_time: int, total_healthcare_capacity: int,
-                    mask_effectiveness: dict, speed: float):
+                    mask_effectiveness: dict, speed: float, social_distancing_at: int, mask_wearing_at: int):
         """
         Constructor used for initializing the bound for the x axis, y axis, the k and R value for the particular population
 
@@ -50,6 +50,10 @@ class PopulationUtil(object):
         self.mask_effectiveness         = mask_effectiveness
         self.speed                      = speed
         self.persons                    = self.population.get_person()
+        self.enforce_social_distance_at = social_distancing_at
+        self.enforce_mask_wearing_at    = mask_wearing_at
+        self.social_distancing_enforced = False
+        self.mask_wearing_enforced      = False
         
 
         self.initialize_persons()
@@ -63,11 +67,9 @@ class PopulationUtil(object):
         self.population.initialize_ages(self.min_age, self.max_age, self.size)
         self.population.initialize_positions(self.x_bounds, self.y_bounds, self.size)
         self.population.initialize_g_value(self.r, 1/self.k, self.size)
-        self.population.initialize_mask_eff(self.size, self.mask_effectiveness)
-        self.population.initialize_mortality_rate(self.size, self.mortality_rate)
-        self.population.initialize_social_distancing(self.social_distance_per)
-        
+        self.population.initialize_mortality_rate(self.size, self.mortality_rate) 
         self.population.initialize_susceptibility()
+
         # print(self.persons[:,15])
         self.persons[:, 7] = 1
         self.persons[:,10] = 0.1
@@ -83,6 +85,8 @@ class PopulationUtil(object):
 
 
     def move(self, frame):
+        
+
         # print(self.persons)
         active_dests = len(self.persons[self.persons[:,7] != 0])
  
@@ -96,6 +100,15 @@ class PopulationUtil(object):
         #     self.persons = self.movement.keep_at_destination(self.persons, self.destinations)
         #     #pass
         
+        if frame == self.enforce_mask_wearing_at:
+            self.population.initialize_mask_eff(self.size, self.mask_effectiveness)
+            self.population.initialize_susceptibility()
+            self.mask_wearing_enforced = True
+        
+        if frame == self.enforce_social_distance_at:
+            self.population.initialize_social_distancing(self.social_distance_per)
+            self.social_distancing_enforced =  True
+
         _xbounds = np.array([[0,1]] * self.size)
         _ybounds = np.array([[0,1]] * self.size)
         self.persons = self.movement.out_of_bounds(self.persons, _xbounds, _ybounds)
