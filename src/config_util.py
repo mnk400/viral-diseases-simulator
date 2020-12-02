@@ -45,6 +45,7 @@ class ConfigUtil(object):
         ----------
         section_str : str
             The section in the configuration file to get the value from
+            
         key_str : str
             The corresponding key to get the value from
 

@@ -22,11 +22,17 @@ class Main(object):
         self.infection_range            = self.config_util.getFloatValue("virus.stats", "infection_range")
         self.recovery_time              = self.config_util.getFloatValue("virus.stats", "recovery_time")
         self.total_healthcare_capacity  = self.size*(self.config_util.getIntegerValue("area.stats", "healthcare_capacity_ratio")/100)
-    
+        self.mask_effectiveness         = self.config_util.getDictionary("virus.stats", "mask_effectiveness")
+        self.speed                      = self.config_util.getFloatValue("people.stats", "speed")
+        self.enforce_social_distance_at = self.config_util.getIntegerValue("area.stats", "enforce_social_distancing_at")
+        self.enforce_mask_wearing_at    = self.config_util.getIntegerValue("area.stats", "enforce_mask_wearing_at")
+
     def initialize(self) -> None:
         self.population_util = PopulationUtil(k = self.k, r = self.r, min_age = self.min_age, max_age = self.max_age, size = self.size,
                                 mortality_rate = self.mortality_rate, infection_range = self.infection_range, recovery_time = self.recovery_time,
-                                total_healthcare_capacity = self.total_healthcare_capacity, social_distance_per = self.social_distance_per)
+                                total_healthcare_capacity = self.total_healthcare_capacity, social_distance_per = self.social_distance_per,
+                                mask_effectiveness = self.mask_effectiveness, speed=self.speed, social_distancing_at = self.enforce_social_distance_at,
+                                mask_wearing_at = self.enforce_mask_wearing_at)
         self.visualize = Visualization(self.population_util)
 
 

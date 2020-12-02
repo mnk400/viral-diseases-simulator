@@ -288,7 +288,6 @@ class Population(object):
         return current_frame - self.persons[index][16]
 
     def get_since_infected_all(self, current_frame: int, recovery_time: int):
-        # tmp =  np.array([current_frame]*len(self.persons)) - self.persons[:, 16]
         return self.persons[(current_frame - self.persons[:, 16] > recovery_time)]
 
     def initialize_id(self, low: int, high: int):
@@ -352,7 +351,7 @@ class Population(object):
         g_value[g_value < 0] = 0.00000
         self.set_g_value(g_value.astype(int))
 
-    def initialize_mask_eff(self, size: int):
+    def initialize_mask_eff(self, size: int, mask_effective_range: dict):
         """
         Initializing mask effectiveness for all the people in the population. Randomly assigning the mask effectiveness from values 0, 60, 80, 90
 
@@ -362,13 +361,15 @@ class Population(object):
         :param size: size of the population
         :return:
         """
-        mask_effective_range = [0, 60, 80, 90]
-        tmp = np.random.randint(low=0, high=4, size=size)
 
-        tmp[tmp == 0] = mask_effective_range[0]
-        tmp[tmp == 1] = mask_effective_range[1]
-        tmp[tmp == 2] = mask_effective_range[2]
-        tmp[tmp == 3] = mask_effective_range[3]
+        tmp = np.random.randint(low=0, high=len(mask_effective_range.keys()), size=size)
+        key_list = list(mask_effective_range.keys())
+
+        for i in range(len(key_list)):
+           tmp[tmp == i] = float(mask_effective_range[key_list[i]])
+            #print(mask_effective_range[list(mask_effective_range.keys())[i]])
+
+
         self.set_mask_effectiveness(tmp)
 
     def initialize_susceptibility(self):
@@ -383,10 +384,9 @@ class Population(object):
         :param size: Size of the random g value array to be generated
         """
         tmp = (np.array([100] * len(self.persons)) - self.persons[:, 15]) / 100
-
-        tmp2 = [0.1] * len(self.persons)
+        
+        tmp2 = [0.06] * len(self.persons)
         tmp2 = np.multiply(tmp, tmp2)
-
         self.persons[:, 13] = tmp2
 
     def initialize_mortality_rate(self, size: int, fatality_rate: dict):
@@ -405,3 +405,18 @@ class Population(object):
             age_group_upper_bound = int(age_groups.split("-")[1])
             self.persons[:, 14][(self.persons[:, 1] > age_group_lower_bound) &
                                 (self.persons[:, 1] < age_group_upper_bound)] = float(fatality_rate[age_groups])
+
+    def initialize_social_distancing(self, social_distancing_per: float):
+        """
+        Initialize the mortality rate of the virus, depends on the age of the person. 
+        However, may differ according to healthcare capacity
+
+        Parameters
+        ----------
+
+        :param size: Size of the array to be generated
+        :param fatality_rate: Fatality rate risk according to the age group
+        """
+        choice = [0,1]
+        random_social_distancing = np.random.choice(choice, len(self.persons), p=[1-social_distancing_per, social_distancing_per])
+        self.persons[:,18] = random_social_distancing
