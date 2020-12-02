@@ -1,81 +1,127 @@
+'''
+Created on Nov 29, 2020
+@author: Pallak Singh, manik
+'''
 import random
 import numpy as np
-from person import Person
-from virus_util import Virus
+from numpy.core.fromnumeric import size
+from src.population import Population
+import src.person_properties_util as index
+from src.virus_util import Virus
+from src.movements import Movement
 
-class Population(object):
+class PopulationUtil(object):
     """
-    Class representing the population 
+    Class representing the self.person.persons 
     """
 
     #_instance = Population()
     # def getInstance():
     #     return Population._instance
 
-    def __init__(self, size: int, x_bounds: list, y_bounds: list, r: float, k: float):
-        self.person = Person() 
-        self.virus  = Virus()
-        self.size         = size
-        self.x_bounds     = x_bounds
-        self.y_bounds     = y_bounds
-        self.k            = k
-        self.r            = r
+    def __init__(self, size: int, r: float, k: float, min_age : int, max_age: int, mortality_rate: int,
+                    social_distance_per: int, infection_range: float, recovery_time: int, total_healthcare_capacity: int,
+                    mask_effectiveness: dict, speed: float, social_distancing_at: int, mask_wearing_at: int):
+        """
+        Constructor used for initializing the bound for the x axis, y axis, the k and R value for the particular population
+
+        Parameters
+        ----------
+        size : int
+            Size of the population
+        x_bounds : list
+            The list containing the lower and upper bound for the x axis of the population map
+        y_bounds : list
+            The list containing the lower and upper bound for the y axis of the population map
+        r : float
+            Disease reproduction (R0) rate for the virus
+        k : float
+            The k value for the virus
+        """        
+        self.population                 = Population(size) 
+        self.virus                      = Virus(infection_range, recovery_time, total_healthcare_capacity)
+        self.movement                   = Movement()
+        self.size                       = size
+        self.x_bounds                   = [0, 1]
+        self.y_bounds                   = [0, 1]
+        self.k                          = k
+        self.r                          = r
+        self.destinations               = np.random.uniform(low=0,high=1,size=(self.size,2))
+        self.min_age                    = min_age
+        self.max_age                    = max_age
+        self.mortality_rate             = mortality_rate
+        self.social_distance_per        = social_distance_per
+        self.mask_effectiveness         = mask_effectiveness
+        self.speed                      = speed
+        self.persons                    = self.population.get_person()
+        self.enforce_social_distance_at = social_distancing_at
+        self.enforce_mask_wearing_at    = mask_wearing_at
+        self.social_distancing_enforced = False
+        self.mask_wearing_enforced      = False
+        
+
         self.initialize_persons()
 
     def initialize_persons(self):
-        ages = np.int32(np.random.normal(loc=45, scale= 30, size=self.size))
-        x_bound_list = np.random.uniform(low=self.x_bounds[0] + 0.1, 
-                                            high=self.x_bounds[1] - 0.1, size=self.size)
-        y_bound_list = np.random.uniform(low=self.y_bounds[0] + 0.1, 
-                                            high=self.y_bounds[1] - 0.1, size=self.size)
-        g_value = np.random.normal(loc=self.r, scale=(1/self.k),size=self.size)
-        g_value[g_value<0] = 0.00000
-        current_state = np.full(shape = (self.size, 1), fill_value = 0)
-        self.person.set_age(ages)
-        self.person.set_current_state(current_state)
-        self.person.set_x_axis(x_bound_list)
-        self.person.set_y_axis(y_bound_list)
-        self.person.set_g_value(g_value)
+        """
+        Method which initializes the person list in the population and further calls another method to update other 
+        properties of the individual persons
+        """    
+        self.population.initialize_id(0, self.size)
+        self.population.initialize_ages(self.min_age, self.max_age, self.size)
+        self.population.initialize_positions(self.x_bounds, self.y_bounds, self.size)
+        self.population.initialize_g_value(self.r, 1/self.k, self.size)
+        self.population.initialize_mortality_rate(self.size, self.mortality_rate) 
+        self.population.initialize_susceptibility()
 
-        x_bound_list_future = np.add(x_bound_list, np.random.uniform(low=-self.x_bounds[1]/8, high=self.x_bounds[1]/8, size=self.size))
-        y_bound_list_future = np.add(y_bound_list, np.random.uniform(low=-self.y_bounds[1]/8, high=self.y_bounds[1]/8, size=self.size))
+        # print(self.persons[:,15])
+        self.persons[:, 7] = 1
+        self.persons[:,10] = 0.1
+        self.persons[:,11] = 0.1
 
-        self.person.set_next_x_axis(x_bound_list_future)
-        self.person.set_next_y_axis(y_bound_list_future)
+        #self.persons[:, index.social_distance] = tmp
+        #Update the destination each person is headed to and corresponding speed randomly
+        self.persons = self.movement.update_persons(self.persons, self.size, self.speed, 1)
 
-        #Infect a random person
-        infected_index = random.randint(0, self.size)
-        self.person.get_dataframe().loc[infected_index,'current_state'] = 1
-
-    def move(self):
-        rand_sample = random.sample(list(range(1, self.size)), int(0.1*self.size)) 
-        self.person.get_dataframe().loc[rand_sample,'x_axis'] = self.person.get_dataframe().loc[rand_sample,'next_x_axis']
-        self.person.get_dataframe().loc[rand_sample,'y_axis'] = self.person.get_dataframe().loc[rand_sample,'next_y_axis']
-
-        x_bound_list_future = np.add(self.person.get_dataframe().loc[rand_sample,'x_axis'].to_numpy(),
-                        np.random.normal(loc=0.1, scale=0.3, size=len(rand_sample)))
-        y_bound_list_future = np.add(self.person.get_dataframe().loc[rand_sample,'y_axis'].to_numpy(),
-                    np.random.normal(loc=0.1, scale=0.3, size=len(rand_sample)))
-        x_bound_list_future[x_bound_list_future > 0.95] = np.random.uniform(low=0.90, high=0.95, size=1)
-        x_bound_list_future[x_bound_list_future < 0.05] = np.random.uniform(low=0.05, high=0.1, size=1)
-        y_bound_list_future[y_bound_list_future > 0.95] = np.random.uniform(low=0.90, high=0.95, size=1)
-        y_bound_list_future[y_bound_list_future < 0.05] = np.random.uniform(low=0.05, high=0.1, size=1)
+        self.infected_person = np.random.randint(0,self.size)
+        self.persons[self.infected_person, index.g_value] = 3
+        self.population.set_infected_at(62, 0)
+        self.persons[self.infected_person, index.social_distance] = 0
+        self.persons[self.infected_person, 9] = 1
 
 
-        self.person.get_dataframe().loc[rand_sample, 'next_x_axis'] = x_bound_list_future
-        self.person.get_dataframe().loc[rand_sample, 'next_y_axis'] = y_bound_list_future
-        #print(self.person.persons)
-        self.person.persons = self.virus.infect(self.person)
+    def move(self, frame):
+ 
+        #print(active_dests)
+        # if active_dests > 0 and len(self.persons[self.persons[:,8] == 0]) > 0:
+        #     #print("here1")
+        #     self.persons = self.movement.set_destination(self.persons, self.destinations, self.population)
+        #     self.persons = self.movement.check_at_destination(self.persons, self.destinations)
 
-if __name__ == "__main__":
-    p = Population(100, [0, 1], [0, 1], 3, 0.5)
-    p.move()
-    virus = Virus()
-    p.person = virus.infect(p.person)
-    
+        # if active_dests > 0 and len(self.persons[self.persons[:,8] == 1]) > 0:
+        #     self.persons = self.movement.keep_at_destination(self.persons, self.destinations)
+        #     #pass
+        
+        if frame == self.enforce_mask_wearing_at:
+            self.population.initialize_mask_eff(self.size, self.mask_effectiveness)
+            self.population.initialize_susceptibility()
+            self.mask_wearing_enforced = True
+        
+        if frame == self.enforce_social_distance_at:
+            self.population.initialize_social_distancing(self.social_distance_per)
+            self.persons[self.infected_person, index.social_distance] = 0
+            self.social_distancing_enforced =  True
 
+        if frame >= self.enforce_social_distance_at and frame%300 == 0 and self.enforce_social_distance_at >= 0:
+            self.population.initialize_social_distancing(self.social_distance_per)
 
+        _xbounds = np.array([[0,1]] * self.size)
+        _ybounds = np.array([[0,1]] * self.size)
+        
+        self.persons = self.movement.out_of_bounds(self.persons, _xbounds, _ybounds)
 
-            
+        self.persons = self.movement.update_persons(self.persons, self.size, self.speed)
+        
+        self.persons = self.movement.update_pop(self.persons)
 
-
+        self.population = self.virus.infect(self.population, frame)
