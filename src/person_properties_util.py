@@ -1,3 +1,7 @@
+'''
+Created on Nov 30, 2020
+@author: Pallak Singh
+'''
 #Index of all the properties of the persons in the persons NumPy array located in population.py -> Population() class
 id                 = 0
 age                = 1
