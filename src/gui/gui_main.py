@@ -8,7 +8,7 @@ Created on 2nd Dec, 2020
 import tkinter as tk
 from gui.load_config_frame import LoadConfigFrame
 from gui.sim_command_frame import SimCommandFrame
-
+from gui.config_frame import SetConfigFrame
 
 class Application(tk.Frame):
     """
@@ -28,6 +28,7 @@ class Application(tk.Frame):
         super().__init__(master, height=height, width=width)
         self.master = master
         self.pack()
+        self.pack_propagate(0)
         self.create_widgets()
 
     def create_widgets(self):
@@ -41,6 +42,10 @@ app = Application(root, height, width)
 
 
 action_frame = tk.Frame(master=app, height=height, width=width*2/3)
+config_frame = SetConfigFrame(master=action_frame, height=height/2, width=width)
+config_frame.pack()
+config_frame.pack_propagate(0)
+
 action_frame1 = tk.Frame(master=app, height=height, width=width*1/3)
 load_config_frame = LoadConfigFrame(master=action_frame1, height=height/2, width=width)
 sim_command_frame = SimCommandFrame(master=action_frame1, height=height/2, width=width)

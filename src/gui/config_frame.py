@@ -8,7 +8,7 @@ Created on 2nd Dec, 2020
 import tkinter as tk
 
 
-class LoadConfigFrame(tk.Frame):
+class SetConfigFrame(tk.Frame):
 
     def __init__(self, master=None, height=100, width=100):
         """
@@ -32,12 +32,17 @@ class LoadConfigFrame(tk.Frame):
         """
 
         # Load Config Data button
-        self.hi_there = tk.Button(self)
-        self.hi_there["text"] = "Load COVID Config Data"
-        self.hi_there["command"] = "hi there, everyone!"
-        self.hi_there.pack(expand=True, fill='both', side="bottom")
+        label1 = tk.Label(master=self, anchor='center', text='Population', pady=15)
+        label1.pack()
+        population_scale = tk.Scale(master=self, variable=tk.IntVar(), sliderlength=150, orient='horizontal', from_=1000, to=100000)
+        population_scale.pack(expand=True, fill='both')
 
-        # Load influenza data button
-        self.quit = tk.Button(self, text="Load Influenza Config Data", fg="red",
-                              command="#")
-        self.quit.pack(expand=True, fill='both', side="top")
+        label2 = tk.Label(master=self, anchor='center', text='Social Distancing Ratio', pady=15)
+        label2.pack()
+        social_distance_scale = tk.Scale(master=self, variable=tk.DoubleVar(), sliderlength=150, orient='horizontal', from_=0, to= 1)
+        social_distance_scale.pack(expand=True, fill='both')
+
+        label3 = tk.Label(master=self, anchor='center', text='Hospital capacity', pady=15)
+        label3.pack()
+        hospital_capacity_scale = tk.Scale(master=self, variable=tk.DoubleVar(), sliderlength=150, orient='horizontal', from_=1000, to= 5000)
+        hospital_capacity_scale.pack(expand=True, fill='both')
