@@ -36,13 +36,13 @@ class Application(tk.Frame):
 
 # creates root window
 root = tk.Tk()
-height = root.winfo_screenheight() / 2
-width = root.winfo_screenwidth() / 2
+height = root.winfo_screenheight() * 0.75
+width = root.winfo_screenwidth() * 0.75
 app = Application(root, height, width)
-
+app.master.title('COVID SIM')
 
 action_frame = tk.Frame(master=app, height=height, width=width*2/3)
-config_frame = SetConfigFrame(master=action_frame, height=height/2, width=width)
+config_frame = SetConfigFrame(master=action_frame, height=height, width=width)
 config_frame.pack()
 config_frame.pack_propagate(0)
 
