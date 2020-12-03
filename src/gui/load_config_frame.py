@@ -1,5 +1,5 @@
 """
-Main application window for Virussim application, built using Tkinter
+Load Config Window application window for Virussim application, built using Tkinter
 
 Created on 2nd Dec, 2020
 @author Yatish Pitta
@@ -8,15 +8,15 @@ Created on 2nd Dec, 2020
 import tkinter as tk
 
 
-class ActionFrame(tk.Frame):
+class LoadConfigFrame(tk.Frame):
 
     def __init__(self, master=None, height=100, width=100):
         """
-        Constructor to create the main Frame
+        Constructor to set the master frame, height and width
 
         Parameters
         ----------
-        :param master: master frame
+        :param master: parent frame
         :param height: height of frame
         :param width: width of frame
         """
@@ -27,12 +27,17 @@ class ActionFrame(tk.Frame):
         self.create_widgets()
 
     def create_widgets(self):
+        """
+        Creates button widgets for loading config data of COVID and Influenza viruses
+        """
 
+        # Load Config Data button
         self.hi_there = tk.Button(self)
-        self.hi_there["text"] = "Hello World Updated \n(click me)"
+        self.hi_there["text"] = "Load COVID Config Data"
         self.hi_there["command"] = "hi there, everyone!"
         self.hi_there.pack(expand=True, fill='both', side="bottom")
 
-        self.quit = tk.Button(self, text="QUIT", fg="red",
-                              command=self.master.destroy)
-        self.quit.pack(expand=True, fill='both',side="top")
+        # Load influenza data button
+        self.quit = tk.Button(self, text="Load Influenza Config Data", fg="red",
+                              command="#")
+        self.quit.pack(expand=True, fill='both', side="top")
