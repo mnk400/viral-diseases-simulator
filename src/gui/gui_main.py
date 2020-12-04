@@ -6,12 +6,13 @@ Created on 2nd Dec, 2020
 """
 
 import tkinter as tk
-from gui.load_config_frame import LoadConfigFrame
-from gui.sim_command_frame import SimCommandFrame
-from gui.config_frame import SetConfigFrame
+import tkinter.ttk as ttk
+from load_config_frame import LoadConfigFrame
+from sim_command_frame import SimCommandFrame
+from config_frame import SetConfigFrame
 
 
-class Application(tk.Frame):
+class Application(ttk.Frame):
     """
     Main application window, inherits Frame from Tkinter
     """
@@ -31,18 +32,18 @@ class Application(tk.Frame):
         self.pack()
         self.pack_propagate(0)
 
-
 if __name__ == '__main__':
     # root window widget
     root = tk.Tk()
     height = root.winfo_screenheight() * 0.75
     width = root.winfo_screenwidth() * 0.75
+
     # Main application frame
     app = Application(root, height, width)
     app.master.title('COVID SIM')
 
     # Frame holding configuration frame - left
-    action_frame = tk.Frame(master=app, height=float(app.winfo_reqheight()), width=float(app.winfo_reqwidth()) * 2 / 3)
+    action_frame = ttk.Frame(master=app, height=float(app.winfo_reqheight()), width=float(app.winfo_reqwidth()) * 2 / 3)
     # Configure simulation frame
     config_frame = SetConfigFrame(master=action_frame, height=float(action_frame.winfo_reqheight()),
                                   width=float(action_frame.winfo_reqwidth()))

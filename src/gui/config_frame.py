@@ -6,9 +6,11 @@ Created on 2nd Dec, 2020
 """
 
 import tkinter as tk
+import tkinter.ttk as ttk
+from ttk_helper import TtkScale
 
 
-class SetConfigFrame(tk.Frame):
+class SetConfigFrame(ttk.Frame):
     """
     Frame widget for configuring and customizing simulation
     """
@@ -34,27 +36,36 @@ class SetConfigFrame(tk.Frame):
         Creates slider and button widgets for configuring simulation
         """
         # Main label frame to hold widgets
-        label_frame = tk.LabelFrame(master=self, text="Modify Configuration", height=self.height * 0.95,
+        label_frame = ttk.LabelFrame(master=self, text="Modify Configuration", height=self.height * 0.95,
                                     width=self.width * 0.95)
+        #, font="helvetica 24 bold", background="#ECECEC"
         label_frame.grid(row=0, column=0, pady=self.height * 0.02)
         label_frame.grid_propagate(0)
+        
 
         # Population value slider
         self.population_var = tk.IntVar()
-        label1 = tk.Label(master=label_frame, anchor='center', text='Population')
+        label1 = tk.Label(master=label_frame, anchor='center', text='Population:', font="helvetica 15")
         label1.grid(row=0, column=0, padx=float(label_frame.winfo_reqwidth()) * 0.025,
                     pady=float(label_frame.winfo_reqheight()) * 0.025, columnspan=1)
         label1.grid_propagate(0)
-        population_scale = tk.Scale(master=label_frame, variable=self.population_var, orient='horizontal', from_=1000,
-                                    to=100000, width=25, sliderlength=100,
-                                    length=float(label_frame.winfo_reqwidth()) * 0.65)
-        population_scale.grid(row=0, column=1, padx=float(label_frame.winfo_reqwidth()) * 0.05,
+        self.population_scale = ttk.Scale(master=label_frame, variable=self.population_var, orient='horizontal', from_=100,
+                                    to=1000,
+                                    length=float(label_frame.winfo_reqwidth()) * 0.65, command = self.accept_whole_number_only)
+        ttk.Label(self, text=' ').grid(row=0)
+        population_label = ttk.Label(label_frame, textvariable=self.population_var)
+        population_label.place(in_=self.population_scale, bordermode='outside', x=0, y=0, anchor='s')
+        # self.display_value(population_scale, population_label)
+        # # , width=25, sliderlength=100,
+        # population_scale.bind('<Configure>', lambda event: population_label.update())
+    
+        self.population_scale.grid(row=0, column=1, padx=float(label_frame.winfo_reqwidth()) * 0.05,
                               pady=float(label_frame.winfo_reqheight()) * 0.025, columnspan=3)
-        population_scale.grid_propagate(0)
+        self.population_scale.grid_propagate(0)
 
         # Social distancing value slider
         self.social_distance_var = tk.DoubleVar()
-        label2 = tk.Label(master=label_frame, anchor='center', text='Social Distancing Ratio')
+        label2 = tk.Label(master=label_frame, anchor='center', text='Social Distancing Ratio:', font="helvetica 15")
         label2.grid(row=1, column=0, padx=float(label_frame.winfo_reqwidth()) * 0.025,
                     pady=float(label_frame.winfo_reqheight()) * 0.025, columnspan=1)
         label2.grid_propagate(0)
@@ -67,7 +78,7 @@ class SetConfigFrame(tk.Frame):
 
         # Hospital capacity value slider
         self.hospital_capacity_var = tk.IntVar()
-        label3 = tk.Label(master=label_frame, anchor='center', text='Hospital capacity')
+        label3 = tk.Label(master=label_frame, anchor='center', text='Hospital Capacity:', font="helvetica 15")
         label3.grid(row=2, column=0, padx=float(label_frame.winfo_reqwidth()) * 0.025,
                     pady=float(label_frame.winfo_reqheight()) * 0.025, columnspan=1)
         label3.grid_propagate(0)
@@ -227,4 +238,30 @@ class SetConfigFrame(tk.Frame):
         :param val:
         """
         self.k_val = val
+
+    def display_value(self, scale, label):
+        # position (in pixel) of the center of the slider
+        value = scale.get()
+        x = self.convert_to_pixels(float(value), scale, 1000, 100000)
+        # pay attention to the borders
+        half_width = label.winfo_width() / 2
+        if x + half_width > scale.winfo_width():
+            x = scale.winfo_width() - half_width
+        elif x - half_width < 0:
+            x = half_width
+        label.place_configure(x=x)
+        formatter = '{:.' + str(1) + 'f}'
+        label.configure(text=formatter.format(float(value)))
+
+    def convert_to_pixels(self, value, scale, start, extent):
+        return ((value - start)/ extent) * (scale.winfo_width()- 10) + 10 / 2
+
+    def on_configure(self, event, scale, label):
+        """Redisplay the ticks and the label so that they adapt to the new size of the scale."""
+        self.display_value(scale, label)
+
+    def accept_whole_number_only(self, e=None):
+        value = self.population_scale.get()
+        if int(value) != value:
+            self.population_scale.set(round(value))
 
