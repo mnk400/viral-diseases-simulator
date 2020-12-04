@@ -65,23 +65,38 @@ class PopulationClassTest(unittest.TestCase):
         assert isinstance(self.population.get_person(), np.ndarray)
         self.assertEqual(self.size, self.population.get_person()[:, 0].size)
 
-    def test_get_people_by_health(self):
+    def test_get_all_infected(self):
         """
-        Test to check if the people at indices returned by get_all_healthy are actually healthy;
         people returned by get_all_infected are actually infected;
-        people returned by get_all_recovered are actually recovered;
-        people returned by get_all_dead are dead;
         """
         persons = self.population.get_person()
 
         # Test if get_all_infected returns indices of all people infected
         self.assertEqual(persons[persons[:, 9] == 1].size, self.population.get_all_infected().size)
 
+    def test_get_all_healthy(self):
+        """
+        Test to check if the people at indices returned by get_all_healthy are actually healthy;
+        """
+        persons = self.population.get_person()
+
         # Test if get_all_healthy returns indices of all people healthy
         self.assertEqual(persons[persons[:, 9] == 0].size, self.population.get_all_healthy().size)
 
+    def test_get_all_recovered(self):
+        """
+        Test to check if the people returned by get_all_recovered are actually recovered;
+        """
+        persons = self.population.get_person()
+
         # Test if get_all_recovered returns indices of all people who recovered
         self.assertEqual(persons[persons[:, 9] == 2].size, self.population.get_all_recovered().size)
+
+    def test_get_all_dead(self):
+        """
+        Test to check if the people returned by get_all_dead are dead;
+        """
+        persons = self.population.get_person()
 
         # Test if get_all_dead returns indices of all people dead
         self.assertEqual(persons[persons[:, 9] == 3].size, self.population.get_all_dead().size)

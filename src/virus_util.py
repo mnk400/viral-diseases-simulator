@@ -25,29 +25,17 @@ class Virus():
         self.total_healthcare_capacity = total_healthcare_capacity
         
     def infect(self, population: Population, frame):
-        #print(len(population.persons[population.persons[:,index.hospitalized] == 1]))
 
         #Get the index of all the people who were infected in the previous step
         infected_idx = population.get_all_infected()
         persons = population.get_person()
 
-        #print(len(population.persons[:,index.g_value == 0]))
-        #print(population.persons[62][index.g_value])
         infected_counter = 0
         for idx in infected_idx:
             infected_counter += 1
             if(population.get_time_infected(int(idx[0]), frame) >= self.recovery_time):
                 population = self.die_or_immune(population,int(idx[0]))
-            #print(infected_counter)
-            # if(population.get_time_infected(int(idx[0]), frame) >= self.recovery_time):
-            #     if(infected_counter >= self.total_healthcare_capacity):
-            #         #print(infected_counter)
-            #         self.healthcare_facility_full = True 
-            #         population = self.die_or_immune(population, int(idx[0]), True)
-            #     else:
-            #         self.healthcare_facility_full = False
-            #         population = self.die_or_immune(population, int(idx[0]), False)
-            #     break         
+     
             x_bounds = [persons[int(idx[0])][index.x_axis] - math.sqrt(self.infection_range), persons[int(idx[0])][index.x_axis] + math.sqrt(self.infection_range)]
             y_bounds = [persons[int(idx[0])][index.y_axis] - math.sqrt(self.infection_range), persons[int(idx[0])][index.y_axis] + math.sqrt(self.infection_range)]
             # print(population.get_time_infected(int(idx[0]), frame))
@@ -91,7 +79,7 @@ class Virus():
                                         (persons[:, index.current_state] == 0) &
                                         (persons[:,index.social_distance] == 0)
                                     ]
-        # print(selected_rows)
+                                    
         return selected_rows
 
     def die_or_immune(self, population: Population, infected_person_idx: int) -> bool:

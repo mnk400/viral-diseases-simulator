@@ -74,12 +74,10 @@ class PopulationUtil(object):
         self.population.initialize_mortality_rate(self.size, self.mortality_rate) 
         self.population.initialize_susceptibility()
 
-        # print(self.persons[:,15])
         self.persons[:, 7] = 1
         self.persons[:,10] = 0.1
         self.persons[:,11] = 0.1
 
-        #self.persons[:, index.social_distance] = tmp
         #Update the destination each person is headed to and corresponding speed randomly
         self.persons = self.movement.update_persons(self.persons, self.size, self.speed, 1)
 
@@ -92,16 +90,6 @@ class PopulationUtil(object):
 
     def move(self, frame):
  
-        #print(active_dests)
-        # if active_dests > 0 and len(self.persons[self.persons[:,8] == 0]) > 0:
-        #     #print("here1")
-        #     self.persons = self.movement.set_destination(self.persons, self.destinations, self.population)
-        #     self.persons = self.movement.check_at_destination(self.persons, self.destinations)
-
-        # if active_dests > 0 and len(self.persons[self.persons[:,8] == 1]) > 0:
-        #     self.persons = self.movement.keep_at_destination(self.persons, self.destinations)
-        #     #pass
-        
         if frame == self.enforce_mask_wearing_at:
             self.population.initialize_mask_eff(self.size, self.mask_effectiveness)
             self.population.initialize_susceptibility()
