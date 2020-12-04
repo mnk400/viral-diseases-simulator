@@ -9,6 +9,9 @@ import tkinter as tk
 
 
 class LoadConfigFrame(tk.Frame):
+    """
+    Load Config Frame contains action buttons to load default simulation configuration for COVID and Influenza viruses
+    """
 
     def __init__(self, master=None, height=100, width=100):
         """
@@ -32,12 +35,12 @@ class LoadConfigFrame(tk.Frame):
         """
 
         # Load Config Data button
-        self.hi_there = tk.Button(self)
-        self.hi_there["text"] = "Load COVID Config Data"
-        self.hi_there["command"] = "hi there, everyone!"
-        self.hi_there.pack(expand=True, fill='both', side="bottom")
+        self.load_button = tk.Button(self)
+        self.load_button["text"] = "Load COVID Config Data"
+        self.load_button["command"] = "hi there, everyone!"
+        self.load_button.pack(expand=True, fill='both', side="bottom")
 
         # Load influenza data button
-        self.quit = tk.Button(self, text="Load Influenza Config Data", fg="red",
+        self.load_inf_button = tk.Button(self, text="Load Influenza Config Data", fg="red",
                               command="#")
-        self.quit.pack(expand=True, fill='both', side="top")
+        self.load_inf_button.pack(expand=True, fill='both', side="top")

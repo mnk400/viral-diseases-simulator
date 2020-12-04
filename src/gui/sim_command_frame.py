@@ -33,11 +33,11 @@ class SimCommandFrame(tk.Frame):
         """
         Creates the Render Mode and View Simulation buttons
         """
-        self.hi_there = tk.Button(self)
-        self.hi_there["text"] = "Render Mode"
-        self.hi_there["command"] = "hi there, everyone!"
-        self.hi_there.pack(expand=True, fill='both', side="top")
+        self.render_button = tk.Button(self)
+        self.render_button["text"] = "Render Mode"
+        self.render_button["command"] = "hi there, everyone!"
+        self.render_button.pack(expand=True, fill='both', side="top")
 
-        self.quit = tk.Button(self, text="View Simulation", fg="red",
+        self.start_sim_button = tk.Button(self, text="View Simulation", fg="red",
                               command='#')
-        self.quit.pack(expand=True, fill='both', side="bottom")
+        self.start_sim_button.pack(expand=True, fill='both', side="bottom")
