@@ -17,7 +17,7 @@ class Application(ttk.Frame):
     Main application window, inherits Frame from Tkinter
     """
 
-    def __init__(self, master=None, height=100, width=100):
+    def __init__(self, master=None, height=100, width=70):
         """
         Constructor to create the main Frame
 
@@ -35,8 +35,8 @@ class Application(ttk.Frame):
 if __name__ == '__main__':
     # root window widget
     root = tk.Tk()
-    height = root.winfo_screenheight() * 0.75
-    width = root.winfo_screenwidth() * 0.75
+    height = root.winfo_screenheight() * 0.6
+    width = root.winfo_screenwidth() * 0.4
 
     # Main application frame
     app = Application(root, height, width)

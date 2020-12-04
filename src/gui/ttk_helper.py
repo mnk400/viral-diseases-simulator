@@ -1,6 +1,5 @@
 import tkinter as tk
 import tkinter.ttk as ttk
-from ttkwidgets import TickScale
 
 class TtkScale(ttk.Frame):
     def __init__(self, master=None, **kwargs):

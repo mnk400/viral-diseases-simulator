@@ -15,7 +15,7 @@ class SetConfigFrame(ttk.Frame):
     Frame widget for configuring and customizing simulation
     """
 
-    def __init__(self, master=None, height=100, width=100):
+    def __init__(self, master=None, height=100, width=70):
         """
         Constructor to set the master frame, height and width
 
@@ -44,102 +44,114 @@ class SetConfigFrame(ttk.Frame):
         
 
         # Population value slider
-        self.population_var = tk.IntVar()
-        label1 = tk.Label(master=label_frame, anchor='center', text='Population:', font="helvetica 15")
-        label1.grid(row=0, column=0, padx=float(label_frame.winfo_reqwidth()) * 0.025,
-                    pady=float(label_frame.winfo_reqheight()) * 0.025, columnspan=1)
-        label1.grid_propagate(0)
-        self.population_scale = ttk.Scale(master=label_frame, variable=self.population_var, orient='horizontal', from_=100,
-                                    to=1000,
-                                    length=float(label_frame.winfo_reqwidth()) * 0.65, command = self.accept_whole_number_only)
-        ttk.Label(self, text=' ').grid(row=0)
-        population_label = ttk.Label(label_frame, textvariable=self.population_var)
-        population_label.place(in_=self.population_scale, bordermode='outside', x=0, y=0, anchor='s')
-        # self.display_value(population_scale, population_label)
-        # # , width=25, sliderlength=100,
-        # population_scale.bind('<Configure>', lambda event: population_label.update())
-    
-        self.population_scale.grid(row=0, column=1, padx=float(label_frame.winfo_reqwidth()) * 0.05,
+        population_label = ttk.Label(master=label_frame, anchor=tk.E, text='Population: ', font="helvetica 10")
+        population_label.grid(row=0, column=0, columnspan=1)
+
+        population_scale_val = tk.StringVar()
+        population_scale_val.set('1000')
+
+        population_scale = ttk.Scale(master=label_frame, orient='horizontal', from_=200, to=3000, 
+                                    length=float(label_frame.winfo_reqwidth()) * 0.40, command=lambda s:population_scale_val.set('%d' % int(float(s))))
+        population_scale.set(1000)
+        population_scale.grid(row=0, column=1, padx=float(label_frame.winfo_reqwidth()) * 0.05,
                               pady=float(label_frame.winfo_reqheight()) * 0.025, columnspan=3)
-        self.population_scale.grid_propagate(0)
+
+        population_scale_val_label = ttk.Label(label_frame, textvariable=population_scale_val)
+        population_scale_val_label.place(in_=population_scale, bordermode='outside', x=0, y=0, anchor='s')
+
 
         # Social distancing value slider
-        self.social_distance_var = tk.DoubleVar()
-        label2 = tk.Label(master=label_frame, anchor='center', text='Social Distancing Ratio:', font="helvetica 15")
-        label2.grid(row=1, column=0, padx=float(label_frame.winfo_reqwidth()) * 0.025,
+        social_distancing_label = ttk.Label(master=label_frame, text='Social Distancing:', font="helvetica 10")
+        social_distancing_label.grid(row=1, column=0, padx=float(label_frame.winfo_reqwidth()) * 0.025,
                     pady=float(label_frame.winfo_reqheight()) * 0.025, columnspan=1)
-        label2.grid_propagate(0)
-        social_distance_scale = tk.Scale(master=label_frame, variable=self.social_distance_var, orient='horizontal', from_=0.00,
-                                         to=1.00, width=25, sliderlength=100,
-                                         length=float(label_frame.winfo_reqwidth()) * 0.65)
+
+        social_distancing_val = tk.StringVar()
+        social_distancing_val.set('50%')
+
+        social_distance_scale = ttk.Scale(master=label_frame, orient='horizontal', from_=0, to=100, 
+                                         length=float(label_frame.winfo_reqwidth()) * 0.40, command=lambda s:social_distancing_val.set('%d%%' % int(float(s))))
+        social_distance_scale.set(50)
         social_distance_scale.grid(row=1, column=1, padx=float(label_frame.winfo_reqwidth()) * 0.05,
                                    pady=float(label_frame.winfo_reqheight()) * 0.025, columnspan=3)
-        social_distance_scale.grid_propagate(0)
+
+        distancing_val_label = ttk.Label(label_frame, textvariable=social_distancing_val)
+        distancing_val_label.place(in_=social_distance_scale, bordermode='outside', x=0, y=0, anchor='s')
 
         # Hospital capacity value slider
-        self.hospital_capacity_var = tk.IntVar()
-        label3 = tk.Label(master=label_frame, anchor='center', text='Hospital Capacity:', font="helvetica 15")
-        label3.grid(row=2, column=0, padx=float(label_frame.winfo_reqwidth()) * 0.025,
-                    pady=float(label_frame.winfo_reqheight()) * 0.025, columnspan=1)
-        label3.grid_propagate(0)
-        hospital_capacity_scale = tk.Scale(master=label_frame, variable=self.hospital_capacity_var, orient='horizontal', from_=1000,
-                                           to=5000, width=25, sliderlength=100,
-                                           length=float(label_frame.winfo_reqwidth()) * 0.65)
+        hostpital_capacity_label = tk.Label(master=label_frame, anchor='center', text='Hospital Capacity:', font="helvetica 10")
+        hostpital_capacity_label.grid(row=2, column=0, columnspan=1)
+
+        hostpital_capacity_val = tk.StringVar()
+        hostpital_capacity_val.set('20%')
+
+        hospital_capacity_scale = ttk.Scale(master=label_frame, orient='horizontal', from_=0, to=100,
+                                           length=float(label_frame.winfo_reqwidth()) * 0.40, command=lambda s:hostpital_capacity_val.set('%d%%' % int(float(s))))
+        hospital_capacity_scale.set(20)
         hospital_capacity_scale.grid(row=2, column=1, padx=float(label_frame.winfo_reqwidth()) * 0.05,
                                      pady=float(label_frame.winfo_reqheight()) * 0.025, columnspan=3)
-        hospital_capacity_scale.grid_propagate(0)
+        
+        hostpital_capacity_val_label = ttk.Label(label_frame, textvariable=hostpital_capacity_val)
+        hostpital_capacity_val_label.place(in_=hospital_capacity_scale, bordermode='outside', x=0, y=0, anchor='s')
 
         # Recovery time value slider
-        self.recovery_time_var = tk.IntVar()
-        label4 = tk.Label(master=label_frame, anchor='center', text='Recovery time')
-        label4.grid(row=3, column=0, padx=float(label_frame.winfo_reqwidth()) * 0.025,
-                    pady=float(label_frame.winfo_reqheight()) * 0.025, columnspan=1)
-        label4.grid_propagate(0)
-        recovery_time_scale = tk.Scale(master=label_frame, variable=self.recovery_time_var, orient='horizontal', from_=1, to=50,
-                                       width=25, sliderlength=100, length=float(label_frame.winfo_reqwidth()) * 0.65)
-        recovery_time_scale.grid(row=3, column=1, padx=float(label_frame.winfo_reqwidth()) * 0.05,
-                                 pady=float(label_frame.winfo_reqheight()) * 0.025, columnspan=3)
-        recovery_time_scale.grid_propagate(0)
+        recovery_time_label = tk.Label(master=label_frame, anchor='center', text='Hospital Capacity:', font="helvetica 10")
+        recovery_time_label.grid(row=3, column=0, columnspan=1)
 
-        # Death rate value slider
-        self.death_rate_var = tk.DoubleVar()
-        label5 = tk.Label(master=label_frame, anchor='center', text='Death rate')
-        label5.grid(row=4, column=0, padx=float(label_frame.winfo_reqwidth()) * 0.025,
-                    pady=float(label_frame.winfo_reqheight()) * 0.025, columnspan=1)
-        label5.grid_propagate(0)
-        death_rate_scale = tk.Scale(master=label_frame, variable=self.death_rate_var, orient='horizontal', from_=0, to=100,
-                                    width=25, sliderlength=100, length=float(label_frame.winfo_reqwidth()) * 0.65)
-        death_rate_scale.grid(row=4, column=1, padx=float(label_frame.winfo_reqwidth()) * 0.05,
-                              pady=float(label_frame.winfo_reqheight()) * 0.025, columnspan=3)
-        death_rate_scale.grid_propagate(0)
+        recovery_time_val = tk.StringVar()
+        recovery_time_val.set('150 Frames')
+
+        recovery_time_scale = ttk.Scale(master=label_frame, orient='horizontal', from_=100, to=500,
+                                           length=float(label_frame.winfo_reqwidth()) * 0.40, command=lambda s:recovery_time_val.set('%d Frames' % int(float(s))))
+        recovery_time_scale.set(150)
+        recovery_time_scale.grid(row=3, column=1, padx=float(label_frame.winfo_reqwidth()) * 0.05,
+                                     pady=float(label_frame.winfo_reqheight()) * 0.025, columnspan=3)
+        
+        recovery_time_val_label = ttk.Label(label_frame, textvariable=recovery_time_val)
+        recovery_time_val_label.place(in_=recovery_time_scale, bordermode='outside', x=0, y=0, anchor='s')
+
+        # # Death rate value slider
+        # self.death_rate_var = tk.DoubleVar()
+        # label5 = tk.Label(master=label_frame, anchor='center', text='Death rate')
+        # label5.grid(row=4, column=0, padx=float(label_frame.winfo_reqwidth()) * 0.025,
+        #             pady=float(label_frame.winfo_reqheight()) * 0.025, columnspan=1)
+        # label5.grid_propagate(0)
+        # death_rate_scale = tk.Scale(master=label_frame, variable=self.death_rate_var, orient='horizontal', from_=0, to=100,
+        #                             width=25, sliderlength=100, length=float(label_frame.winfo_reqwidth()) * 0.65)
+        # death_rate_scale.grid(row=4, column=1, padx=float(label_frame.winfo_reqwidth()) * 0.05,
+        #                       pady=float(label_frame.winfo_reqheight()) * 0.025, columnspan=3)
+        # death_rate_scale.grid_propagate(0)
 
         # R value setter button
-        self.r_val = tk.IntVar()
-        r_val_button = tk.Button(master=label_frame, text='Set r value', command='#')
-        r_val_button.grid(row=5, column=0, padx=float(label_frame.winfo_reqwidth()) * 0.025,
-                          pady=float(label_frame.winfo_reqheight()) * 0.025, columnspan=1)
-        r_val_button.grid_propagate(0)
-        r_field = tk.Entry(master=label_frame, textvariable=self.r_val, width=5)
-        r_field.grid(row=5, column=1, padx=float(label_frame.winfo_reqwidth()) * 0.05,
-                     pady=float(label_frame.winfo_reqheight()) * 0.025, columnspan=3)
-        r_field.grid_propagate(0)
+        r_value_label = tk.Label(master=label_frame, anchor='center', text='R value:', font="helvetica 10")
+        r_value_label.grid(row=4, column=0, columnspan=1)
+
+        r_value_val = tk.StringVar()
+        r_value_val.set('3.00')
+
+        r_value_scale = ttk.Scale(master=label_frame, orient='horizontal', from_=0, to=10,
+                                           length=float(label_frame.winfo_reqwidth()) * 0.40, command=lambda s:r_value_val.set('%0.2f' % float(s)))
+        r_value_scale.set(3.00)
+        r_value_scale.grid(row=4, column=1, padx=float(label_frame.winfo_reqwidth()) * 0.05,
+                                     pady=float(label_frame.winfo_reqheight()) * 0.025, columnspan=3)
+        
+        r_value_val_label = ttk.Label(label_frame, textvariable=r_value_val)
+        r_value_val_label.place(in_=r_value_scale, bordermode='outside', x=0, y=0, anchor='s')
 
         # K value setter button
-        self.k_val = tk.DoubleVar()
-        k_val_button = tk.Button(master=label_frame, text='Set k value', command='')
-        k_val_button.grid(row=6, column=0, padx=float(label_frame.winfo_reqwidth()) * 0.025,
-                          pady=float(label_frame.winfo_reqheight()) * 0.025, columnspan=1)
-        k_val_button.grid_propagate(0)
-        k_field = tk.Entry(master=label_frame, textvariable=self.k_val, width=5)
-        k_field.grid(row=6, column=1, padx=float(label_frame.winfo_reqwidth()) * 0.05,
-                     pady=float(label_frame.winfo_reqheight()) * 0.025, columnspan=3)
-        k_field.grid_propagate(0)
+        k_value_label = tk.Label(master=label_frame, anchor='center', text='K value:', font="helvetica 10")
+        k_value_label.grid(row=5, column=0, columnspan=1)
 
-        # Exit button
-        exit_button = tk.Button(master=label_frame, text='Exit', command=self.master.master.master.destroy)
-        exit_button.grid(row=7, column=0, padx=float(label_frame.winfo_reqwidth()) * 0.025,
-                         pady=float(label_frame.winfo_reqheight()) * 0.025, columnspan=4)
-        exit_button.grid_propagate(0)
+        k_value_val = tk.StringVar()
+        k_value_val.set('0.10')
+
+        k_value_scale = ttk.Scale(master=label_frame, orient='horizontal', from_=0, to=3,
+                                           length=float(label_frame.winfo_reqwidth()) * 0.40, command=lambda s:k_value_val.set('%0.2f' % float(s)))
+        k_value_scale.set(0.1)
+        k_value_scale.grid(row=5, column=1, padx=float(label_frame.winfo_reqwidth()) * 0.05,
+                                     pady=float(label_frame.winfo_reqheight()) * 0.025, columnspan=3)
+        
+        k_value_val_label = ttk.Label(label_frame, textvariable=k_value_val)
+        k_value_val_label.place(in_=k_value_scale, bordermode='outside', x=0, y=0, anchor='s')
 
     def get_population_value(self) -> int:
         """
@@ -239,29 +251,6 @@ class SetConfigFrame(ttk.Frame):
         """
         self.k_val = val
 
-    def display_value(self, scale, label):
-        # position (in pixel) of the center of the slider
-        value = scale.get()
-        x = self.convert_to_pixels(float(value), scale, 1000, 100000)
-        # pay attention to the borders
-        half_width = label.winfo_width() / 2
-        if x + half_width > scale.winfo_width():
-            x = scale.winfo_width() - half_width
-        elif x - half_width < 0:
-            x = half_width
-        label.place_configure(x=x)
-        formatter = '{:.' + str(1) + 'f}'
-        label.configure(text=formatter.format(float(value)))
 
     def convert_to_pixels(self, value, scale, start, extent):
         return ((value - start)/ extent) * (scale.winfo_width()- 10) + 10 / 2
-
-    def on_configure(self, event, scale, label):
-        """Redisplay the ticks and the label so that they adapt to the new size of the scale."""
-        self.display_value(scale, label)
-
-    def accept_whole_number_only(self, e=None):
-        value = self.population_scale.get()
-        if int(value) != value:
-            self.population_scale.set(round(value))
-

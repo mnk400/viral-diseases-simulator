@@ -6,7 +6,7 @@ Created on 2nd Dec, 2020
 """
 
 import tkinter as tk
-
+from tkinter import ttk
 
 class LoadConfigFrame(tk.Frame):
     """
@@ -35,12 +35,12 @@ class LoadConfigFrame(tk.Frame):
         """
 
         # Load Config Data button
-        self.load_button = tk.Button(self)
+        self.load_button = ttk.Button(self)
         self.load_button["text"] = "Load COVID Config Data"
         self.load_button["command"] = "hi there, everyone!"
-        self.load_button.pack(expand=True, fill='both', side="bottom")
+        self.load_button.pack()
 
         # Load influenza data button
-        self.load_inf_button = tk.Button(self, text="Load Influenza Config Data", fg="red",
-                              command="#")
-        self.load_inf_button.pack(expand=True, fill='both', side="top")
+        self.load_inf_button = ttk.Button(self, text="Load Influenza Config Data",
+                              command="#")       
+        self.load_inf_button.pack()

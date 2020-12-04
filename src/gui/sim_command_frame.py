@@ -6,6 +6,7 @@ Created on 2nd Dec, 2020
 """
 
 import tkinter as tk
+from tkinter import ttk
 
 
 class SimCommandFrame(tk.Frame):
@@ -33,11 +34,11 @@ class SimCommandFrame(tk.Frame):
         """
         Creates the Render Mode and View Simulation buttons
         """
-        self.render_button = tk.Button(self)
-        self.render_button["text"] = "Render Mode"
-        self.render_button["command"] = "hi there, everyone!"
-        self.render_button.pack(expand=True, fill='both', side="top")
-
-        self.start_sim_button = tk.Button(self, text="View Simulation", fg="red",
+        self.my_var = tk.IntVar()
+        rb1 = ttk.Radiobutton(self, text='Render Mode', variable=self.my_var, value=5)
+        rb2 = ttk.Radiobutton(self, text='Live Simulation', variable=self.my_var, value=10)
+        rb1.pack()
+        rb2.pack()
+        self.start_sim_button = ttk.Button(self, text="Start",
                               command='#')
-        self.start_sim_button.pack(expand=True, fill='both', side="bottom")
+        self.start_sim_button.pack()

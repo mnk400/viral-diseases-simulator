@@ -1,6 +1,6 @@
 import tkinter as tk
 import tkinter.ttk as ttk
-from ttkwidgets import TickScale
+
 
 class TtkScale(ttk.Frame):
     def __init__(self, master=None, **kwargs):
@@ -97,6 +97,7 @@ class TtkScale(ttk.Frame):
     def on_configure(self, event):
         """Redisplay the ticks and the label so that they adapt to the new size of the scale."""
         self.display_value(self.scale.get())
+        print("here")
         self.place_ticks()
 
 if __name__ == '__main__':
