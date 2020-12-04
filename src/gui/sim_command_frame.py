@@ -35,8 +35,9 @@ class SimCommandFrame(tk.Frame):
         Creates the Render Mode and View Simulation buttons
         """
         self.my_var = tk.IntVar()
-        rb1 = ttk.Radiobutton(self, text='Render Mode', variable=self.my_var, value=5)
-        rb2 = ttk.Radiobutton(self, text='Live Simulation', variable=self.my_var, value=10)
+        self.my_var.set(2)
+        rb1 = ttk.Radiobutton(self, text='Render Mode', variable=self.my_var, value=1)
+        rb2 = ttk.Radiobutton(self, text='Live Simulation', variable=self.my_var, value=2)
         rb1.pack()
         rb2.pack()
         self.start_sim_button = ttk.Button(self, text="Start",
