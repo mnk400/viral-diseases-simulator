@@ -42,9 +42,8 @@ class ButtonsFrame(ttk.Frame):
         label_frame.grid_propagate(0)
 
         label_frame_label2 = ttk.Label(text="Simulation Mode")
-        label_frame2 = ttk.LabelFrame(master=label_frame, labelwidget=label_frame_label2, height=float(label_frame.winfo_reqheight())/6,
-                                    width=float(label_frame.winfo_reqwidth()))
-        label_frame2.grid(row=0, column=0, columnspan=1, padx=(float(label_frame.winfo_reqwidth()) * 0.05, float(label_frame.winfo_reqwidth()) * 0.1))
+        label_frame2 = ttk.LabelFrame(master=label_frame, labelwidget=label_frame_label2, height=float(label_frame.winfo_reqheight())/6, width=float(label_frame.winfo_reqwidth())*0.9)
+        label_frame2.grid(row=0, column=0, columnspan=1, sticky='ew', padx=(float(label_frame.winfo_reqwidth()) * 0.05,float(label_frame.winfo_reqwidth()) * 0.205))
         label_frame2.grid_propagate(0)
 
         self.my_var = tk.IntVar()
@@ -55,9 +54,8 @@ class ButtonsFrame(ttk.Frame):
         rb2.grid(row=1,column=0,columnspan=1, padx=float(label_frame.winfo_reqwidth()) * 0.10, pady=float(label_frame.winfo_reqheight())*0.005, sticky=tk.W)
 
         label_frame_label3 = ttk.Label(text="Preventive Options")
-        label_frame3 = ttk.LabelFrame(master=label_frame, labelwidget=label_frame_label3, height=float(label_frame.winfo_reqheight())/6,
-                                    width=float(label_frame.winfo_reqwidth()))
-        label_frame3.grid(row=1, column=0, columnspan=1, padx=(float(label_frame.winfo_reqwidth()) * 0.05, float(label_frame.winfo_reqwidth()) * 0.1))
+        label_frame3 = ttk.LabelFrame(master=label_frame, labelwidget=label_frame_label3, height=float(label_frame.winfo_reqheight())/6, width=float(label_frame.winfo_reqwidth())*0.9)
+        label_frame3.grid(row=1, column=0, columnspan=1, sticky='ew', padx=(float(label_frame.winfo_reqwidth()) * 0.05,float(label_frame.winfo_reqwidth()) * 0.205))
         label_frame3.grid_propagate(0)
 
         #social_distance_enable = tk.IntVar()
@@ -66,7 +64,7 @@ class ButtonsFrame(ttk.Frame):
 
         social_distance_check.grid(row=0,column=0,columnspan=1, padx=float(label_frame.winfo_reqwidth())*0.10, pady=float(label_frame.winfo_reqheight())*0.005, sticky=tk.W)
 
-        #mask_wearing_enable = tk.IntVar()
+        mask_wearing_enable = tk.IntVar()
         mask_wearing_check = ttk.Checkbutton(master=label_frame3, text='Enable Mask Wearing')
 
         mask_wearing_check.grid(row=1,column=0,columnspan=1, padx=float(label_frame.winfo_reqwidth())*0.10, pady=float(label_frame.winfo_reqheight())*0.005, sticky=tk.W)
@@ -74,15 +72,15 @@ class ButtonsFrame(ttk.Frame):
 
         # Load Config Data button
         self.load_button = ttk.Button(master=label_frame, text="Start Covid Simulation", command="#")
-        self.load_button.grid(row=4,column=0,columnspan=1, sticky="nesw", pady=float(label_frame.winfo_reqheight()) * 0.02)
+        self.load_button.grid(row=4,column=0,columnspan=1, sticky='ew', padx=(float(label_frame.winfo_reqwidth()) * 0.05,float(label_frame.winfo_reqwidth()) * 0.205), pady=float(label_frame.winfo_reqheight()) * 0.02)
 
         # Load influenza data button
         self.load_inf_button = ttk.Button(master=label_frame, text="Start Influenza Simulation", command="#")       
-        self.load_inf_button.grid(row=5,column=0,columnspan=1, sticky="nesw", pady=float(label_frame.winfo_reqheight()) * 0.02)
+        self.load_inf_button.grid(row=5,column=0,columnspan=1, sticky='ew', padx=(float(label_frame.winfo_reqwidth()) * 0.05,float(label_frame.winfo_reqwidth()) * 0.205), pady=float(label_frame.winfo_reqheight()) * 0.02)
 
         #Start custom sim button
         self.start_sim_button = ttk.Button(master=label_frame, text="Start Custom Simulation", command='#')
-        self.start_sim_button.grid(row=6,column=0,columnspan=1, sticky="nesw", pady=float(label_frame.winfo_reqheight()) * 0.02)
+        self.start_sim_button.grid(row=6,column=0,columnspan=1, sticky='ew', padx=(float(label_frame.winfo_reqwidth()) * 0.05,float(label_frame.winfo_reqwidth()) * 0.205), pady=float(label_frame.winfo_reqheight()) * 0.02)
 
 
         
