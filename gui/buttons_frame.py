@@ -7,8 +7,11 @@ Created on 2nd Dec, 2020
 
 import tkinter as tk
 from tkinter import Widget, ttk
-import ttk_helper
-from ttk_helper import ToolTip
+import gui.ttk_helper
+from gui.ttk_helper import ToolTip
+from src.visualization import Visualization
+from src.population_util import PopulationUtil
+from src.config_util import ConfigUtil
 
 class ButtonsFrame(ttk.Frame):
     """
@@ -29,6 +32,7 @@ class ButtonsFrame(ttk.Frame):
         self.master = master
         self.height = height
         self.width = width
+        self.config_util = ConfigUtil("config/config.ini")
         self.create_widgets()
 
     def create_widgets(self):
@@ -71,7 +75,7 @@ class ButtonsFrame(ttk.Frame):
         mask_wearing_check.invoke()
 
         # Load Config Data button
-        self.load_button = ttk.Button(master=label_frame, text="Start Covid Simulation", command="#")
+        self.load_button = ttk.Button(master=label_frame, text="Start Covid Simulation", command=self.execute_covid_sim)
         self.load_button.grid(row=4,column=0,columnspan=1, sticky='ew', padx=(float(label_frame.winfo_reqwidth()) * 0.05,float(label_frame.winfo_reqwidth()) * 0.205), pady=float(label_frame.winfo_reqheight()) * 0.02)
 
         # Load influenza data button
@@ -79,14 +83,30 @@ class ButtonsFrame(ttk.Frame):
         self.load_inf_button.grid(row=5,column=0,columnspan=1, sticky='ew', padx=(float(label_frame.winfo_reqwidth()) * 0.05,float(label_frame.winfo_reqwidth()) * 0.205), pady=float(label_frame.winfo_reqheight()) * 0.02)
 
         #Start custom sim button
-        self.start_sim_button = ttk.Button(master=label_frame, text="Start Custom Simulation", command='#')
-        self.start_sim_button.grid(row=6,column=0,columnspan=1, sticky='ew', padx=(float(label_frame.winfo_reqwidth()) * 0.05,float(label_frame.winfo_reqwidth()) * 0.205), pady=float(label_frame.winfo_reqheight()) * 0.02)
+        self.start_sim_button = ttk.Button(master=label_frame, text="Start Custom Simulation", command="#")
+        self.start_sim_button.grid(row=6,column=0,columnspan=1, sticky='ew', 
+                                    padx=(float(label_frame.winfo_reqwidth()) * 0.05,float(label_frame.winfo_reqwidth()) * 0.205), 
+                                    pady=float(label_frame.winfo_reqheight()) * 0.02)
+    
+    def execute_covid_sim(self):
+        self.k                          = self.config_util.getFloatValue("virus.stats", "k_value")
+        self.r                          = self.config_util.getFloatValue("virus.stats", "r_value")
+        self.size                       = self.config_util.getIntegerValue("area.stats", "total_population")
+        self.min_age                    = self.config_util.getIntegerValue("people.stats", "min_age")
+        self.max_age                    = self.config_util.getIntegerValue("people.stats", "min_age")
+        self.mortality_rate             = self.config_util.getDictionary("virus.stats", "mortality_rate")
+        self.social_distance_per        = self.config_util.getFloatValue("people.stats", "social_distancing_percent")
+        self.infection_range            = self.config_util.getFloatValue("virus.stats", "infection_range")
+        self.recovery_time              = self.config_util.getFloatValue("virus.stats", "recovery_time")
+        self.total_healthcare_capacity  = self.size*(self.config_util.getIntegerValue("area.stats", "healthcare_capacity_ratio")/100)
+        self.mask_effectiveness         = self.config_util.getDictionary("virus.stats", "mask_effectiveness")
+        self.speed                      = self.config_util.getFloatValue("people.stats", "speed")
+        self.enforce_social_distance_at = self.config_util.getIntegerValue("area.stats", "enforce_social_distancing_at")
+        self.enforce_mask_wearing_at    = self.config_util.getIntegerValue("area.stats", "enforce_mask_wearing_at")
 
-
-        
-
-
-        
-        
-
-        
+        self.population_util = PopulationUtil(k = self.k, r = self.r, min_age = self.min_age, max_age = self.max_age, size = self.size,
+                                mortality_rate = self.mortality_rate, infection_range = self.infection_range, recovery_time = self.recovery_time,
+                                total_healthcare_capacity = self.total_healthcare_capacity, social_distance_per = self.social_distance_per,
+                                mask_effectiveness = self.mask_effectiveness, speed=self.speed, social_distancing_at = self.enforce_social_distance_at,
+                                mask_wearing_at = self.enforce_mask_wearing_at)
+        self.visualize = Visualization(self.population_util, render_mode = False)

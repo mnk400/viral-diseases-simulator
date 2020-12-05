@@ -7,8 +7,8 @@ Created on 2nd Dec, 2020
 
 import tkinter as tk
 import tkinter.ttk as ttk
-from buttons_frame import ButtonsFrame
-from config_frame import SetConfigFrame
+from gui.buttons_frame import ButtonsFrame
+from gui.config_frame import SetConfigFrame
 
 
 class Application(ttk.Frame):
@@ -31,11 +31,11 @@ class Application(ttk.Frame):
         self.pack()
         self.pack_propagate(0)
 
-if __name__ == '__main__':
+def main():
     # root window widget
     root = tk.Tk() 
     height = root.winfo_screenheight() * 0.5
-    width = root.winfo_screenwidth() * 0.6
+    width = root.winfo_screenwidth() * 0.45
     
     # Main application frame
     app = Application(root, height, width)
@@ -43,7 +43,7 @@ if __name__ == '__main__':
 
 
     # Frame holding configuration frame - left
-    action_frame = ttk.Frame(master=app, height=float(app.winfo_reqheight()), width=float(app.winfo_reqwidth()) * 2 / 3)
+    action_frame = ttk.Frame(master=app, height=float(app.winfo_reqheight()), width=float(app.winfo_reqwidth()) * 1 / 2)
     # Configure simulation frame
     config_frame = SetConfigFrame(master=action_frame, height=float(action_frame.winfo_reqheight()),
                                   width=float(action_frame.winfo_reqwidth()))
@@ -51,7 +51,7 @@ if __name__ == '__main__':
 
 
     # Frame holding main action buttons - right
-    action_frame1 = tk.Frame(master=app, height=float(app.winfo_reqheight()), width=float(app.winfo_reqwidth()) * 1 / 3)
+    action_frame1 = tk.Frame(master=app, height=float(app.winfo_reqheight()), width=float(app.winfo_reqwidth()) * 1 / 2)
     load_config_frame = ButtonsFrame(master=action_frame1, height=float(action_frame1.winfo_reqheight()),
                                         width=float(action_frame1.winfo_reqwidth()))
     

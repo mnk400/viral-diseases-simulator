@@ -1,14 +1,16 @@
 from src.visualization import Visualization
 from src.population_util import PopulationUtil
 from src.config_util import ConfigUtil
+from gui.gui_main import main
 
 class Main(object):
     """
     docstring
     """
+
     def __init__(self) -> None:
-        self.config_util = ConfigUtil("config/config.ini")
-        self.load_config()
+        #self.config_util = ConfigUtil("config/config.ini")
+        #self.load_config()
         self.initialize()
 
     def load_config(self) -> None:
@@ -28,12 +30,13 @@ class Main(object):
         self.enforce_mask_wearing_at    = self.config_util.getIntegerValue("area.stats", "enforce_mask_wearing_at")
 
     def initialize(self) -> None:
-        self.population_util = PopulationUtil(k = self.k, r = self.r, min_age = self.min_age, max_age = self.max_age, size = self.size,
-                                mortality_rate = self.mortality_rate, infection_range = self.infection_range, recovery_time = self.recovery_time,
-                                total_healthcare_capacity = self.total_healthcare_capacity, social_distance_per = self.social_distance_per,
-                                mask_effectiveness = self.mask_effectiveness, speed=self.speed, social_distancing_at = self.enforce_social_distance_at,
-                                mask_wearing_at = self.enforce_mask_wearing_at)
-        self.visualize = Visualization(self.population_util, render_mode = False)
+        # self.population_util = PopulationUtil(k = self.k, r = self.r, min_age = self.min_age, max_age = self.max_age, size = self.size,
+        #                         mortality_rate = self.mortality_rate, infection_range = self.infection_range, recovery_time = self.recovery_time,
+        #                         total_healthcare_capacity = self.total_healthcare_capacity, social_distance_per = self.social_distance_per,
+        #                         mask_effectiveness = self.mask_effectiveness, speed=self.speed, social_distancing_at = self.enforce_social_distance_at,
+        #                         mask_wearing_at = self.enforce_mask_wearing_at)
+        # self.visualize = Visualization(self.population_util, render_mode = False)
+        main()
 
 
 if __name__ == "__main__":

@@ -7,8 +7,8 @@ Created on 2nd Dec, 2020
 
 import tkinter as tk
 import tkinter.ttk as ttk
-import ttk_helper
-from ttk_helper import ToolTip
+import gui.ttk_helper
+from gui.ttk_helper import ToolTip
 
 
 class SetConfigFrame(ttk.Frame):
@@ -49,8 +49,8 @@ class SetConfigFrame(ttk.Frame):
         
         # Population value slider
         population_label = ttk.Label(master=label_frame, anchor=tk.E, text='Population:', font="helvetica 11")
-        population_label.grid(row=0, column=0, columnspan=1, sticky=tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.02)
-        popToolTip = ttk_helper.ToolTip(widget = population_label, text = "The size of the population for the simulation")
+        population_label.grid(row=0, column=0, columnspan=1, sticky=tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.03)
+        popToolTip = ToolTip(widget = population_label, text = "The size of the population for the simulation")
 
         population_label.bind("<Enter>", lambda event: self.enter(event = event, tooltip = popToolTip))
         population_label.bind("<Leave>", lambda event: self.leave(event = event, tooltip = popToolTip))
@@ -73,8 +73,8 @@ class SetConfigFrame(ttk.Frame):
         social_distancing_label = ttk.Label(master=label_frame, text='Social Distancing:', font="helvetica 11")
         # social_distancing_label.grid(row=1, column=0, padx=float(label_frame.winfo_reqwidth()) * 0.025,
         #             pady=float(label_frame.winfo_reqheight()) * 0.025, columnspan=1)
-        social_distancing_label.grid(row=1, column=0, columnspan=1, sticky=tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.02)
-        socToolTip = ttk_helper.ToolTip(widget = social_distancing_label, text = "The percentage of the total population who will be social distancing")
+        social_distancing_label.grid(row=1, column=0, columnspan=1, sticky=tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.03)
+        socToolTip = ToolTip(widget = social_distancing_label, text = "The percentage of the total population who will be social distancing")
 
         social_distancing_label.bind("<Enter>", lambda event: self.enter(event = event, tooltip = socToolTip))
         social_distancing_label.bind("<Leave>", lambda event: self.leave(event = event, tooltip = socToolTip))
@@ -94,9 +94,9 @@ class SetConfigFrame(ttk.Frame):
 
         # Hospital capacity value slider
         hostpital_capacity_label = ttk.Label(master=label_frame, text='Hospital Capacity:', font="helvetica 11")
-        hostpital_capacity_label.grid(row=2, column=0, columnspan=1, sticky = tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.02)
+        hostpital_capacity_label.grid(row=2, column=0, columnspan=1, sticky = tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.03)
 
-        hosToolTip = ttk_helper.ToolTip(widget = hostpital_capacity_label, 
+        hosToolTip = ToolTip(widget = hostpital_capacity_label, 
                     text = "The hospital capacity as a percentage of the population. \nWe found in our research that the hospital capacity is generally a function of the population.")
 
         hostpital_capacity_label.bind("<Enter>", lambda event: self.enter(event = event, tooltip = hosToolTip))
@@ -117,9 +117,9 @@ class SetConfigFrame(ttk.Frame):
 
         # Recovery time value slider
         recovery_time_label = ttk.Label(master=label_frame, text='Recovery Time:', font="helvetica 11")
-        recovery_time_label.grid(row=3, column=0, columnspan=1, sticky=tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.02)
+        recovery_time_label.grid(row=3, column=0, columnspan=1, sticky=tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.03)
 
-        recoveryToolTip = ttk_helper.ToolTip(widget = recovery_time_label, 
+        recoveryToolTip = ToolTip(widget = recovery_time_label, 
                     text = "The time a person needs to recover from the virus in unit of frames. \nThis takes into account both if the person is recovering without medical attention or if they needed hospitalization. \nIn our simulation, 1 day roughly amounts to 5 frames.")
 
         recovery_time_label.bind("<Enter>", lambda event: self.enter(event = event, tooltip = recoveryToolTip))
@@ -151,9 +151,9 @@ class SetConfigFrame(ttk.Frame):
 
         # R value setter button
         r_value_label = ttk.Label(master=label_frame, text='R value:', font="helvetica 11")
-        r_value_label.grid(row=4, column=0, columnspan=1, sticky=tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.02)
+        r_value_label.grid(row=4, column=0, columnspan=1, sticky=tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.03)
 
-        rValueToolTip = ttk_helper.ToolTip(widget = r_value_label, 
+        rValueToolTip = ToolTip(widget = r_value_label, 
                     text = "The reproduction rate or the R value of the virus. \nThis is defined as the average number of people an infected person goes on to infect.")
 
         r_value_label.bind("<Enter>", lambda event: self.enter(event = event, tooltip = rValueToolTip))
@@ -173,9 +173,9 @@ class SetConfigFrame(ttk.Frame):
         r_value_val_label.grid(row=4, column=1, columnspan=1, sticky=tk.W)
         # K value setter button
         k_value_label = ttk.Label(master=label_frame,  text='K value:', font="helvetica 11")
-        k_value_label.grid(row=5, column=0, columnspan=1, sticky=tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.02)
+        k_value_label.grid(row=5, column=0, columnspan=1, sticky=tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.03)
 
-        kValueToolTip = ttk_helper.ToolTip(widget = r_value_label, 
+        kValueToolTip = ToolTip(widget = r_value_label, 
                     text = "The K value of the virus. \nThis is defined as the dispersion rate of the R value of the virus.")
 
         k_value_label.bind("<Enter>", lambda event: self.enter(event = event, tooltip = kValueToolTip))
@@ -197,9 +197,9 @@ class SetConfigFrame(ttk.Frame):
 
         #Enforce Social Distancing At
         enforce_social_distancing_label = ttk.Label(master=label_frame,  text='Social Distancing Starts:', font="helvetica 11")
-        enforce_social_distancing_label.grid(row=6, column=0, columnspan=1, sticky=tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.02)
+        enforce_social_distancing_label.grid(row=6, column=0, columnspan=1, sticky=tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.03)
 
-        enforceSocToolTip = ttk_helper.ToolTip(widget = r_value_label, 
+        enforceSocToolTip = ToolTip(widget = r_value_label, 
                     text = "The time at which the city officials decided to announce the social distancing advisory. \n-1 refers to the city officials never providing a social distancing advisory. \nIn our simulation, 1 day roughly amounts to 5 frames.")
 
         enforce_social_distancing_label.bind("<Enter>", lambda event: self.enter(event = event, tooltip = enforceSocToolTip))
@@ -219,9 +219,9 @@ class SetConfigFrame(ttk.Frame):
 
         #Mask Wearing Starts At
         enforce_mask_wearing_label = ttk.Label(master=label_frame,  text='Mask Mandate Starts:', font="helvetica 11")
-        enforce_mask_wearing_label.grid(row=7, column=0, columnspan=1, sticky=tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.02)
+        enforce_mask_wearing_label.grid(row=7, column=0, columnspan=1, sticky=tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.03)
 
-        enforceMaskToolTip = ttk_helper.ToolTip(widget = r_value_label, 
+        enforceMaskToolTip = ToolTip(widget = r_value_label, 
                     text = "The time at which the city officials decided to announce the mask mandate. \n-1 refers to the city officials never mandating masks in their area. \nIn our simulation, 1 day roughly amounts to 5 frames.")
 
         enforce_mask_wearing_label.bind("<Enter>", lambda event: self.enter(event = event, tooltip = enforceMaskToolTip))

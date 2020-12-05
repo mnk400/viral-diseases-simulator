@@ -1,3 +1,9 @@
+"""
+Main application window for Virussim application, built using Tkinter
+
+Created on 5th Dec, 2020
+@author Pallak Singh
+"""
 from tkinter import *
 import tkinter.ttk as ttk
 class ToolTip(object):
