@@ -9,7 +9,7 @@ import tkinter as tk
 from tkinter import ttk
 
 
-class SimCommandFrame(tk.Frame):
+class SimCommandFrame(ttk.Frame):
     """
     Sim Command Frame contains action buttons to start render mode and start virus simulation
     """
@@ -38,8 +38,10 @@ class SimCommandFrame(tk.Frame):
         self.my_var.set(2)
         rb1 = ttk.Radiobutton(self, text='Render Mode', variable=self.my_var, value=1)
         rb2 = ttk.Radiobutton(self, text='Live Simulation', variable=self.my_var, value=2)
-        rb1.pack()
-        rb2.pack()
+        # rb1.pack(expand=tk.YES)
+        # rb2.pack(expand=tk.YES)
+        rb1.place(relx=.5, rely=.7, anchor="center")
+        rb2.place(relx=.5, rely=.8, anchor="center")
         self.start_sim_button = ttk.Button(self, text="Start",
                               command='#')
-        self.start_sim_button.pack()
+        self.start_sim_button.place(relx=.5, rely=.9, anchor="center")

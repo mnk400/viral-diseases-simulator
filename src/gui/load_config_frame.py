@@ -8,7 +8,7 @@ Created on 2nd Dec, 2020
 import tkinter as tk
 from tkinter import ttk
 
-class LoadConfigFrame(tk.Frame):
+class LoadConfigFrame(ttk.Frame):
     """
     Load Config Frame contains action buttons to load default simulation configuration for COVID and Influenza viruses
     """
@@ -35,12 +35,12 @@ class LoadConfigFrame(tk.Frame):
         """
 
         # Load Config Data button
-        self.load_button = ttk.Button(self)
+        self.load_button = ttk.Button(self.master)
         self.load_button["text"] = "Load COVID Config Data"
         self.load_button["command"] = "hi there, everyone!"
-        self.load_button.pack()
+        self.load_button.pack(expand=True)
 
         # Load influenza data button
-        self.load_inf_button = ttk.Button(self, text="Load Influenza Config Data",
+        self.load_inf_button = ttk.Button(self.master, text="Load Influenza Config Data",
                               command="#")       
-        self.load_inf_button.pack()
+        self.load_inf_button.pack(expand=True)
