@@ -42,9 +42,9 @@ class ButtonsFrame(ttk.Frame):
         label_frame.grid_propagate(0)
 
         label_frame_label2 = ttk.Label(text="Simulation Mode")
-        label_frame2 = ttk.LabelFrame(master=label_frame, labelwidget=label_frame_label2, height=float(label_frame.winfo_reqheight()) * 0.145,
+        label_frame2 = ttk.LabelFrame(master=label_frame, labelwidget=label_frame_label2, height=float(label_frame.winfo_reqheight())/6,
                                     width=float(label_frame.winfo_reqwidth()) * 0.8)
-        label_frame2.grid(row=0, column=0, padx=float(label_frame.winfo_reqwidth()) * 0.07)
+        label_frame2.grid(row=0, column=0, columnspan=1, sticky=tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.05)
         label_frame2.grid_propagate(0)
 
         self.my_var = tk.IntVar()
@@ -55,9 +55,9 @@ class ButtonsFrame(ttk.Frame):
         rb2.grid(row=1,column=0,columnspan=1, padx=float(label_frame.winfo_reqwidth()) * 0.10, pady=float(label_frame.winfo_reqheight())*0.005, sticky=tk.W)
 
         label_frame_label3 = ttk.Label(text="Preventive Options")
-        label_frame3 = ttk.LabelFrame(master=label_frame, labelwidget=label_frame_label3, height=float(label_frame.winfo_reqheight()) * 0.145,
+        label_frame3 = ttk.LabelFrame(master=label_frame, labelwidget=label_frame_label3, height=float(label_frame.winfo_reqheight())/6,
                                     width=float(label_frame.winfo_reqwidth()) * 0.8)
-        label_frame3.grid(row=1, column=0, padx=float(label_frame.winfo_reqwidth()) * 0.07)
+        label_frame3.grid(row=1, column=0, columnspan=1, sticky=tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.05)
         label_frame3.grid_propagate(0)
 
         #social_distance_enable = tk.IntVar()
@@ -74,15 +74,15 @@ class ButtonsFrame(ttk.Frame):
 
         # Load Config Data button
         self.load_button = ttk.Button(master=label_frame, text="Start Covid Simulation", command="#", width=25)
-        self.load_button.grid(row=4,column=0,columnspan=1, padx=float(label_frame.winfo_reqwidth())*0.15, pady=float(label_frame.winfo_reqheight())*0.02)
+        self.load_button.grid(row=4,column=0,columnspan=1, sticky=tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.05)
 
         # Load influenza data button
         self.load_inf_button = ttk.Button(master=label_frame, text="Start Influenza Simulation", command="#", width=25)       
-        self.load_inf_button.grid(row=5,column=0,columnspan=1, padx=float(label_frame.winfo_reqwidth())*0.15, pady=float(label_frame.winfo_reqheight())*0.02)
+        self.load_inf_button.grid(row=5,column=0,columnspan=1, sticky=tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.05)
 
         #Start custom sim button
         self.start_sim_button = ttk.Button(master=label_frame, text="Start Custom Simulation", command='#', width=25)
-        self.start_sim_button.grid(row=6,column=0,columnspan=1, padx=float(label_frame.winfo_reqwidth())*0.15, pady=float(label_frame.winfo_reqheight())*0.02)
+        self.start_sim_button.grid(row=6,column=0,columnspan=1, sticky=tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.05)
 
 
         

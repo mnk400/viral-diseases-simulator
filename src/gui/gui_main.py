@@ -35,7 +35,7 @@ if __name__ == '__main__':
     # root window widget
     root = tk.Tk()
     height = root.winfo_screenheight() * 0.5
-    width = root.winfo_screenwidth() * 0.4
+    width = root.winfo_screenwidth() * 0.6
 
     # Main application frame
     app = Application(root, height, width)
