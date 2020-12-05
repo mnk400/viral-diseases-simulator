@@ -7,7 +7,7 @@ Created on Dec 2nd, 2020
 import logging
 import unittest
 from config_util import ConfigUtil
-from population_util import Population
+from population import Population
 import numpy as np
 
 
