@@ -6,7 +6,7 @@ Created on 2nd Dec, 2020
 """
 
 import tkinter as tk
-from tkinter import ttk
+from tkinter import Widget, ttk
 import ttk_helper
 from ttk_helper import ToolTip
 
@@ -36,15 +36,15 @@ class ButtonsFrame(ttk.Frame):
         Creates button widgets for loading config data of COVID and Influenza viruses
         """
         label_frame_label = ttk.Label(text="", style="Bold.TLabel")
-        label_frame = ttk.LabelFrame(master=self, labelwidget=label_frame_label, height=self.height * 0.95,
-                                    width=self.width * 0.95)
-        label_frame.grid(row=0, column=0, pady=self.height * 0.02)
+        label_frame = ttk.LabelFrame(master=self, labelwidget=label_frame_label, height=self.height*0.95,
+                                    width=self.width*0.90)
+        label_frame.grid(row=0, column=0, pady=self.height * 0.02, padx=(0, self.width * 0.06))
         label_frame.grid_propagate(0)
 
         label_frame_label2 = ttk.Label(text="Simulation Mode")
         label_frame2 = ttk.LabelFrame(master=label_frame, labelwidget=label_frame_label2, height=float(label_frame.winfo_reqheight())/6,
-                                    width=float(label_frame.winfo_reqwidth()) * 0.8)
-        label_frame2.grid(row=0, column=0, columnspan=1, sticky=tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.05)
+                                    width=float(label_frame.winfo_reqwidth()))
+        label_frame2.grid(row=0, column=0, columnspan=1, padx=(float(label_frame.winfo_reqwidth()) * 0.05, float(label_frame.winfo_reqwidth()) * 0.1))
         label_frame2.grid_propagate(0)
 
         self.my_var = tk.IntVar()
@@ -56,8 +56,8 @@ class ButtonsFrame(ttk.Frame):
 
         label_frame_label3 = ttk.Label(text="Preventive Options")
         label_frame3 = ttk.LabelFrame(master=label_frame, labelwidget=label_frame_label3, height=float(label_frame.winfo_reqheight())/6,
-                                    width=float(label_frame.winfo_reqwidth()) * 0.8)
-        label_frame3.grid(row=1, column=0, columnspan=1, sticky=tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.05)
+                                    width=float(label_frame.winfo_reqwidth()))
+        label_frame3.grid(row=1, column=0, columnspan=1, padx=(float(label_frame.winfo_reqwidth()) * 0.05, float(label_frame.winfo_reqwidth()) * 0.1))
         label_frame3.grid_propagate(0)
 
         #social_distance_enable = tk.IntVar()
@@ -73,16 +73,16 @@ class ButtonsFrame(ttk.Frame):
         mask_wearing_check.invoke()
 
         # Load Config Data button
-        self.load_button = ttk.Button(master=label_frame, text="Start Covid Simulation", command="#", width=25)
-        self.load_button.grid(row=4,column=0,columnspan=1, sticky=tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.05)
+        self.load_button = ttk.Button(master=label_frame, text="Start Covid Simulation", command="#")
+        self.load_button.grid(row=4,column=0,columnspan=1, sticky="nesw", pady=float(label_frame.winfo_reqheight()) * 0.02)
 
         # Load influenza data button
-        self.load_inf_button = ttk.Button(master=label_frame, text="Start Influenza Simulation", command="#", width=25)       
-        self.load_inf_button.grid(row=5,column=0,columnspan=1, sticky=tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.05)
+        self.load_inf_button = ttk.Button(master=label_frame, text="Start Influenza Simulation", command="#")       
+        self.load_inf_button.grid(row=5,column=0,columnspan=1, sticky="nesw", pady=float(label_frame.winfo_reqheight()) * 0.02)
 
         #Start custom sim button
-        self.start_sim_button = ttk.Button(master=label_frame, text="Start Custom Simulation", command='#', width=25)
-        self.start_sim_button.grid(row=6,column=0,columnspan=1, sticky=tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.05)
+        self.start_sim_button = ttk.Button(master=label_frame, text="Start Custom Simulation", command='#')
+        self.start_sim_button.grid(row=6,column=0,columnspan=1, sticky="nesw", pady=float(label_frame.winfo_reqheight()) * 0.02)
 
 
         

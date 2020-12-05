@@ -26,7 +26,7 @@ class SetConfigFrame(ttk.Frame):
         :param height: height of frame
         :param width: width of frame
         """
-        super().__init__(master, height=height, width=width)
+        super().__init__(master, height=height, width=width,)
         self.master = master
         self.height = height
         self.width = width
@@ -36,14 +36,15 @@ class SetConfigFrame(ttk.Frame):
         """
         Creates slider and button widgets for configuring simulation
         """
+        
         # Main label frame to hold widgets
-        style = ttk.Style()
+        style = ttk.Style(self)
         style.configure("Bold.TLabel", font=("Helvetica", 19, "bold"))
         label_frame_label = ttk.Label(text="Modify Configuration", style="Bold.TLabel")
         label_frame = ttk.LabelFrame(master=self, labelwidget=label_frame_label, height=self.height * 0.95,
                                     width=self.width * 0.95)
         #, font="helvetica 24 bold", background="#ECECEC" text="Modify Configuration"
-        label_frame.grid(row=0, column=0, pady=self.height * 0.02)
+        label_frame.grid(row=0, column=0, pady=self.height * 0.02, padx=(self.width * 0.03, 0))
         label_frame.grid_propagate(0)
         
         # Population value slider
