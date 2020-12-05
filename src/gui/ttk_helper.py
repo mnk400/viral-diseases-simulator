@@ -2,15 +2,15 @@ from tkinter import *
 import tkinter.ttk as ttk
 class ToolTip(object):
 
-    def __init__(self, widget):
+    def __init__(self, widget, text):
         self.widget = widget
         self.tipwindow = None
         self.id = None
+        self.text = text
         self.x = self.y = 0
 
-    def showtip(self, text):
+    def showtip(self):
         "Display text in tooltip window"
-        self.text = text
         if self.tipwindow or not self.text:
             return
         x, y, cx, cy = self.widget.bbox("insert")
@@ -23,7 +23,7 @@ class ToolTip(object):
         tw.wm_geometry("+%d+%d" % (x, y))
         label = Label(tw, text=self.text, justify=LEFT,
                       background="#ffffe0", relief=SOLID, borderwidth=1,
-                      font=("tahoma", "8", "normal"))
+                      font=("tahoma", "10", "normal"))
         label.pack(ipadx=1)
 
     def hidetip(self):
