@@ -1,4 +1,9 @@
+"""
+Test file for population util class
 
+Created on Dec 4th, 2020
+@author: Yatish Pitta
+"""
 import logging
 import unittest
 from config_util import ConfigUtil
@@ -7,11 +12,11 @@ import functools
 
 
 class PopulationUtilClassTest(unittest.TestCase):
+    """
+    Test cases to test the granular functionality of Population util class
+    """
 
     def setUp(self) -> None:
-        """
-        :return:
-        """
         logging.basicConfig(format='%(asctime)s:%(module)s:%(levelname)s:%(message)s', level=logging.DEBUG)
         logging.info('Testing population util class.....')
         self.config_util = ConfigUtil('config/test_config.ini')
@@ -32,7 +37,9 @@ class PopulationUtilClassTest(unittest.TestCase):
         self.initialize()
 
     def initialize(self) -> None:
-
+        """
+        Initializes the population util class with the appropriate parameters
+        """
         self.population_util = PopulationUtil(k=self.k, r=self.r, min_age=self.min_age, max_age=self.max_age,
                                                   size=self.size,
                                                   mortality_rate=self.mortality_rate,
@@ -45,6 +52,9 @@ class PopulationUtilClassTest(unittest.TestCase):
                                                   mask_wearing_at=self.enforce_mask_wearing_at)
 
     def test_move(self):
+        """
+        Tests the move method to check if the position of the persons is changing
+        """
 
         try:
             x_axis_before = list(self.population_util.population.get_x_axis())

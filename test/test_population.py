@@ -6,8 +6,8 @@ Created on Dec 2nd, 2020
 """
 import logging
 import unittest
-from config_util import ConfigUtil
-from population import Population
+from src.config_util import ConfigUtil
+from src.population_util import Population
 import numpy as np
 
 
