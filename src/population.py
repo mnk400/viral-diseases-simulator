@@ -372,8 +372,6 @@ class Population(object):
 
         for i in range(len(key_list)):
            tmp[tmp == i] = float(mask_effective_range[key_list[i]])
-            #print(mask_effective_range[list(mask_effective_range.keys())[i]])
-
 
         self.set_mask_effectiveness(tmp)
 

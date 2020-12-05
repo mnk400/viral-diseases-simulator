@@ -6,3 +6,4 @@ Desktop.ini
 src/__pycache__
 test/__pycache__
 src/try.py
+src/gui/__pycache__

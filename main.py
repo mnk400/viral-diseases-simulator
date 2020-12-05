@@ -33,7 +33,7 @@ class Main(object):
                                 total_healthcare_capacity = self.total_healthcare_capacity, social_distance_per = self.social_distance_per,
                                 mask_effectiveness = self.mask_effectiveness, speed=self.speed, social_distancing_at = self.enforce_social_distance_at,
                                 mask_wearing_at = self.enforce_mask_wearing_at)
-        self.visualize = Visualization(self.population_util)
+        self.visualize = Visualization(self.population_util, render_mode = False)
 
 
 if __name__ == "__main__":
