@@ -42,6 +42,7 @@ class SimCommandFrame(ttk.Frame):
         # rb2.pack(expand=tk.YES)
         rb1.place(relx=.5, rely=.7, anchor="center")
         rb2.place(relx=.5, rely=.8, anchor="center")
-        self.start_sim_button = ttk.Button(self, text="Start",
+        self.start_sim_button = ttk.Button(self, text="Start Custom Simulation",
                               command='#')
         self.start_sim_button.place(relx=.5, rely=.9, anchor="center")
+        

@@ -36,11 +36,11 @@ class LoadConfigFrame(ttk.Frame):
 
         # Load Config Data button
         self.load_button = ttk.Button(self.master)
-        self.load_button["text"] = "Load COVID Config Data"
+        self.load_button["text"] = "Start Covid Simulation"
         self.load_button["command"] = "hi there, everyone!"
         self.load_button.pack(expand=True)
 
         # Load influenza data button
-        self.load_inf_button = ttk.Button(self.master, text="Load Influenza Config Data",
+        self.load_inf_button = ttk.Button(self.master, text="Start Influenza Simulation",
                               command="#")       
         self.load_inf_button.pack(expand=True)
