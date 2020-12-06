@@ -34,16 +34,16 @@ class Application(ttk.Frame):
 def main():
     # root window widget
     root = tk.Tk() 
-    height = root.winfo_screenheight() * 0.5
+    height = root.winfo_screenheight() * 0.38
     width = root.winfo_screenwidth() * 0.45
     
     # Main application frame
     app = Application(root, height, width)
     app.master.title('Virus Simulator')
-
+    
 
     # Frame holding configuration frame - left
-    action_frame = ttk.Frame(master=app, height=float(app.winfo_reqheight()), width=float(app.winfo_reqwidth()) * 1 / 2)
+    action_frame = ttk.Frame(master=app, height=float(app.winfo_reqheight()), width=float(app.winfo_reqwidth()) * 0.55)
     # Configure simulation frame
     config_frame = SetConfigFrame(master=action_frame, height=float(action_frame.winfo_reqheight()),
                                   width=float(action_frame.winfo_reqwidth()))
@@ -51,7 +51,7 @@ def main():
 
 
     # Frame holding main action buttons - right
-    action_frame1 = tk.Frame(master=app, height=float(app.winfo_reqheight()), width=float(app.winfo_reqwidth()) * 1 / 2)
+    action_frame1 = tk.Frame(master=app, height=float(app.winfo_reqheight()), width=float(app.winfo_reqwidth()) * 0.45)
     load_config_frame = ButtonsFrame(master=action_frame1, height=float(action_frame1.winfo_reqheight()),
                                         width=float(action_frame1.winfo_reqwidth()))
     

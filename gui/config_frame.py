@@ -9,6 +9,7 @@ import tkinter as tk
 import tkinter.ttk as ttk
 import gui.ttk_helper
 from gui.ttk_helper import ToolTip
+from gui.data_store import DataStore
 
 
 class SetConfigFrame(ttk.Frame):
@@ -30,6 +31,7 @@ class SetConfigFrame(ttk.Frame):
         self.master = master
         self.height = height
         self.width = width
+        self.data = DataStore.get_instance()
         self.create_widgets()
 
     def create_widgets(self):
@@ -48,7 +50,7 @@ class SetConfigFrame(ttk.Frame):
         label_frame.grid_propagate(0)
         
         # Population value slider
-        population_label = ttk.Label(master=label_frame, anchor=tk.E, text='Population:', font="helvetica 11")
+        population_label = ttk.Label(master=label_frame, anchor=tk.E, text='Population:')
         population_label.grid(row=0, column=0, columnspan=1, sticky=tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.03)
         popToolTip = ToolTip(widget = population_label, text = "The size of the population for the simulation")
 
@@ -59,18 +61,18 @@ class SetConfigFrame(ttk.Frame):
         population_scale_val.set('1000')
 
         population_scale = ttk.Scale(master=label_frame, orient='horizontal', from_=200, to=3000, 
-                                    length=float(label_frame.winfo_reqwidth()) * 0.35, command=lambda s:population_scale_val.set('%d' % int(float(s))))
+                                    length=float(label_frame.winfo_reqwidth()) * 0.35, command=lambda s:self.data.population_val.set('%d' % int(float(s))))
         population_scale.set(1000)
         population_scale.grid(row=0, column=2, padx=float(label_frame.winfo_reqwidth()) * 0.05,
-                              pady=float(label_frame.winfo_reqheight()) * 0.025, columnspan=3)
+                              pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3)
 
-        population_scale_val_label = ttk.Label(label_frame, textvariable=population_scale_val, font="helvetica 11")
+        population_scale_val_label = ttk.Label(label_frame, textvariable=self.data.population_val)
         # population_scale_val_label.place(in_=population_scale, bordermode='outside', x=0, y=0, anchor='s')
         population_scale_val_label.grid(row=0, column=1, columnspan=1, sticky = tk.W)
 
 
         # Social distancing value slider
-        social_distancing_label = ttk.Label(master=label_frame, text='Social Distancing:', font="helvetica 11")
+        social_distancing_label = ttk.Label(master=label_frame, text='Social Distancing:')
         # social_distancing_label.grid(row=1, column=0, padx=float(label_frame.winfo_reqwidth()) * 0.025,
         #             pady=float(label_frame.winfo_reqheight()) * 0.025, columnspan=1)
         social_distancing_label.grid(row=1, column=0, columnspan=1, sticky=tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.03)
@@ -86,14 +88,14 @@ class SetConfigFrame(ttk.Frame):
                                          length=float(label_frame.winfo_reqwidth()) * 0.35, command=lambda s:social_distancing_val.set('%d%%' % int(float(s))))
         social_distance_scale.set(50)
         social_distance_scale.grid(row=1, column=2, padx=float(label_frame.winfo_reqwidth()) * 0.05,
-                                   pady=float(label_frame.winfo_reqheight()) * 0.025, columnspan=3)
+                                   pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3)
 
-        distancing_val_label = ttk.Label(label_frame, textvariable=social_distancing_val, font="helvetica 11")
+        distancing_val_label = ttk.Label(label_frame, textvariable=social_distancing_val)
         # distancing_val_label.place(in_=social_distance_scale, bordermode='outside', x=0, y=0, anchor='s')
         distancing_val_label.grid(row=1, column=1, columnspan=1, sticky = tk.W)
 
         # Hospital capacity value slider
-        hostpital_capacity_label = ttk.Label(master=label_frame, text='Hospital Capacity:', font="helvetica 11")
+        hostpital_capacity_label = ttk.Label(master=label_frame, text='Hospital Capacity:')
         hostpital_capacity_label.grid(row=2, column=0, columnspan=1, sticky = tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.03)
 
         hosToolTip = ToolTip(widget = hostpital_capacity_label, 
@@ -109,14 +111,14 @@ class SetConfigFrame(ttk.Frame):
                                            length=float(label_frame.winfo_reqwidth()) * 0.35, command=lambda s:hostpital_capacity_val.set('%d%%' % int(float(s))))
         hospital_capacity_scale.set(20)
         hospital_capacity_scale.grid(row=2, column=2, padx=float(label_frame.winfo_reqwidth()) * 0.05,
-                                     pady=float(label_frame.winfo_reqheight()) * 0.025, columnspan=3)
+                                     pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3)
         
-        hospital_capacity_val_label = ttk.Label(label_frame, textvariable=hostpital_capacity_val, font="helvetica 11")
+        hospital_capacity_val_label = ttk.Label(label_frame, textvariable=hostpital_capacity_val)
         # hostpital_capacity_val_label.place(in_=hospital_capacity_scale, bordermode='outside', x=0, y=0, anchor='s')
         hospital_capacity_val_label.grid(row=2, column=1, columnspan=1, sticky=tk.W)
 
         # Recovery time value slider
-        recovery_time_label = ttk.Label(master=label_frame, text='Recovery Time:', font="helvetica 11")
+        recovery_time_label = ttk.Label(master=label_frame, text='Recovery Time:')
         recovery_time_label.grid(row=3, column=0, columnspan=1, sticky=tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.03)
 
         recoveryToolTip = ToolTip(widget = recovery_time_label, 
@@ -132,9 +134,9 @@ class SetConfigFrame(ttk.Frame):
                                            length=float(label_frame.winfo_reqwidth()) * 0.35, command=lambda s:recovery_time_val.set('%d' % int(float(s))))
         recovery_time_scale.set(150)
         recovery_time_scale.grid(row=3, column=2, padx=float(label_frame.winfo_reqwidth()) * 0.05,
-                                     pady=float(label_frame.winfo_reqheight()) * 0.025, columnspan=3)
+                                     pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3)
         
-        recovery_time_val_label = ttk.Label(label_frame, textvariable=recovery_time_val, font="helvetica 11")
+        recovery_time_val_label = ttk.Label(label_frame, textvariable=recovery_time_val)
         # recovery_time_val_label.place(in_=recovery_time_scale, bordermode='outside', x=0, y=0, anchor='s')
         recovery_time_val_label.grid(row = 3, column=1, columnspan=1, sticky=tk.W)
         # # Death rate value slider
@@ -150,7 +152,7 @@ class SetConfigFrame(ttk.Frame):
         # death_rate_scale.grid_propagate(0)
 
         # R value setter button
-        r_value_label = ttk.Label(master=label_frame, text='R value:', font="helvetica 11")
+        r_value_label = ttk.Label(master=label_frame, text='R value:')
         r_value_label.grid(row=4, column=0, columnspan=1, sticky=tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.03)
 
         rValueToolTip = ToolTip(widget = r_value_label, 
@@ -166,13 +168,13 @@ class SetConfigFrame(ttk.Frame):
                                            length=float(label_frame.winfo_reqwidth()) * 0.35, command=lambda s:r_value_val.set('%0.2f' % float(s)))
         r_value_scale.set(3.00)
         r_value_scale.grid(row=4, column=2, padx=float(label_frame.winfo_reqwidth()) * 0.05,
-                                     pady=float(label_frame.winfo_reqheight()) * 0.025, columnspan=3)
+                                     pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3)
         
-        r_value_val_label = ttk.Label(label_frame, textvariable=r_value_val, font="helvetica 11")
+        r_value_val_label = ttk.Label(label_frame, textvariable=r_value_val)
         # r_value_val_label.place(in_=r_value_scale, bordermode='outside', x=0, y=0, anchor='s')
         r_value_val_label.grid(row=4, column=1, columnspan=1, sticky=tk.W)
         # K value setter button
-        k_value_label = ttk.Label(master=label_frame,  text='K value:', font="helvetica 11")
+        k_value_label = ttk.Label(master=label_frame,  text='K value:')
         k_value_label.grid(row=5, column=0, columnspan=1, sticky=tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.03)
 
         kValueToolTip = ToolTip(widget = r_value_label, 
@@ -188,15 +190,15 @@ class SetConfigFrame(ttk.Frame):
                                            length=float(label_frame.winfo_reqwidth()) * 0.35, command=lambda s:k_value_val.set('%0.2f' % float(s)))
         k_value_scale.set(0.1)
         k_value_scale.grid(row=5, column=2, padx=float(label_frame.winfo_reqwidth()) * 0.05,
-                                     pady=float(label_frame.winfo_reqheight()) * 0.025, columnspan=3)
+                                     pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3)
         
-        k_value_val_label = ttk.Label(label_frame, textvariable=k_value_val, font="helvetica 11")
+        k_value_val_label = ttk.Label(label_frame, textvariable=k_value_val)
         # k_value_val_label.place(in_=k_value_scale, bordermode='outside', x=0, y=0, anchor='s')
         k_value_val_label.grid(row=5, column=1, columnspan=1, sticky=tk.W)
         
 
         #Enforce Social Distancing At
-        enforce_social_distancing_label = ttk.Label(master=label_frame,  text='Social Distancing Starts:', font="helvetica 11")
+        enforce_social_distancing_label = ttk.Label(master=label_frame,  text='Social Distancing Starts:')
         enforce_social_distancing_label.grid(row=6, column=0, columnspan=1, sticky=tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.03)
 
         enforceSocToolTip = ToolTip(widget = r_value_label, 
@@ -212,13 +214,13 @@ class SetConfigFrame(ttk.Frame):
                                            length=float(label_frame.winfo_reqwidth()) * 0.35, command=lambda s:enforce_social_distancing_val.set('%d' % int(float(s))))
         enforce_social_distancing_scale.set(200)
         enforce_social_distancing_scale.grid(row=6, column=2, padx=float(label_frame.winfo_reqwidth()) * 0.05,
-                                     pady=float(label_frame.winfo_reqheight()) * 0.025, columnspan=3)
+                                     pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3)
         
-        enforce_social_distancing_val_label = ttk.Label(label_frame, textvariable=enforce_social_distancing_val, font="helvetica 11")
+        enforce_social_distancing_val_label = ttk.Label(label_frame, textvariable=enforce_social_distancing_val)
         enforce_social_distancing_val_label.grid(row=6, column=1, columnspan=1, sticky=tk.W)
 
         #Mask Wearing Starts At
-        enforce_mask_wearing_label = ttk.Label(master=label_frame,  text='Mask Mandate Starts:', font="helvetica 11")
+        enforce_mask_wearing_label = ttk.Label(master=label_frame,  text='Mask Mandate Starts:')
         enforce_mask_wearing_label.grid(row=7, column=0, columnspan=1, sticky=tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.03)
 
         enforceMaskToolTip = ToolTip(widget = r_value_label, 
@@ -234,10 +236,45 @@ class SetConfigFrame(ttk.Frame):
                                            length=float(label_frame.winfo_reqwidth()) * 0.35, command=lambda s:enforce_mask_wearing_val.set('%d' % int(float(s))))
         enforce_mask_wearing_scale.set(200)
         enforce_mask_wearing_scale.grid(row=7, column=2, padx=float(label_frame.winfo_reqwidth()) * 0.05,
-                                     pady=float(label_frame.winfo_reqheight()) * 0.025, columnspan=3)
+                                     pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3)
         
-        enforce_mask_wearing_val_label = ttk.Label(label_frame, textvariable=enforce_mask_wearing_val, font="helvetica 11")
+        enforce_mask_wearing_val_label = ttk.Label(label_frame, textvariable=enforce_mask_wearing_val)
         enforce_mask_wearing_val_label.grid(row=7, column=1, columnspan=1, sticky=tk.W)
+
+        #Set mask effectiveness
+        mask_effectiveness_label = ttk.Label(master=label_frame,  text='Mask Effectiveness:')
+        mask_effectiveness_label.grid(row=8, column=0, columnspan=1, sticky=tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.03)
+
+        mask_effectiveness_set_button = ttk.Button(label_frame, text="Set Mask Effectiveness", command="#")
+        mask_effectiveness_set_button.grid(row=8, column=1, padx=float(label_frame.winfo_reqwidth()) * 0.05,
+                                     pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3, sticky='ew')
+
+        #Set mortality rate
+        mortality_rate_label = ttk.Label(master=label_frame,  text='Mortality Rate:')
+        mortality_rate_label.grid(row=9, column=0, columnspan=1, sticky=tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.03)
+
+        mortality_rate_set_button = ttk.Button(label_frame, text="Set Mortality Rate", command="#")
+        mortality_rate_set_button.grid(row=9, column=1, padx=float(label_frame.winfo_reqwidth()) * 0.05,
+                                     pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3, sticky='ew')
+        
+    def openNewWindow(self): 
+
+        newWindow = tk.Toplevel(self.master, height = 700, width = 700) 
+
+        style = ttk.Style(self)
+        style.configure("Bold.TLabel", font=("Helvetica", 19, "bold"))
+
+        label_frame_label = ttk.Label(master = newWindow, text="Modify Configuration", style = "Bold.TLabel")
+        label_frame = ttk.LabelFrame(master=newWindow, labelwidget=label_frame_label, height = 700, width = 700)
+        label_frame.grid(row = 0, column = 0, columnspan=1)
+        mask_type_header_label = ttk.Label(master=label_frame,  text='Mask Type')
+        mask_effectivenss_header_label = ttk.Label(master=label_frame,  text='Mask Effectiveness')
+        empty_label  = ttk.Label(master=label_frame,  text='        ')
+        mask_type_header_label.grid(row = 1, column = 0, columnspan=1)
+        empty_label.grid(row = 1, column = 1, columnspan=1)
+        mask_effectivenss_header_label.grid(row = 1, column = 2, columnspan=1)
+        #cloth_mask_effectiveness = 
+
     
     def get_population_value(self) -> int:
         """
