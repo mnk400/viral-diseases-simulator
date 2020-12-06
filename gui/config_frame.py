@@ -47,7 +47,7 @@ class SetConfigFrame(ttk.Frame):
         label_frame_label = ttk.Label(text="Modify Configuration", style="Bold.TLabel")
         label_frame = ttk.LabelFrame(master=self, labelwidget=label_frame_label, height=self.height * 0.95,
                                     width=self.width * 0.95)
-        #, font="helvetica 24 bold", background="#ECECEC" text="Modify Configuration"
+
         label_frame.grid(row=0, column=0, pady=self.height * 0.02, padx=(self.width * 0.03, 0))
         label_frame.grid_propagate(0)
         
@@ -72,8 +72,7 @@ class SetConfigFrame(ttk.Frame):
 
         # Social distancing value slider
         social_distancing_label = ttk.Label(master=label_frame, text='Social Distancing:')
-        # social_distancing_label.grid(row=1, column=0, padx=float(label_frame.winfo_reqwidth()) * 0.025,
-        #             pady=float(label_frame.winfo_reqheight()) * 0.025, columnspan=1)
+
         social_distancing_label.grid(row=1, column=0, columnspan=1, sticky=tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.03)
         socToolTip = ToolTip(widget = social_distancing_label, text = "The percentage of the total population who will be social distancing")
 
@@ -87,7 +86,7 @@ class SetConfigFrame(ttk.Frame):
                                    pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3)
 
         distancing_val_label = ttk.Label(label_frame, textvariable=self.data.social_distancing_val)
-        # distancing_val_label.place(in_=social_distance_scale, bordermode='outside', x=0, y=0, anchor='s')
+
         distancing_val_label.grid(row=1, column=1, columnspan=1, sticky = tk.W)
 
         # Hospital capacity value slider
@@ -107,7 +106,7 @@ class SetConfigFrame(ttk.Frame):
                                      pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3)
         
         hospital_capacity_val_label = ttk.Label(label_frame, textvariable=self.data.hospital_capacity_val)
-        # hostpital_capacity_val_label.place(in_=hospital_capacity_scale, bordermode='outside', x=0, y=0, anchor='s')
+
         hospital_capacity_val_label.grid(row=2, column=1, columnspan=1, sticky=tk.W)
 
         # Recovery time value slider
@@ -127,7 +126,7 @@ class SetConfigFrame(ttk.Frame):
                                      pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3)
         
         recovery_time_val_label = ttk.Label(label_frame, textvariable=self.data.recovery_time_val)
-        # recovery_time_val_label.place(in_=recovery_time_scale, bordermode='outside', x=0, y=0, anchor='s')
+
         recovery_time_val_label.grid(row = 3, column=1, columnspan=1, sticky=tk.W)
 
         # R value setter button
@@ -147,8 +146,9 @@ class SetConfigFrame(ttk.Frame):
                                      pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3)
         
         r_value_val_label = ttk.Label(label_frame, textvariable=self.data.r_val)
-        # r_value_val_label.place(in_=r_value_scale, bordermode='outside', x=0, y=0, anchor='s')
+
         r_value_val_label.grid(row=4, column=1, columnspan=1, sticky=tk.W)
+
         # K value setter button
         k_value_label = ttk.Label(master=label_frame,  text='K value:')
         k_value_label.grid(row=5, column=0, columnspan=1, sticky=tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.03)
@@ -166,7 +166,7 @@ class SetConfigFrame(ttk.Frame):
                                      pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3)
         
         k_value_val_label = ttk.Label(label_frame, textvariable=self.data.k_val)
-        # k_value_val_label.place(in_=k_value_scale, bordermode='outside', x=0, y=0, anchor='s')
+
         k_value_val_label.grid(row=5, column=1, columnspan=1, sticky=tk.W)
         
 
@@ -219,8 +219,7 @@ class SetConfigFrame(ttk.Frame):
         mask_effectiveness_label.bind("<Leave>", lambda event: self.leave(event = event, tooltip = maskEffToolTip))
 
         mask_effectiveness_set_button = ttk.Button(label_frame, text="Set Mask Effectiveness", command=self.openMaskWindow)
-        mask_effectiveness_set_button.grid(row=8, column=1, padx=float(label_frame.winfo_reqwidth()) * 0.05,
-                                     pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3, sticky='ew')
+        mask_effectiveness_set_button.grid(row=8, column=2, pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3, sticky='we')
 
         #Set mortality rate
         mortality_rate_label = ttk.Label(master=label_frame,  text='Mortality Rate:')
@@ -233,14 +232,17 @@ class SetConfigFrame(ttk.Frame):
         mortality_rate_label.bind("<Leave>", lambda event: self.leave(event = event, tooltip = mortalityRateToolTip))
 
         mortality_rate_set_button = ttk.Button(label_frame, text="Set Mortality Rate", command=self.openMortalityWindow)
-        mortality_rate_set_button.grid(row=9, column=1, padx=float(label_frame.winfo_reqwidth()) * 0.05,
-                                     pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3, sticky='ew')
+        mortality_rate_set_button.grid(row=9, column=2, pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3, sticky='we')
         
     def openMaskWindow(self): 
 
         newWindow = tk.Toplevel(self.master) 
         
         newWindow.resizable(width=False, height=False)
+
+        photo = tk.PhotoImage(file = "assets\icon-512.png")
+        newWindow.iconphoto(False, photo)
+        newWindow.resizable(width=False,height=False)
 
         window_frame = ttk.LabelFrame(master=newWindow)
         window_frame.grid(row=0,column=0)
@@ -300,6 +302,10 @@ class SetConfigFrame(ttk.Frame):
 
         newWindow = tk.Toplevel(self.master) 
         newWindow.resizable(width=False, height=False)
+
+        photo = tk.PhotoImage(file = "assets\icon-512.png")
+        newWindow.iconphoto(False, photo)
+        newWindow.resizable(width=False,height=False)
 
         window_frame = ttk.LabelFrame(master=newWindow)
         window_frame.grid(row=0,column=0)

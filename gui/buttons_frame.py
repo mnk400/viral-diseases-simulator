@@ -95,6 +95,10 @@ class ButtonsFrame(ttk.Frame):
     def info_window(self):
         self.newWindow = tk.Toplevel(self.master) 
         self.newWindow.resizable(width=False, height=False)
+
+        photo = tk.PhotoImage(file = "assets\icon-512.png")
+        self.newWindow.iconphoto(False, photo)
+        self.newWindow.resizable(width=False,height=False)
         
         style = ttk.Style(self)
         window_frame = ttk.LabelFrame(master=self.newWindow)

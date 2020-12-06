@@ -34,7 +34,11 @@ class Application(ttk.Frame):
 def main():
     # root window widget
     root = tk.Tk() 
+    
+    photo = tk.PhotoImage(file = "assets\icon-512.png")
+    root.iconphoto(False, photo)
     root.resizable(width=False,height=False)
+
     height = root.winfo_screenheight() * 0.38
     width = root.winfo_screenwidth() * 0.45
     
