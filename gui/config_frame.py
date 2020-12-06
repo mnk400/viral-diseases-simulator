@@ -309,24 +309,24 @@ class SetConfigFrame(ttk.Frame):
         zeronineteen_mortality_rate = ttk.Label(master=label_frame,  text='0-19:')
         zeronineteen_mortality_rate.grid(row = 2, column = 0, columnspan=1, sticky = tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.02)
         zeronineteen_mortality_rate_scale = ttk.Scale(master=label_frame, orient='horizontal', from_=0.001, to=10,
-                                           length=float(label_frame.winfo_reqwidth()) * 0.35, command=lambda s:self.data.get_mortality_rate_zero_to_nineteen().set('%0.03f%%' % float(s)))
+                                           length=float(label_frame.winfo_reqwidth()) * 0.35, command=lambda s:self.data.mortality_rate_zero_to_nineteen.set('%0.03f%%' % float(s)))
         zeronineteen_mortality_rate_scale.set(self.data.get_mortality_rate_zero_to_nineteen())
         zeronineteen_mortality_rate_scale.grid(row=2, column=2, padx=float(label_frame.winfo_reqwidth()) * 0.05,
                                      pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3)
         
-        zeronineteen_mortality_rate_val_label = ttk.Label(label_frame, textvariable=self.data.get_mortality_rate_zero_to_nineteen())
+        zeronineteen_mortality_rate_val_label = ttk.Label(label_frame, textvariable=self.data.mortality_rate_zero_to_nineteen)
         zeronineteen_mortality_rate_val_label.grid(row=2, column=1, columnspan=1, sticky=tk.W)
 
         #20-49 Age Group
         twentyfortynine_mortality_rate = ttk.Label(master=label_frame,  text='20-49:')
         twentyfortynine_mortality_rate.grid(row = 3, column = 0, columnspan=1, sticky = tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.02)
         twentyfortynine_mortality_rate_scale = ttk.Scale(master=label_frame, orient='horizontal', from_=0.001, to=10,
-                                           length=float(label_frame.winfo_reqwidth()) * 0.35, command=lambda s:self.data.get_mortality_rate_twenty_to_fortynine().set('%0.03f%%' % float(s)))
+                                           length=float(label_frame.winfo_reqwidth()) * 0.35, command=lambda s:self.data.mortality_rate_twenty_to_fortynine.set('%0.03f%%' % float(s)))
         twentyfortynine_mortality_rate_scale.set(self.data.get_mortality_rate_twenty_to_fortynine())
         twentyfortynine_mortality_rate_scale.grid(row=3, column=2, padx=float(label_frame.winfo_reqwidth()) * 0.05,
                                      pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3)
         
-        twentyfortynine_mortality_rate_val_label = ttk.Label(label_frame, textvariable=self.data.get_mortality_rate_twenty_to_fortynine())
+        twentyfortynine_mortality_rate_val_label = ttk.Label(label_frame, textvariable=self.data.mortality_rate_twenty_to_fortynine)
         twentyfortynine_mortality_rate_val_label.grid(row=3, column=1, columnspan=1, sticky=tk.W)
 
         #50-69 Age Group
@@ -334,12 +334,12 @@ class SetConfigFrame(ttk.Frame):
         fiftysixtynine_mortality_rate.grid(row = 4, column = 0, columnspan=1, sticky = tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.02)
 
         fiftysixtynine_mortality_rate_scale = ttk.Scale(master=label_frame, orient='horizontal', from_=0.001, to=10,
-                                           length=float(label_frame.winfo_reqwidth()) * 0.35, command=lambda s:self.data.get_mortality_rate_fifty_to_sixtynine().set('%0.03f%%' % float(s)))
+                                           length=float(label_frame.winfo_reqwidth()) * 0.35, command=lambda s:self.data.mortality_rate_fifty_to_sixtynine.set('%0.03f%%' % float(s)))
         fiftysixtynine_mortality_rate_scale.set(self.data.get_mortality_rate_fifty_to_sixtynine())
         fiftysixtynine_mortality_rate_scale.grid(row=4, column=2, padx=float(label_frame.winfo_reqwidth()) * 0.05,
                                      pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3)
         
-        fiftysixtynine_mortality_rate_val_label = ttk.Label(label_frame, textvariable=self.data.get_mortality_rate_fifty_to_sixtynine())
+        fiftysixtynine_mortality_rate_val_label = ttk.Label(label_frame, textvariable=self.data.mortality_rate_fifty_to_sixtynine)
         fiftysixtynine_mortality_rate_val_label.grid(row=4, column=1, columnspan=1, sticky=tk.W)
 
         #70 > Age Group
@@ -347,12 +347,12 @@ class SetConfigFrame(ttk.Frame):
         seventyplus_mortality_rate.grid(row = 5, column = 0, columnspan=1, sticky = tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.02)
 
         seventyplus_mortality_rate_scale = ttk.Scale(master=label_frame, orient='horizontal', from_=0.001, to=10,
-                                           length=float(label_frame.winfo_reqwidth()) * 0.35, command=lambda s:self.data.get_mortality_rate_seventyplus().set('%0.03f%%' % float(s)))
+                                           length=float(label_frame.winfo_reqwidth()) * 0.35, command=lambda s:self.data.mortality_rate_seventyplus.set('%0.03f%%' % float(s)))
         seventyplus_mortality_rate_scale.set(self.data.get_mortality_rate_seventyplus())
         seventyplus_mortality_rate_scale.grid(row=5, column=2, padx=float(label_frame.winfo_reqwidth()) * 0.05,
                                      pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3)
         
-        seventyplus_mortality_rate_val_label = ttk.Label(label_frame, textvariable=self.data.get_mortality_rate_seventyplus())
+        seventyplus_mortality_rate_val_label = ttk.Label(label_frame, textvariable=self.data.mortality_rate_seventyplus)
         seventyplus_mortality_rate_val_label.grid(row=5, column=1, columnspan=1, sticky=tk.W)
 
     
