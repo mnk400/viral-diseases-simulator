@@ -6,8 +6,8 @@ Created on Dec 4th, 2020
 """
 import logging
 import unittest
-from config_util import ConfigUtil
-from population_util import PopulationUtil
+from src.config_util import ConfigUtil
+from src.population_util import PopulationUtil
 import functools
 
 

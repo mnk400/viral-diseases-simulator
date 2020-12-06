@@ -6,8 +6,8 @@ Created on Dec 5th, 2020
 """
 import unittest
 from src.population import Population
-from config_util import ConfigUtil
-from virus_util import Virus
+from src.config_util import ConfigUtil
+from src.virus_util import Virus
 import logging
 import numpy as np
 import src.person_properties_util as index
