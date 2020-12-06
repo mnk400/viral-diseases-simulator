@@ -7,3 +7,6 @@ src/__pycache__
 test/__pycache__
 src/try.py
 gui/__pycache__
+dist
+build
+setup.py
