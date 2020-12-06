@@ -43,11 +43,6 @@ class DataStore:
        self.mortality_rate_seventyplus          = tk.StringVar()
        self.mortality_rate_seventyplus.set('5.4%')
 
-       print(self.get_population_val())
-       print(self.get_hospital_capacity_val())
-       print(self.get_r_val())
-       print(self.get_k_val())
-
        if DataStore.__instance__ is None:
            DataStore.__instance__ = self
        else:
@@ -116,11 +111,11 @@ class DataStore:
 
     def get_all_mortality_rates(self):
         self.mortality_rate = dict()
-        self.mortality_rate['0-19'] = self.get_mortality_rate_zero_to_nineteen()
-        self.mortality_rate['20-49'] = self.get_mortality_rate_twenty_to_fortynine()
-        self.mortality_rate['50-69'] = self.get_mortality_rate_fifty_to_sixtynine()
-        self.mortality_rate['70-100'] = self.get_mortality_rate_seventyplus()
-        return self.mortality_rate()
+        self.mortality_rate['0-19'] = self.get_mortality_rate_zero_to_nineteen()/100
+        self.mortality_rate['20-49'] = self.get_mortality_rate_twenty_to_fortynine()/100
+        self.mortality_rate['50-69'] = self.get_mortality_rate_fifty_to_sixtynine()/100
+        self.mortality_rate['70-100'] = self.get_mortality_rate_seventyplus()/100
+        return self.mortality_rate
 
 
     

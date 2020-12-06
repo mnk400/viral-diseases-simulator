@@ -18,7 +18,7 @@ class Main(object):
         self.r                          = self.config_util.getFloatValue("virus.stats", "r_value")
         self.size                       = self.config_util.getIntegerValue("area.stats", "total_population")
         self.min_age                    = self.config_util.getIntegerValue("people.stats", "min_age")
-        self.max_age                    = self.config_util.getIntegerValue("people.stats", "min_age")
+        self.max_age                    = self.config_util.getIntegerValue("people.stats", "max_age")
         self.mortality_rate             = self.config_util.getDictionary("virus.stats", "mortality_rate")
         self.social_distance_per        = self.config_util.getFloatValue("people.stats", "social_distancing_percent")
         self.infection_range            = self.config_util.getFloatValue("virus.stats", "infection_range")

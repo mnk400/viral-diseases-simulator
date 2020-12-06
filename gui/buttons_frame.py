@@ -66,14 +66,14 @@ class ButtonsFrame(ttk.Frame):
         label_frame3.grid(row=1, column=0, columnspan=1, sticky='ew', padx=(float(self.label_frame.winfo_reqwidth()) * 0.05,float(self.label_frame.winfo_reqwidth()) * 0.205))
         label_frame3.grid_propagate(0)
 
-        #social_distance_enable = tk.IntVar()
-        social_distance_check = ttk.Checkbutton(master=label_frame3, text='Enable Social Distancing')
+        self.social_distance_enable = tk.IntVar(0)
+        social_distance_check = ttk.Checkbutton(master=label_frame3, text='Enable Social Distancing', variable=self.social_distance_enable)
         social_distance_check.invoke()
 
         social_distance_check.grid(row=0,column=0,columnspan=1, padx=float(self.label_frame.winfo_reqwidth())*0.10, pady=float(self.label_frame.winfo_reqheight())*0.005, sticky=tk.W)
 
-        mask_wearing_enable = tk.IntVar()
-        mask_wearing_check = ttk.Checkbutton(master=label_frame3, text='Enable Mask Wearing')
+        self.mask_wearing_enable = tk.IntVar(0)
+        mask_wearing_check = ttk.Checkbutton(master=label_frame3, text='Enable Mask Wearing', variable=self.mask_wearing_enable)
 
         mask_wearing_check.grid(row=1,column=0,columnspan=1, padx=float(self.label_frame.winfo_reqwidth())*0.10, pady=float(self.label_frame.winfo_reqheight())*0.005, sticky=tk.W)
         mask_wearing_check.invoke()
@@ -93,13 +93,13 @@ class ButtonsFrame(ttk.Frame):
                                     pady=float(self.label_frame.winfo_reqheight()) * 0.02)
         
     def info_window(self):
-        newWindow = tk.Toplevel(self.master, height = 700, width = 1000) 
+        self.newWindow = tk.Toplevel(self.master, height = 700, width = 1000) 
         style = ttk.Style(self)
         style.configure("Bold.TLabel", font=("Helvetica", 19, "bold"))
-        label_frame_label = ttk.Label(master = newWindow, text="Run Simulation", style = "Bold.TLabel")
-        label_frame_top = ttk.LabelFrame(master=newWindow, labelwidget=label_frame_label, height = self.height*2, width = self.width*2)
+        label_frame_label = ttk.Label(master = self.newWindow, text="Run Simulation", style = "Bold.TLabel")
+        label_frame_top = ttk.LabelFrame(master=self.newWindow, labelwidget=label_frame_label, height = self.height*2, width = self.width*2)
         label_frame_top.grid(row = 0, column = 0, columnspan=1, pady=self.height * 0.02, padx=(self.width * 0.03, self.width * 0.03))
-
+        
 
         if self.simulation_mode.get() == 1:
             initial_label_text = "Rendering for the following settings"
@@ -107,7 +107,7 @@ class ButtonsFrame(ttk.Frame):
             initial_label_text = "Simulating for the following settings"
 
         #~~~~~~~~~~~~~~~~~~ LABELS ~~~~~~~~~~~~~~~
-        initial_label = ttk.Label(master=newWindow,text=initial_label_text)
+        initial_label = ttk.Label(master=self.newWindow,text=initial_label_text)
 
         label_frame = ttk.LabelFrame(master=label_frame_top, labelwidget=initial_label, height = self.height*2, width = self.width*2)
         label_frame.grid(row = 0, column = 0, columnspan=1, pady=self.height * 0.02, padx=(self.width * 0.03, self.width * 0.03))
@@ -143,12 +143,19 @@ class ButtonsFrame(ttk.Frame):
 
         k_val_label_val = ttk.Label(master=label_frame,text=self.data.get_k_val())
         k_val_label_val.grid(row=3, column=1, columnspan=1, padx=float(label_frame.winfo_reqwidth()) * 0.02, pady=float(label_frame.winfo_reqheight()) * 0.01, sticky=tk.W)
-
-        social_distancing_string = str(self.data.get_social_distancing_val()) +"% of people will socially distance.\nStarting at frame " + str(self.data.get_social_distancing_starting_at_val()) + "." 
+        
+        if self.social_distance_enable.get() == 0:
+            social_distancing_string = "Disabled"
+        else:
+            social_distancing_string = str(self.data.get_social_distancing_val()) +"% of people will socially distance.\nStarting at frame " + str(self.data.get_social_distancing_starting_at_val()) + "." 
+        
         social_distancing_label_val = ttk.Label(master=label_frame,text=social_distancing_string)
         social_distancing_label_val.grid(row=4, column=1, columnspan=1, padx=float(label_frame.winfo_reqwidth()) * 0.02, pady=float(label_frame.winfo_reqheight()) * 0.01, sticky=tk.W)
         
-        mask_string = ("Mask Mandate will start at " + str(self.data.get_mask_mandate_starting_at_val()) + " with\nthe following mask effectiveness:" + 
+        if self.mask_wearing_enable.get() == 0:
+            mask_string = "Disabled"
+        else:
+            mask_string = ("Mask Mandate will start at " + str(self.data.get_mask_mandate_starting_at_val()) + " with\nthe following mask effectiveness:" + 
                         "\nCloth Mask: " + str(self.data.get_mask_effectiveness_cloth_mask()) + "% \nSurgical Mask: " + str(self.data.get_mask_effectiveness_surgical_mask()) +
                         "% \nN96 Mask: " + str(self.data.get_mask_effectiveness_n95_mask()) + "%")
                     
@@ -165,7 +172,7 @@ class ButtonsFrame(ttk.Frame):
         mortality_rate_label_val = ttk.Label(master=label_frame,text=mortality_string)
         mortality_rate_label_val.grid(row=7, column=1, columnspan=1, padx=float(label_frame.winfo_reqwidth()) * 0.02, pady=float(label_frame.winfo_reqheight()) * 0.01, sticky="wn")
 
-        self.start_sim_button = ttk.Button(master=label_frame, text="Start", command=self.test_print)
+        self.start_sim_button = ttk.Button(master=label_frame, text="Start", command=self.start)
         self.start_sim_button.grid(row=8,column=0,columnspan=2, sticky='ew', 
                                     padx=(float(self.label_frame.winfo_reqwidth()) * 0.05,float(self.label_frame.winfo_reqwidth()) * 0.05), 
                                     pady=float(self.label_frame.winfo_reqheight()) * 0.02)
@@ -179,3 +186,45 @@ class ButtonsFrame(ttk.Frame):
         print("K" + self.data.k_val.get())
         print("HC" + self.data.social_distancing_starting_at_val.get())
         print("HC" + self.data.mask_mandate_starting_at_val.get())
+
+    def start(self):
+        self.start_sim_button["text"] = "Rendering. Please Wait"
+        self.update()
+        k               = self.data.get_k_val()
+        r               = self.data.get_r_val()
+        size            = self.data.get_population_val()
+        min_age         = self.config_util.getIntegerValue("people.stats", "min_age")
+        max_age         = self.config_util.getIntegerValue("people.stats", "max_age")
+        mortality       = self.data.get_all_mortality_rates()
+        social_dist_per = self.data.get_social_distancing_val()/100
+        infection_range = self.config_util.getFloatValue("virus.stats", "infection_range")
+        recovery_time   = self.data.get_recovery_time_val()
+        health_cap      = int(size * self.data.get_hospital_capacity_val()/100)
+        mask_effect     = self.data.get_all_mask_effectiveness()
+        speed           = self.config_util.getFloatValue("people.stats", "speed")
+
+        if self.social_distance_enable.get() == 0:
+            enforce_social_distance_at = -1
+        else:
+            enforce_social_distance_at = self.data.get_social_distancing_starting_at_val()
+
+        if self.mask_wearing_enable.get() == 0:
+            enforce_masks_at = -1
+        else:
+            enforce_masks_at = self.data.get_mask_mandate_starting_at_val()
+
+        p_util = PopulationUtil(r=r, k=k, size=size, min_age=min_age, max_age=max_age,
+                    mortality_rate=mortality, infection_range=infection_range, recovery_time=recovery_time,
+                    total_healthcare_capacity=health_cap, mask_effectiveness=mask_effect,
+                    speed=speed, social_distance_per=social_dist_per,social_distancing_at=enforce_social_distance_at,
+                    mask_wearing_at=enforce_masks_at)
+        
+        if self.simulation_mode.get() == 2:
+            self.newWindow.destroy()
+            Visualization(p_util, render_mode=False)
+        else:
+            Visualization(p_util, render_mode=True)
+
+        
+        if self.simulation_mode.get() == 1:
+            self.start_sim_button["text"] = "Done Rendering."
