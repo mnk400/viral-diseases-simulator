@@ -79,55 +79,103 @@ class ButtonsFrame(ttk.Frame):
         mask_wearing_check.invoke()
 
         # Load Config Data button
-        self.load_button = ttk.Button(master=self.label_frame, text="Start Covid Simulation", command=self.execute_covid_sim)
+        self.load_button = ttk.Button(master=self.label_frame, text="Load Covid-19 Data", command="#")
         self.load_button.grid(row=4,column=0,columnspan=1, sticky='ew', padx=(float(self.label_frame.winfo_reqwidth()) * 0.05,float(self.label_frame.winfo_reqwidth()) * 0.205), pady=float(self.label_frame.winfo_reqheight()) * 0.02)
 
         # Load influenza data button
-        self.load_inf_button = ttk.Button(master=self.label_frame, text="Start Influenza Simulation", command="#")       
+        self.load_inf_button = ttk.Button(master=self.label_frame, text="Load Influenza Data", command="#")       
         self.load_inf_button.grid(row=5,column=0,columnspan=1, sticky='ew', padx=(float(self.label_frame.winfo_reqwidth()) * 0.05,float(self.label_frame.winfo_reqwidth()) * 0.205), pady=float(self.label_frame.winfo_reqheight()) * 0.02)
 
         #Start custom sim button
-        self.start_sim_button = ttk.Button(master=self.label_frame, text="Start Custom Simulation", command=self.test_print)
+        self.start_sim_button = ttk.Button(master=self.label_frame, text="Start Simulation", command=self.info_window)
         self.start_sim_button.grid(row=6,column=0,columnspan=1, sticky='ew', 
                                     padx=(float(self.label_frame.winfo_reqwidth()) * 0.05,float(self.label_frame.winfo_reqwidth()) * 0.205), 
                                     pady=float(self.label_frame.winfo_reqheight()) * 0.02)
         
-    
-    def test_print(self):
-        print(self.data.population_val.get())
+    def info_window(self):
+        newWindow = tk.Toplevel(self.master, height = 700, width = 1000) 
+        style = ttk.Style(self)
+        style.configure("Bold.TLabel", font=("Helvetica", 19, "bold"))
+        label_frame_label = ttk.Label(master = newWindow, text="Run Simulation", style = "Bold.TLabel")
+        label_frame_top = ttk.LabelFrame(master=newWindow, labelwidget=label_frame_label, height = self.height*2, width = self.width*2)
+        label_frame_top.grid(row = 0, column = 0, columnspan=1, pady=self.height * 0.02, padx=(self.width * 0.03, self.width * 0.03))
 
-    def execute_covid_sim(self):
-        render_mode = False
-
-        self.k                          = self.config_util.getFloatValue("virus.stats", "k_value")
-        self.r                          = self.config_util.getFloatValue("virus.stats", "r_value")
-        self.size                       = self.config_util.getIntegerValue("area.stats", "total_population")
-        self.min_age                    = self.config_util.getIntegerValue("people.stats", "min_age")
-        self.max_age                    = self.config_util.getIntegerValue("people.stats", "min_age")
-        self.mortality_rate             = self.config_util.getDictionary("virus.stats", "mortality_rate")
-        self.social_distance_per        = self.config_util.getFloatValue("people.stats", "social_distancing_percent")
-        self.infection_range            = self.config_util.getFloatValue("virus.stats", "infection_range")
-        self.recovery_time              = self.config_util.getFloatValue("virus.stats", "recovery_time")
-        self.total_healthcare_capacity  = self.size*(self.config_util.getIntegerValue("area.stats", "healthcare_capacity_ratio")/100)
-        self.mask_effectiveness         = self.config_util.getDictionary("virus.stats", "mask_effectiveness")
-        self.speed                      = self.config_util.getFloatValue("people.stats", "speed")
-        self.enforce_social_distance_at = self.config_util.getIntegerValue("area.stats", "enforce_social_distancing_at")
-        self.enforce_mask_wearing_at    = self.config_util.getIntegerValue("area.stats", "enforce_mask_wearing_at")
 
         if self.simulation_mode.get() == 1:
-            print("inside")
-            self.rendering_status_label = ttk.Label(master=self.label_frame, text="Rendering. Please Wait.")
-            self.rendering_status_label.grid(row=7, column=0, columnspan=1, sticky='ew', 
-                                    padx=(float(self.label_frame.winfo_reqwidth()) * 0.05,float(self.label_frame.winfo_reqwidth()) * 0.205), 
-                                    pady=float(self.label_frame.winfo_reqheight()) * 0.02)
-            self.update()
-            render_mode = True
+            initial_label_text = "Rendering for the following settings"
+        else:
+            initial_label_text = "Simulating for the following settings"
+
+        #~~~~~~~~~~~~~~~~~~ LABELS ~~~~~~~~~~~~~~~
+        initial_label = ttk.Label(master=newWindow,text=initial_label_text)
+
+        label_frame = ttk.LabelFrame(master=label_frame_top, labelwidget=initial_label, height = self.height*2, width = self.width*2)
+        label_frame.grid(row = 0, column = 0, columnspan=1, pady=self.height * 0.02, padx=(self.width * 0.03, self.width * 0.03))
         
-        self.population_util = PopulationUtil(k = self.k, r = self.r, min_age = self.min_age, max_age = self.max_age, size = self.size,
-                                mortality_rate = self.mortality_rate, infection_range = self.infection_range, recovery_time = self.recovery_time,
-                                total_healthcare_capacity = self.total_healthcare_capacity, social_distance_per = self.social_distance_per,
-                                mask_effectiveness = self.mask_effectiveness, speed=self.speed, social_distancing_at = self.enforce_social_distance_at,
-                                mask_wearing_at = self.enforce_mask_wearing_at)
-        self.visualize = Visualization(self.population_util, render_mode = render_mode)
-        if self.simulation_mode.get() == 1:
-            self.rendering_status_label["text"] = "Done Rendering."
+        
+        population_label = ttk.Label(master=label_frame,text="Population: ")
+        population_label.grid(row=1, column=0, columnspan=1, padx=float(label_frame.winfo_reqwidth()) * 0.02, pady=float(label_frame.winfo_reqheight()) * 0.01, sticky=tk.W)
+
+        r_val_label = ttk.Label(master=label_frame,text="R Value: ")
+        r_val_label.grid(row=2, column=0, columnspan=1, padx=float(label_frame.winfo_reqwidth()) * 0.02, pady=float(label_frame.winfo_reqheight()) * 0.01, sticky=tk.W)
+
+        k_val_label = ttk.Label(master=label_frame,text="K Value: ")
+        k_val_label.grid(row=3, column=0, columnspan=1, padx=float(label_frame.winfo_reqwidth()) * 0.02, pady=float(label_frame.winfo_reqheight()) * 0.01, sticky=tk.W)
+
+        social_distancing_label = ttk.Label(master=label_frame,text="Social Distancing: ")
+        social_distancing_label.grid(row=4, column=0, columnspan=1, padx=float(label_frame.winfo_reqwidth()) * 0.02, pady=float(label_frame.winfo_reqheight()) * 0.01, sticky="wn")
+
+        mask_mandates_label = ttk.Label(master=label_frame,text="Mask Mandate: ")
+        mask_mandates_label.grid(row=5, column=0, columnspan=1, padx=float(label_frame.winfo_reqwidth()) * 0.02, pady=float(label_frame.winfo_reqheight()) * 0.01, sticky="wn")
+
+        hospital_capacity_label = ttk.Label(master=label_frame,text="Hospital Capacity: ")
+        hospital_capacity_label.grid(row=6, column=0, columnspan=1, padx=float(label_frame.winfo_reqwidth()) * 0.02, pady=float(label_frame.winfo_reqheight()) * 0.01, sticky=tk.W)
+
+        mortality_rate_label = ttk.Label(master=label_frame,text="Mortality Rates: ")
+        mortality_rate_label.grid(row=7, column=0, columnspan=1, padx=float(label_frame.winfo_reqwidth()) * 0.02, pady=float(label_frame.winfo_reqheight()) * 0.01, sticky="wn")
+
+        #~~~~~~~~~~~~~~~~~~ LABEL VALUES ~~~~~~~~~~~~~~~~~~
+        population_label_val = ttk.Label(master=label_frame,text=str(self.data.get_population_val()) + " people.")
+        population_label_val.grid(row=1, column=1, columnspan=1, padx=float(label_frame.winfo_reqwidth()) * 0.02, pady=float(label_frame.winfo_reqheight()) * 0.01, sticky=tk.W)
+
+        r_val_label_val = ttk.Label(master=label_frame,text=self.data.get_r_val())
+        r_val_label_val.grid(row=2, column=1, columnspan=1, padx=float(label_frame.winfo_reqwidth()) * 0.02, pady=float(label_frame.winfo_reqheight()) * 0.01, sticky=tk.W)
+
+        k_val_label_val = ttk.Label(master=label_frame,text=self.data.get_k_val())
+        k_val_label_val.grid(row=3, column=1, columnspan=1, padx=float(label_frame.winfo_reqwidth()) * 0.02, pady=float(label_frame.winfo_reqheight()) * 0.01, sticky=tk.W)
+
+        social_distancing_string = str(self.data.get_social_distancing_val()) +"% of people will socially distance.\nStarting at frame " + str(self.data.get_social_distancing_starting_at_val()) + "." 
+        social_distancing_label_val = ttk.Label(master=label_frame,text=social_distancing_string)
+        social_distancing_label_val.grid(row=4, column=1, columnspan=1, padx=float(label_frame.winfo_reqwidth()) * 0.02, pady=float(label_frame.winfo_reqheight()) * 0.01, sticky=tk.W)
+        
+        mask_string = ("Mask Mandate will start at " + str(self.data.get_mask_mandate_starting_at_val()) + " with\nthe following mask effectiveness:" + 
+                        "\nCloth Mask: " + str(self.data.get_mask_effectiveness_cloth_mask()) + "% \nSurgical Mask: " + str(self.data.get_mask_effectiveness_surgical_mask()) +
+                        "% \nN96 Mask: " + str(self.data.get_mask_effectiveness_n95_mask()) + "%")
+                    
+        mask_mandates_label_val = ttk.Label(master=label_frame,text=mask_string)
+        mask_mandates_label_val.grid(row=5, column=1, columnspan=1, padx=float(label_frame.winfo_reqwidth()) * 0.02, pady=float(label_frame.winfo_reqheight()) * 0.01, sticky="wn")
+
+        hospital_capacity = int(self.data.get_population_val() * self.data.get_hospital_capacity_val()/100)
+        hospital_capacity_label_val = ttk.Label(master=label_frame,text=hospital_capacity)
+        hospital_capacity_label_val.grid(row=6, column=1, columnspan=1, padx=float(label_frame.winfo_reqwidth()) * 0.02, pady=float(label_frame.winfo_reqheight()) * 0.01, sticky=tk.W)
+
+        mortality_string = ("Age groups and respective mortality rates,\n0 to 19: " + str(self.data.get_mortality_rate_zero_to_nineteen()) + "% \n20 to 49: " + 
+                            str(self.data.get_mortality_rate_twenty_to_fortynine()) + "% \n50 to 69: " + str(self.data.get_mortality_rate_fifty_to_sixtynine()) + 
+                            "% \n>=70: " + str(self.data.get_mortality_rate_seventyplus()) + "%")
+        mortality_rate_label_val = ttk.Label(master=label_frame,text=mortality_string)
+        mortality_rate_label_val.grid(row=7, column=1, columnspan=1, padx=float(label_frame.winfo_reqwidth()) * 0.02, pady=float(label_frame.winfo_reqheight()) * 0.01, sticky="wn")
+
+        self.start_sim_button = ttk.Button(master=label_frame, text="Start", command=self.test_print)
+        self.start_sim_button.grid(row=8,column=0,columnspan=2, sticky='ew', 
+                                    padx=(float(self.label_frame.winfo_reqwidth()) * 0.05,float(self.label_frame.winfo_reqwidth()) * 0.05), 
+                                    pady=float(self.label_frame.winfo_reqheight()) * 0.02)
+
+    def test_print(self):
+        print("population" + self.data.population_val.get())
+        print("SD" + self.data.social_distancing_val.get())
+        print("HC" + self.data.hospital_capacity_val.get())
+        print("RT" + self.data.recovery_time_val.get())
+        print("R" + self.data.r_val.get())
+        print("K" + self.data.k_val.get())
+        print("HC" + self.data.social_distancing_starting_at_val.get())
+        print("HC" + self.data.mask_mandate_starting_at_val.get())
