@@ -93,11 +93,15 @@ class ButtonsFrame(ttk.Frame):
                                     pady=float(self.label_frame.winfo_reqheight()) * 0.02)
         
     def info_window(self):
-        self.newWindow = tk.Toplevel(self.master, height = 700, width = 1000) 
+        self.newWindow = tk.Toplevel(self.master) 
+        self.newWindow.resizable(width=False, height=False)
+        
         style = ttk.Style(self)
+        window_frame = ttk.LabelFrame(master=self.newWindow)
+        window_frame.grid(row=0,column=0)
         style.configure("Bold.TLabel", font=("Helvetica", 19, "bold"))
-        label_frame_label = ttk.Label(master = self.newWindow, text="Run Simulation", style = "Bold.TLabel")
-        label_frame_top = ttk.LabelFrame(master=self.newWindow, labelwidget=label_frame_label, height = self.height*2, width = self.width*2)
+        label_frame_label = ttk.Label(master = window_frame, text="Run Simulation", style = "Bold.TLabel")
+        label_frame_top = ttk.LabelFrame(master = window_frame, labelwidget=label_frame_label, height = self.height*2, width = self.width*2)
         label_frame_top.grid(row = 0, column = 0, columnspan=1, pady=self.height * 0.02, padx=(self.width * 0.03, self.width * 0.03))
         
 
@@ -107,7 +111,7 @@ class ButtonsFrame(ttk.Frame):
             initial_label_text = "Simulating for the following settings"
 
         #~~~~~~~~~~~~~~~~~~ LABELS ~~~~~~~~~~~~~~~
-        initial_label = ttk.Label(master=self.newWindow,text=initial_label_text)
+        initial_label = ttk.Label(master=window_frame, text=initial_label_text)
 
         label_frame = ttk.LabelFrame(master=label_frame_top, labelwidget=initial_label, height = self.height*2, width = self.width*2)
         label_frame.grid(row = 0, column = 0, columnspan=1, pady=self.height * 0.02, padx=(self.width * 0.03, self.width * 0.03))
@@ -224,7 +228,6 @@ class ButtonsFrame(ttk.Frame):
             Visualization(p_util, render_mode=False)
         else:
             Visualization(p_util, render_mode=True)
-
         
         if self.simulation_mode.get() == 1:
             self.start_sim_button["text"] = "Done Rendering."

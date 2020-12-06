@@ -34,6 +34,7 @@ class Application(ttk.Frame):
 def main():
     # root window widget
     root = tk.Tk() 
+    root.resizable(width=False,height=False)
     height = root.winfo_screenheight() * 0.38
     width = root.winfo_screenwidth() * 0.45
     

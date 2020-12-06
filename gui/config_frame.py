@@ -7,6 +7,8 @@ Created on 2nd Dec, 2020
 
 import tkinter as tk
 import tkinter.ttk as ttk
+
+from numpy.core.fromnumeric import resize
 import gui.ttk_helper
 from gui.ttk_helper import ToolTip
 from gui.data_store import DataStore
@@ -236,12 +238,17 @@ class SetConfigFrame(ttk.Frame):
         
     def openMaskWindow(self): 
 
-        newWindow = tk.Toplevel(self.master, height = 700, width = 700) 
+        newWindow = tk.Toplevel(self.master) 
+        
+        newWindow.resizable(width=False, height=False)
+
+        window_frame = ttk.LabelFrame(master=newWindow)
+        window_frame.grid(row=0,column=0)
 
         style = ttk.Style(self)
         style.configure("Bold.TLabel", font=("Helvetica", 19, "bold"))
-        label_frame_label = ttk.Label(master = newWindow, text="Set Mask Effectiveness", style = "Bold.TLabel")
-        label_frame = ttk.LabelFrame(master=newWindow, labelwidget=label_frame_label, height = self.height*2, width = self.width*1)
+        label_frame_label = ttk.Label(master = window_frame, text="Set Mask Effectiveness", style = "Bold.TLabel")
+        label_frame = ttk.LabelFrame(master = window_frame, labelwidget=label_frame_label, height = self.height*2, width = self.width*1)
         label_frame.grid(row = 0, column = 0, columnspan=1, pady=self.height * 0.02, padx=(self.width * 0.03, self.width * 0.03))
         mask_type_header_label = ttk.Label(master=label_frame,  text='Mask Type')
         mask_effectivenss_header_label = ttk.Label(master=label_frame,  text='Mask Effectiveness')
@@ -291,12 +298,16 @@ class SetConfigFrame(ttk.Frame):
 
     def openMortalityWindow(self): 
 
-        newWindow = tk.Toplevel(self.master, height = 700, width = 700) 
+        newWindow = tk.Toplevel(self.master) 
+        newWindow.resizable(width=False, height=False)
+
+        window_frame = ttk.LabelFrame(master=newWindow)
+        window_frame.grid(row=0,column=0)
 
         style = ttk.Style(self)
         style.configure("Bold.TLabel", font=("Helvetica", 19, "bold"))
-        label_frame_label = ttk.Label(master = newWindow, text="Set Mortality Rate", style = "Bold.TLabel")
-        label_frame = ttk.LabelFrame(master=newWindow, labelwidget=label_frame_label, height = self.height*2, width = self.width*1)
+        label_frame_label = ttk.Label(master = window_frame, text="Set Mortality Rate", style = "Bold.TLabel")
+        label_frame = ttk.LabelFrame(master=window_frame, labelwidget=label_frame_label, height = self.height*2, width = self.width*1)
         label_frame.grid(row = 0, column = 0, columnspan=1, pady=self.height * 0.02, padx=(self.width * 0.03, self.width * 0.03))
         mask_type_header_label = ttk.Label(master=label_frame,  text='Age Group')
         mask_effectivenss_header_label = ttk.Label(master=label_frame,  text='Mortality Rate')
