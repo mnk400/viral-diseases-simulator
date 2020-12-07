@@ -40,6 +40,7 @@ class PopulationUtil(object):
         """        
         self.population                 = Population(size) 
         self.virus                      = Virus(infection_range, recovery_time, total_healthcare_capacity)
+        self.total_healthcare_capacity  = total_healthcare_capacity
         self.movement                   = Movement()
         self.size                       = size
         self.x_bounds                   = [0, 1]
@@ -89,7 +90,6 @@ class PopulationUtil(object):
 
 
     def move(self, frame):
- 
         if frame == self.enforce_mask_wearing_at:
             self.population.initialize_mask_eff(self.size, self.mask_effectiveness)
             self.population.initialize_susceptibility()

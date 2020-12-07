@@ -5,7 +5,7 @@ from gui.gui_main import main
 
 class Main(object):
     """
-    docstring
+    Main class to execute it all
     """
 
     def __init__(self) -> None:

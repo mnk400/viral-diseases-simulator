@@ -8,10 +8,12 @@ Created on 2nd Dec, 2020
 import tkinter as tk
 from tkinter import Widget, ttk
 import gui.ttk_helper
+import webbrowser
 from gui.ttk_helper import ToolTip
 from src.visualization import Visualization
 from src.population_util import PopulationUtil
 from src.config_util import ConfigUtil
+from PIL import Image, ImageTk
 from gui.data_store import DataStore
 
 class ButtonsFrame(ttk.Frame):
@@ -34,7 +36,6 @@ class ButtonsFrame(ttk.Frame):
         self.height = height
         self.width = width
         self.data = DataStore.get_instance()
-        self.config_util = ConfigUtil("config/config.ini")
         
         
         self.create_widgets()
@@ -79,11 +80,11 @@ class ButtonsFrame(ttk.Frame):
         mask_wearing_check.invoke()
 
         # Load Config Data button
-        self.load_button = ttk.Button(master=self.label_frame, text="Load Covid-19 Data", command="#")
+        self.load_button = ttk.Button(master=self.label_frame, text="Load Covid-19 Data", command=self.load_covid_data)
         self.load_button.grid(row=4,column=0,columnspan=1, sticky='ew', padx=(float(self.label_frame.winfo_reqwidth()) * 0.05,float(self.label_frame.winfo_reqwidth()) * 0.205), pady=float(self.label_frame.winfo_reqheight()) * 0.02)
 
         # Load influenza data button
-        self.load_inf_button = ttk.Button(master=self.label_frame, text="Load Influenza Data", command="#")       
+        self.load_inf_button = ttk.Button(master=self.label_frame, text="Load Influenza Data", command=self.load_influenza_data)       
         self.load_inf_button.grid(row=5,column=0,columnspan=1, sticky='ew', padx=(float(self.label_frame.winfo_reqwidth()) * 0.05,float(self.label_frame.winfo_reqwidth()) * 0.205), pady=float(self.label_frame.winfo_reqheight()) * 0.02)
 
         #Start custom sim button
@@ -92,6 +93,11 @@ class ButtonsFrame(ttk.Frame):
                                     padx=(float(self.label_frame.winfo_reqwidth()) * 0.05,float(self.label_frame.winfo_reqwidth()) * 0.205), 
                                     pady=float(self.label_frame.winfo_reqheight()) * 0.02)
         
+        self.about_me_button = ttk.Button(master=self.label_frame, text="About Me", command=self.about_me)
+        self.about_me_button.grid(row=7,column=0,columnspan=1, sticky='ew', 
+                                    padx=(float(self.label_frame.winfo_reqwidth()) * 0.05,float(self.label_frame.winfo_reqwidth()) * 0.205), 
+                                    pady=float(self.label_frame.winfo_reqheight()) * 0.02)
+    
     def info_window(self):
         self.newWindow = tk.Toplevel(self.master) 
         self.newWindow.resizable(width=False, height=False)
@@ -99,7 +105,7 @@ class ButtonsFrame(ttk.Frame):
         photo = tk.PhotoImage(file = "assets\icon-512.png")
         self.newWindow.iconphoto(False, photo)
         self.newWindow.resizable(width=False,height=False)
-        
+
         style = ttk.Style(self)
         window_frame = ttk.LabelFrame(master=self.newWindow)
         window_frame.grid(row=0,column=0)
@@ -185,31 +191,73 @@ class ButtonsFrame(ttk.Frame):
                                     padx=(float(self.label_frame.winfo_reqwidth()) * 0.05,float(self.label_frame.winfo_reqwidth()) * 0.05), 
                                     pady=float(self.label_frame.winfo_reqheight()) * 0.02)
 
-    def test_print(self):
-        print("population" + self.data.population_val.get())
-        print("SD" + self.data.social_distancing_val.get())
-        print("HC" + self.data.hospital_capacity_val.get())
-        print("RT" + self.data.recovery_time_val.get())
-        print("R" + self.data.r_val.get())
-        print("K" + self.data.k_val.get())
-        print("HC" + self.data.social_distancing_starting_at_val.get())
-        print("HC" + self.data.mask_mandate_starting_at_val.get())
+    def load_covid_data(self):
+        config_util = ConfigUtil("config/config.ini")
+
+        self.data.k_val.set(str(config_util.getFloatValue("covid.stats","k_value")))
+        self.data.k_value_scale.set(config_util.getFloatValue("covid.stats","k_value"))
+
+        self.data.r_val.set(str(config_util.getFloatValue("covid.stats","r_value")))
+        self.data.r_value_scale.set(config_util.getFloatValue("covid.stats","r_value"))
+
+        self.data.recovery_time_val.set(str(config_util.getIntegerValue("covid.stats","recovery_time")))
+        self.data.recovery_time_scale.set(config_util.getIntegerValue("covid.stats","recovery_time"))
+
+        mortality_dict = config_util.getDictionary("covid.stats","mortality_rate")
+        self.data.mortality_rate_zero_to_nineteen.set(str(mortality_dict["0-19"]*100) + "%")
+        self.data.mortality_rate_twenty_to_fortynine.set(str(mortality_dict["20-49"]*100) + "%")
+        self.data.mortality_rate_fifty_to_sixtynine.set(str(mortality_dict["50-69"]*100) + "%")
+        self.data.mortality_rate_seventyplus.set(str(mortality_dict["70-100"]*100) + "%")
+
+        mask_dict = config_util.getDictionary("covid.stats","mask_effectiveness")
+        self.data.mask_effectiveness_cloth_mask.set(str(mask_dict["cloth_mask"]) + "%")
+        self.data.mask_effectiveness_surgical_mask.set(str(mask_dict["surgery_mask"]) + "%")
+        self.data.mask_effectiveness_n95_mask.set(str(mask_dict["n95"]) + "%")
+
+        self.update() 
+
+    def load_influenza_data(self):
+        config_util = ConfigUtil("config/config.ini")
+
+        self.data.k_val.set(str(config_util.getFloatValue("influenza.stats","k_value")))
+        self.data.k_value_scale.set(config_util.getFloatValue("influenza.stats","k_value"))
+
+        self.data.r_val.set(str(config_util.getFloatValue("influenza.stats","r_value")))
+        self.data.r_value_scale.set(config_util.getFloatValue("influenza.stats","r_value"))
+
+        self.data.recovery_time_val.set(str(config_util.getIntegerValue("influenza.stats","recovery_time")))
+        self.data.recovery_time_scale.set(config_util.getIntegerValue("influenza.stats","recovery_time"))
+
+        mortality_dict = config_util.getDictionary("influenza.stats","mortality_rate")
+        self.data.mortality_rate_zero_to_nineteen.set(str(mortality_dict["0-19"]*100) + "%")
+        self.data.mortality_rate_twenty_to_fortynine.set(str(mortality_dict["20-49"]*100) + "%")
+        self.data.mortality_rate_fifty_to_sixtynine.set(str(mortality_dict["50-69"]*100) + "%")
+        self.data.mortality_rate_seventyplus.set(str(mortality_dict["70-100"]*100) + "%")
+
+        mask_dict = config_util.getDictionary("influenza.stats","mask_effectiveness")
+        self.data.mask_effectiveness_cloth_mask.set(str(mask_dict["cloth_mask"]) + "%")
+        self.data.mask_effectiveness_surgical_mask.set(str(mask_dict["surgery_mask"]) + "%")
+        self.data.mask_effectiveness_n95_mask.set(str(mask_dict["n95"]) + "%")
+
+        self.update()
 
     def start(self):
-        self.start_sim_button["text"] = "Rendering. Please Wait"
+        config_util = ConfigUtil("config/config.ini")
+        if self.simulation_mode.get() == 1:
+            self.start_sim_button["text"] = "Rendering. Please Wait"
         self.update()
         k               = self.data.get_k_val()
         r               = self.data.get_r_val()
         size            = self.data.get_population_val()
-        min_age         = self.config_util.getIntegerValue("people.stats", "min_age")
-        max_age         = self.config_util.getIntegerValue("people.stats", "max_age")
+        min_age         = config_util.getIntegerValue("people.stats", "min_age")
+        max_age         = config_util.getIntegerValue("people.stats", "max_age")
         mortality       = self.data.get_all_mortality_rates()
         social_dist_per = self.data.get_social_distancing_val()/100
-        infection_range = self.config_util.getFloatValue("virus.stats", "infection_range")
+        infection_range = self.data.get_infection_range_val()
         recovery_time   = self.data.get_recovery_time_val()
         health_cap      = int(size * self.data.get_hospital_capacity_val()/100)
         mask_effect     = self.data.get_all_mask_effectiveness()
-        speed           = self.config_util.getFloatValue("people.stats", "speed")
+        speed           = config_util.getFloatValue("people.stats", "speed")
 
         if self.social_distance_enable.get() == 0:
             enforce_social_distance_at = -1
@@ -235,3 +283,69 @@ class ButtonsFrame(ttk.Frame):
         
         if self.simulation_mode.get() == 1:
             self.start_sim_button["text"] = "Done Rendering."
+    
+    def about_me(self):
+        newWindow = tk.Toplevel(self.master) 
+        newWindow.resizable(width=False, height=False)
+
+        photo = tk.PhotoImage(file = "assets\icon-512.png")
+        newWindow.iconphoto(False, photo)
+        newWindow.resizable(width=False,height=False)
+
+        style = ttk.Style(self)
+        window_frame = ttk.LabelFrame(master=newWindow)
+        window_frame.grid(row=0,column=0)
+        style.configure("Bold.TLabel", font=("Helvetica", 19, "bold"))
+
+        label_frame_top_left = ttk.LabelFrame(master = window_frame, height = self.height*2, width = self.width*2)
+        label_frame_top_left.grid(row = 0, column = 0, columnspan=1, padx=(self.width * 0.03, self.width * 0.01))
+
+        label_frame_top_right = ttk.LabelFrame(master = window_frame, height = int(self.height * 0.4), width = self.width*2)
+        label_frame_top_right.grid(row = 0, column = 1, columnspan=1, padx=(self.width * 0.01, self.width * 0.03), sticky=tk.N)
+
+        label_frame_bottom = ttk.LabelFrame(master = window_frame, height = self.height*2, width = self.width*2)
+        label_frame_bottom.grid(row = 1, column = 0, columnspan=2, padx=(self.width * 0.03, self.width * 0.03), pady=(0,self.height * 0.01), sticky=tk.N+tk.W)
+
+        image1 = Image.open("assets\icon-512.png")
+        image1 = image1.resize((int(self.height * 0.25), int(self.height * 0.25)), Image.ANTIALIAS)
+        test = ImageTk.PhotoImage(image1)
+
+        label1 = tk.Label(master=label_frame_top_left,image=test)
+        label1.image = test
+
+        label1.grid(row=0,column=0, padx=(self.width * 0.03, self.width * 0.03), pady=(self.width * 0.03, self.width * 0.03))
+        
+        title = ttk.Label(master=label_frame_top_right,text="Virus Simulator", style="Bold.TLabel")
+        title.grid(row=0, column=0, columnspan=1, padx=(self.width * 0.03, self.width * 0.03), sticky=tk.W)
+        
+        description = ttk.Label(master=label_frame_top_right,text="Virus Simulation system and an accompanying GUI.\nBuild to visualize the spread of a virus based on various\ndifferent variable factors.")
+        description.grid(row=1, column=0, columnspan=1, padx=(self.width * 0.03, self.width * 0.03), pady=self.height * 0.02, sticky=tk.W)
+        
+        sentence1 = ttk.Label(master=label_frame_top_right,text="Published under MIT. Built by,\nManik Kumar, Pallak Singh, and Yatish Pitta")
+        sentence1.grid(row=2, column=0, columnspan=1, padx=(self.width * 0.03, self.width * 0.03), pady=self.height * 0.02, sticky=tk.W)
+        
+        reference = ttk.Label(master=label_frame_bottom,text="References", style="Bold.TLabel")
+        reference.grid(row=0, column=0, columnspan=1, padx=(self.width * 0.03, self.width * 0.03), sticky=tk.W)
+
+        sentence2 = ttk.Label(master=label_frame_bottom,text="Data collected from the following organizations: ")
+        sentence2.grid(row=1, column=0, columnspan=1, padx=(self.width * 0.03, self.width * 0.03), sticky=tk.W)
+
+        sentence3 = ttk.Label(master=label_frame_bottom,text="Attribution for the virus logo used/Icons made by: ")
+        sentence3.grid(row=2, column=0, columnspan=1, padx=(self.width * 0.03, self.width * 0.03), sticky=tk.W,pady=(0,self.height*0.02))
+        
+        style.configure("Blue.TLabel", foreground="blue")
+        
+        link1 = ttk.Label(master=label_frame_bottom, text="CDC.gov", cursor="hand2", style="Blue.TLabel")
+        link1.grid(row=1,column=1, padx=(self.width * 0.02, self.width * 0.02), sticky=tk.W )
+        link1.bind("<Button-1>", lambda e: self.callback("https://www.cdc.gov/coronavirus/2019-ncov/hcp/planning-scenarios.html"))
+
+        link2 = ttk.Label(master=label_frame_bottom, text="The Conversation", cursor="hand2", style="Blue.TLabel")
+        link2.grid(row=1,column=2, padx=(self.width * 0.02, self.width * 0.02), sticky=tk.W)
+        link2.bind("<Button-1>", lambda e: self.callback("https://theconversation.com/is-the-k-number-the-new-r-number-what-you-need-to-know-140286#:~:text=Dispersion%20parameter%2C%20K&text=For%20the%201918%20influenza%2C%20the,this%20proportion%20rises%20to%2070%25"))
+        
+        link3 = ttk.Label(master=label_frame_bottom, text="Freepik", cursor="hand2", style="Blue.TLabel")
+        link3.grid(row=2,column=1, padx=(self.width * 0.02, self.width * 0.02), sticky=tk.W,pady=(0,self.height*0.02))
+        link3.bind("<Button-1>", lambda e: self.callback("https://www.flaticon.com/authors/freepik"))
+    
+    def callback(self, link):
+        webbrowser.open_new(link)

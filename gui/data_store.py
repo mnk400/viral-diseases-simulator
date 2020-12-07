@@ -19,7 +19,7 @@ class DataStore:
        self.hospital_capacity_val               = tk.StringVar()
        self.hospital_capacity_val.set('20%')
        self.recovery_time_val                   = tk.StringVar()
-       self.recovery_time_val.set('150')
+       self.recovery_time_val.set('120')
        self.r_val                               = tk.StringVar()
        self.r_val.set('3.00')
        self.k_val                               = tk.StringVar()
@@ -27,7 +27,7 @@ class DataStore:
        self.social_distancing_starting_at_val   = tk.StringVar()
        self.social_distancing_starting_at_val.set("200")
        self.mask_mandate_starting_at_val        = tk.StringVar()
-       self.mask_mandate_starting_at_val.set("200")
+       self.mask_mandate_starting_at_val.set("320")
        self.mask_effectiveness_cloth_mask       = tk.StringVar()
        self.mask_effectiveness_cloth_mask.set('50%')
        self.mask_effectiveness_surgical_mask    = tk.StringVar()
@@ -42,7 +42,13 @@ class DataStore:
        self.mortality_rate_fifty_to_sixtynine.set('0.5%')
        self.mortality_rate_seventyplus          = tk.StringVar()
        self.mortality_rate_seventyplus.set('5.4%')
-
+       self.infection_range                     = tk.StringVar()
+       self.infection_range.set('0.001')
+       
+       self.recovery_time_scale = None
+       self.r_value_scale = None
+       self.k_value_scale = None
+       
        if DataStore.__instance__ is None:
            DataStore.__instance__ = self
        else:
@@ -55,6 +61,9 @@ class DataStore:
        if not DataStore.__instance__:
            DataStore()
        return DataStore.__instance__
+
+    def get_infection_range_val(self):
+        return float(self.infection_range.get())
 
     def get_population_val(self):        
         return int(self.population_val.get())

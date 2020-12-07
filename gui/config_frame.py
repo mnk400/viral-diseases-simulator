@@ -90,7 +90,7 @@ class SetConfigFrame(ttk.Frame):
         distancing_val_label.grid(row=1, column=1, columnspan=1, sticky = tk.W)
 
         # Hospital capacity value slider
-        hostpital_capacity_label = ttk.Label(master=label_frame, text='Hospital Capacity:')
+        hostpital_capacity_label = ttk.Label(master=label_frame, text='Healthcare Capacity:')
         hostpital_capacity_label.grid(row=2, column=0, columnspan=1, sticky = tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.03)
 
         hosToolTip = ToolTip(widget = hostpital_capacity_label, 
@@ -119,10 +119,10 @@ class SetConfigFrame(ttk.Frame):
         recovery_time_label.bind("<Enter>", lambda event: self.enter(event = event, tooltip = recoveryToolTip))
         recovery_time_label.bind("<Leave>", lambda event: self.leave(event = event, tooltip = recoveryToolTip))
 
-        recovery_time_scale = ttk.Scale(master=label_frame, orient='horizontal', from_=100, to=500,
+        self.data.recovery_time_scale = ttk.Scale(master=label_frame, orient='horizontal', from_=50, to=500,
                                            length=float(label_frame.winfo_reqwidth()) * 0.35, command=lambda s:self.data.recovery_time_val.set('%d' % int(float(s))))
-        recovery_time_scale.set(150)
-        recovery_time_scale.grid(row=3, column=2, padx=float(label_frame.winfo_reqwidth()) * 0.05,
+        self.data.recovery_time_scale.set(120)
+        self.data.recovery_time_scale.grid(row=3, column=2, padx=float(label_frame.winfo_reqwidth()) * 0.05,
                                      pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3)
         
         recovery_time_val_label = ttk.Label(label_frame, textvariable=self.data.recovery_time_val)
@@ -139,10 +139,10 @@ class SetConfigFrame(ttk.Frame):
         r_value_label.bind("<Enter>", lambda event: self.enter(event = event, tooltip = rValueToolTip))
         r_value_label.bind("<Leave>", lambda event: self.leave(event = event, tooltip = rValueToolTip))
 
-        r_value_scale = ttk.Scale(master=label_frame, orient='horizontal', from_=0, to=10,
+        self.data.r_value_scale = ttk.Scale(master=label_frame, orient='horizontal', from_=0, to=10,
                                            length=float(label_frame.winfo_reqwidth()) * 0.35, command=lambda s:self.data.r_val.set('%0.2f' % float(s)))
-        r_value_scale.set(3.00)
-        r_value_scale.grid(row=4, column=2, padx=float(label_frame.winfo_reqwidth()) * 0.05,
+        self.data.r_value_scale.set(3.00)
+        self.data.r_value_scale.grid(row=4, column=2, padx=float(label_frame.winfo_reqwidth()) * 0.05,
                                      pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3)
         
         r_value_val_label = ttk.Label(label_frame, textvariable=self.data.r_val)
@@ -159,10 +159,10 @@ class SetConfigFrame(ttk.Frame):
         k_value_label.bind("<Enter>", lambda event: self.enter(event = event, tooltip = kValueToolTip))
         k_value_label.bind("<Leave>", lambda event: self.leave(event = event, tooltip = kValueToolTip))
 
-        k_value_scale = ttk.Scale(master=label_frame, orient='horizontal', from_=0, to=3,
+        self.data.k_value_scale = ttk.Scale(master=label_frame, orient='horizontal', from_=0, to=3,
                                            length=float(label_frame.winfo_reqwidth()) * 0.35, command=lambda s:self.data.k_val.set('%0.2f' % float(s)))
-        k_value_scale.set(0.1)
-        k_value_scale.grid(row=5, column=2, padx=float(label_frame.winfo_reqwidth()) * 0.05,
+        self.data.k_value_scale.set(0.1)
+        self.data.k_value_scale.grid(row=5, column=2, padx=float(label_frame.winfo_reqwidth()) * 0.05,
                                      pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3)
         
         k_value_val_label = ttk.Label(label_frame, textvariable=self.data.k_val)
@@ -201,7 +201,7 @@ class SetConfigFrame(ttk.Frame):
 
         enforce_mask_wearing_scale = ttk.Scale(master=label_frame, orient='horizontal', from_=0, to=1000,
                                            length=float(label_frame.winfo_reqwidth()) * 0.35, command=lambda s:self.data.mask_mandate_starting_at_val.set('%d' % int(float(s))))
-        enforce_mask_wearing_scale.set(200)
+        enforce_mask_wearing_scale.set(320)
         enforce_mask_wearing_scale.grid(row=7, column=2, padx=float(label_frame.winfo_reqwidth()) * 0.05,
                                      pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3)
         
