@@ -228,7 +228,10 @@ class SetConfigFrame(ttk.Frame):
         mortality_rate_set_button = ttk.Button(label_frame, text="Set Mortality Rate", command=self.openMortalityWindow)
         mortality_rate_set_button.grid(row=9, column=1, pady=float(label_frame.winfo_reqheight()) * 0.01,  columnspan=3, sticky='we', padx=(float(label_frame.winfo_reqwidth()) * 0.03,float(label_frame.winfo_reqwidth()) * 0.03))
         
-    def openMaskWindow(self): 
+    def openMaskWindow(self):
+        """
+        Top level window with sliders to adjust the mask effectiveness related configuration
+        """
 
         newWindow = tk.Toplevel(self.master) 
         
@@ -293,7 +296,9 @@ class SetConfigFrame(ttk.Frame):
         n95_mask_effectiveness_val_label.grid(row=4, column=1, columnspan=1, sticky=tk.W)
 
     def openMortalityWindow(self): 
-
+        """
+        Top level window to adjust the mortality related configuration
+        """
         newWindow = tk.Toplevel(self.master) 
         newWindow.resizable(width=False, height=False)
 

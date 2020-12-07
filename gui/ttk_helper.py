@@ -18,7 +18,9 @@ class ToolTip(object):
         self.x = self.y = 0
 
     def showtip(self):
-        "Display text in tooltip window"
+        """
+        Display text in tooltip window
+        """
         if self.tipwindow or not self.text:
             return
         x, y, cx, cy = self.widget.bbox("insert")
