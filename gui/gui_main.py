@@ -35,7 +35,7 @@ def main():
     # root window widget
     root = tk.Tk() 
     
-    photo = tk.PhotoImage(file = "assets\icon-512.png")
+    photo = tk.PhotoImage(file = "assets/icon-512.png")
     root.iconphoto(False, photo)
     root.resizable(width=False,height=False)
 

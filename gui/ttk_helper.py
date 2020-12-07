@@ -5,7 +5,9 @@ Created on 5th Dec, 2020
 @author Pallak Singh
 """
 from tkinter import *
+from PIL import Image
 import tkinter.ttk as ttk
+
 class ToolTip(object):
 
     def __init__(self, widget, text):
@@ -37,3 +39,26 @@ class ToolTip(object):
         self.tipwindow = None
         if tw:
             tw.destroy()
+    
+def flattenAlpha( img):
+    alpha = img.split()[-1]  # Pull off the alpha layer
+    ab = alpha.tobytes()  # Original 8-bit alpha
+
+    checked = []  # Create a new array to store the cleaned up alpha layer bytes
+
+    # Walk through all pixels and set them either to 0 for transparent or 255 for opaque fancy pants
+    transparent = 50  # change to suit your tolerance for what is and is not transparent
+
+    p = 0
+    for pixel in range(0, len(ab)):
+        if ab[pixel] < transparent:
+            checked.append(0)  # Transparent
+        else:
+            checked.append(255)  # Opaque
+        p += 1
+
+    mask = Image.frombytes('L', img.size, bytes(checked))
+
+    img.putalpha(mask)
+
+    return img

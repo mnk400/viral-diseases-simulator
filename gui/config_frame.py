@@ -240,7 +240,7 @@ class SetConfigFrame(ttk.Frame):
         
         newWindow.resizable(width=False, height=False)
 
-        photo = tk.PhotoImage(file = "assets\icon-512.png")
+        photo = tk.PhotoImage(file = "assets/icon-512.png")
         newWindow.iconphoto(False, photo)
         newWindow.resizable(width=False,height=False)
 
@@ -303,7 +303,7 @@ class SetConfigFrame(ttk.Frame):
         newWindow = tk.Toplevel(self.master) 
         newWindow.resizable(width=False, height=False)
 
-        photo = tk.PhotoImage(file = "assets\icon-512.png")
+        photo = tk.PhotoImage(file = "assets/icon-512.png")
         newWindow.iconphoto(False, photo)
         newWindow.resizable(width=False,height=False)
 

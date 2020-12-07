@@ -7,10 +7,10 @@ Created on 2nd Dec, 2020
 
 import tkinter as tk
 from tkinter import Widget, ttk
-import gui.ttk_helper
 import webbrowser
-from gui.ttk_helper import ToolTip
+from gui.ttk_helper import ToolTip, flattenAlpha
 from src.visualization import Visualization
+from sys import platform
 from src.population_util import PopulationUtil
 from src.config_util import ConfigUtil
 from PIL import Image, ImageTk
@@ -102,7 +102,7 @@ class ButtonsFrame(ttk.Frame):
         self.newWindow = tk.Toplevel(self.master) 
         self.newWindow.resizable(width=False, height=False)
 
-        photo = tk.PhotoImage(file = "assets\icon-512.png")
+        photo = tk.PhotoImage(file = "assets/icon-512.png")
         self.newWindow.iconphoto(False, photo)
         self.newWindow.resizable(width=False,height=False)
 
@@ -288,7 +288,7 @@ class ButtonsFrame(ttk.Frame):
         newWindow = tk.Toplevel(self.master) 
         newWindow.resizable(width=False, height=False)
 
-        photo = tk.PhotoImage(file = "assets\icon-512.png")
+        photo = tk.PhotoImage(file = "assets/icon-512.png")
         newWindow.iconphoto(False, photo)
         newWindow.resizable(width=False,height=False)
 
@@ -297,28 +297,16 @@ class ButtonsFrame(ttk.Frame):
         window_frame.grid(row=0,column=0)
         style.configure("Bold.TLabel", font=("Helvetica", 19, "bold"))
 
-        label_frame_top_left = ttk.LabelFrame(master = window_frame, height = self.height*2, width = self.width*2)
-        label_frame_top_left.grid(row = 0, column = 0, columnspan=1, padx=(self.width * 0.03, self.width * 0.01))
-
         label_frame_top_right = ttk.LabelFrame(master = window_frame, height = int(self.height * 0.4), width = self.width*2)
-        label_frame_top_right.grid(row = 0, column = 1, columnspan=1, padx=(self.width * 0.01, self.width * 0.03), sticky=tk.N)
+        label_frame_top_right.grid(row = 0, column = 0, columnspan=1, padx=(self.width * 0.03, self.width * 0.03), sticky=tk.N+tk.W)
 
         label_frame_bottom = ttk.LabelFrame(master = window_frame, height = self.height*2, width = self.width*2)
         label_frame_bottom.grid(row = 1, column = 0, columnspan=2, padx=(self.width * 0.03, self.width * 0.03), pady=(0,self.height * 0.01), sticky=tk.N+tk.W)
 
-        image1 = Image.open("assets\icon-512.png")
-        image1 = image1.resize((int(self.height * 0.25), int(self.height * 0.25)), Image.ANTIALIAS)
-        test = ImageTk.PhotoImage(image1)
-
-        label1 = tk.Label(master=label_frame_top_left,image=test)
-        label1.image = test
-
-        label1.grid(row=0,column=0, padx=(self.width * 0.03, self.width * 0.03), pady=(self.width * 0.03, self.width * 0.03))
-        
         title = ttk.Label(master=label_frame_top_right,text="Virus Simulator", style="Bold.TLabel")
         title.grid(row=0, column=0, columnspan=1, padx=(self.width * 0.03, self.width * 0.03), sticky=tk.W)
         
-        description = ttk.Label(master=label_frame_top_right,text="Virus Simulation system and an accompanying GUI.\nBuild to visualize the spread of a virus based on various\ndifferent variable factors.")
+        description = ttk.Label(master=label_frame_top_right,text="Virus Simulation system and an accompanying GUI.\nBuild to visualize the spread of a virus based on various different variable factors.")
         description.grid(row=1, column=0, columnspan=1, padx=(self.width * 0.03, self.width * 0.03), pady=self.height * 0.02, sticky=tk.W)
         
         sentence1 = ttk.Label(master=label_frame_top_right,text="Published under MIT. Built by,\nManik Kumar, Pallak Singh, and Yatish Pitta")
