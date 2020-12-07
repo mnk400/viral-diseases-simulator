@@ -1,7 +1,6 @@
 <img align="left" src="https://i.imgur.com/dgN1Fnh.png" width=100>
-<p style="font-size:40px;font-weight: bold;">&nbsp&nbsp Viral Diseases Simulator</p>  
 
-#
+# Viral Diseases Simulator
 
 ![Build Status](https://github.com/mnk400/virussim/workflows/Build%20Status/badge.svg)
 
@@ -9,7 +8,10 @@ This is a virus simulation system built as the semester project of INFO6205 FALL
 
 #
 
-![](example.gif)
+![](assets/example.gif)
+![](assets/screenshot.png)
+
+#
 
 ## Using pre-built binaries
 ### macOS
