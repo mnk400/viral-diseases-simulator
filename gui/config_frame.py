@@ -60,10 +60,10 @@ class SetConfigFrame(ttk.Frame):
         population_label.bind("<Leave>", lambda event: self.leave(event = event, tooltip = popToolTip))
 
         population_scale = ttk.Scale(master=label_frame, orient='horizontal', from_=200, to=3000, 
-                                    length=float(label_frame.winfo_reqwidth()) * 0.35, command=lambda s:self.data.population_val.set('%d' % int(float(s))))
+                                     command=lambda s:self.data.population_val.set('%d' % int(float(s))))
         population_scale.set(1000)
         population_scale.grid(row=0, column=2, padx=float(label_frame.winfo_reqwidth()) * 0.05,
-                              pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3)
+                              pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3,sticky=tk.W+tk.E)
 
         population_scale_val_label = ttk.Label(label_frame, textvariable=self.data.population_val)
         # population_scale_val_label.place(in_=population_scale, bordermode='outside', x=0, y=0, anchor='s')
@@ -79,11 +79,10 @@ class SetConfigFrame(ttk.Frame):
         social_distancing_label.bind("<Enter>", lambda event: self.enter(event = event, tooltip = socToolTip))
         social_distancing_label.bind("<Leave>", lambda event: self.leave(event = event, tooltip = socToolTip))
 
-        social_distance_scale = ttk.Scale(master=label_frame, orient='horizontal', from_=0, to=100, 
-                                         length=float(label_frame.winfo_reqwidth()) * 0.35, command=lambda s:self.data.social_distancing_val.set('%d%%' % int(float(s))))
+        social_distance_scale = ttk.Scale(master=label_frame, orient='horizontal', from_=0, to=100, command=lambda s:self.data.social_distancing_val.set('%d%%' % int(float(s))))
         social_distance_scale.set(50)
         social_distance_scale.grid(row=1, column=2, padx=float(label_frame.winfo_reqwidth()) * 0.05,
-                                   pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3)
+                                   pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3,sticky=tk.W+tk.E)
 
         distancing_val_label = ttk.Label(label_frame, textvariable=self.data.social_distancing_val)
 
@@ -99,11 +98,10 @@ class SetConfigFrame(ttk.Frame):
         hostpital_capacity_label.bind("<Enter>", lambda event: self.enter(event = event, tooltip = hosToolTip))
         hostpital_capacity_label.bind("<Leave>", lambda event: self.leave(event = event, tooltip = hosToolTip))
 
-        hospital_capacity_scale = ttk.Scale(master=label_frame, orient='horizontal', from_=0, to=100,
-                                           length=float(label_frame.winfo_reqwidth()) * 0.35, command=lambda s:self.data.hospital_capacity_val.set('%d%%' % int(float(s))))
+        hospital_capacity_scale = ttk.Scale(master=label_frame, orient='horizontal', from_=0, to=100, command=lambda s:self.data.hospital_capacity_val.set('%d%%' % int(float(s))))
         hospital_capacity_scale.set(20)
         hospital_capacity_scale.grid(row=2, column=2, padx=float(label_frame.winfo_reqwidth()) * 0.05,
-                                     pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3)
+                                     pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3,sticky=tk.W+tk.E)
         
         hospital_capacity_val_label = ttk.Label(label_frame, textvariable=self.data.hospital_capacity_val)
 
@@ -119,11 +117,10 @@ class SetConfigFrame(ttk.Frame):
         recovery_time_label.bind("<Enter>", lambda event: self.enter(event = event, tooltip = recoveryToolTip))
         recovery_time_label.bind("<Leave>", lambda event: self.leave(event = event, tooltip = recoveryToolTip))
 
-        self.data.recovery_time_scale = ttk.Scale(master=label_frame, orient='horizontal', from_=50, to=500,
-                                           length=float(label_frame.winfo_reqwidth()) * 0.35, command=lambda s:self.data.recovery_time_val.set('%d' % int(float(s))))
+        self.data.recovery_time_scale = ttk.Scale(master=label_frame, orient='horizontal', from_=50, to=500, command=lambda s:self.data.recovery_time_val.set('%d' % int(float(s))))
         self.data.recovery_time_scale.set(120)
         self.data.recovery_time_scale.grid(row=3, column=2, padx=float(label_frame.winfo_reqwidth()) * 0.05,
-                                     pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3)
+                                     pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3,sticky=tk.W+tk.E)
         
         recovery_time_val_label = ttk.Label(label_frame, textvariable=self.data.recovery_time_val)
 
@@ -139,11 +136,10 @@ class SetConfigFrame(ttk.Frame):
         r_value_label.bind("<Enter>", lambda event: self.enter(event = event, tooltip = rValueToolTip))
         r_value_label.bind("<Leave>", lambda event: self.leave(event = event, tooltip = rValueToolTip))
 
-        self.data.r_value_scale = ttk.Scale(master=label_frame, orient='horizontal', from_=0, to=10,
-                                           length=float(label_frame.winfo_reqwidth()) * 0.35, command=lambda s:self.data.r_val.set('%0.2f' % float(s)))
+        self.data.r_value_scale = ttk.Scale(master=label_frame, orient='horizontal', from_=0, to=10, command=lambda s:self.data.r_val.set('%0.2f' % float(s)))
         self.data.r_value_scale.set(3.00)
         self.data.r_value_scale.grid(row=4, column=2, padx=float(label_frame.winfo_reqwidth()) * 0.05,
-                                     pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3)
+                                     pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3,sticky=tk.W+tk.E)
         
         r_value_val_label = ttk.Label(label_frame, textvariable=self.data.r_val)
 
@@ -159,11 +155,10 @@ class SetConfigFrame(ttk.Frame):
         k_value_label.bind("<Enter>", lambda event: self.enter(event = event, tooltip = kValueToolTip))
         k_value_label.bind("<Leave>", lambda event: self.leave(event = event, tooltip = kValueToolTip))
 
-        self.data.k_value_scale = ttk.Scale(master=label_frame, orient='horizontal', from_=0, to=3,
-                                           length=float(label_frame.winfo_reqwidth()) * 0.35, command=lambda s:self.data.k_val.set('%0.2f' % float(s)))
+        self.data.k_value_scale = ttk.Scale(master=label_frame, orient='horizontal', from_=0, to=3, command=lambda s:self.data.k_val.set('%0.2f' % float(s)))
         self.data.k_value_scale.set(0.1)
         self.data.k_value_scale.grid(row=5, column=2, padx=float(label_frame.winfo_reqwidth()) * 0.05,
-                                     pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3)
+                                     pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3,sticky=tk.W+tk.E)
         
         k_value_val_label = ttk.Label(label_frame, textvariable=self.data.k_val)
 
@@ -180,11 +175,10 @@ class SetConfigFrame(ttk.Frame):
         enforce_social_distancing_label.bind("<Enter>", lambda event: self.enter(event = event, tooltip = enforceSocToolTip))
         enforce_social_distancing_label.bind("<Leave>", lambda event: self.leave(event = event, tooltip = enforceSocToolTip))
 
-        enforce_social_distancing_scale = ttk.Scale(master=label_frame, orient='horizontal', from_=0, to=1000,
-                                           length=float(label_frame.winfo_reqwidth()) * 0.35, command=lambda s:self.data.social_distancing_starting_at_val.set('%d' % int(float(s))))
+        enforce_social_distancing_scale = ttk.Scale(master=label_frame, orient='horizontal', from_=0, to=1000, command=lambda s:self.data.social_distancing_starting_at_val.set('%d' % int(float(s))))
         enforce_social_distancing_scale.set(200)
         enforce_social_distancing_scale.grid(row=6, column=2, padx=float(label_frame.winfo_reqwidth()) * 0.05,
-                                     pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3)
+                                     pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3, sticky=tk.W+tk.E)
         
         enforce_social_distancing_val_label = ttk.Label(label_frame, textvariable=self.data.social_distancing_starting_at_val)
         enforce_social_distancing_val_label.grid(row=6, column=1, columnspan=1, sticky=tk.W)
@@ -219,7 +213,7 @@ class SetConfigFrame(ttk.Frame):
         mask_effectiveness_label.bind("<Leave>", lambda event: self.leave(event = event, tooltip = maskEffToolTip))
 
         mask_effectiveness_set_button = ttk.Button(label_frame, text="Set Mask Effectiveness", command=self.openMaskWindow)
-        mask_effectiveness_set_button.grid(row=8, column=2, pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3, sticky='we')
+        mask_effectiveness_set_button.grid(row=8, column=1, pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3, sticky='we', padx=(float(label_frame.winfo_reqwidth()) * 0.03,float(label_frame.winfo_reqwidth()) * 0.03))
 
         #Set mortality rate
         mortality_rate_label = ttk.Label(master=label_frame,  text='Mortality Rate:')
@@ -232,7 +226,7 @@ class SetConfigFrame(ttk.Frame):
         mortality_rate_label.bind("<Leave>", lambda event: self.leave(event = event, tooltip = mortalityRateToolTip))
 
         mortality_rate_set_button = ttk.Button(label_frame, text="Set Mortality Rate", command=self.openMortalityWindow)
-        mortality_rate_set_button.grid(row=9, column=2, pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3, sticky='we')
+        mortality_rate_set_button.grid(row=9, column=1, pady=float(label_frame.winfo_reqheight()) * 0.01,  columnspan=3, sticky='we', padx=(float(label_frame.winfo_reqwidth()) * 0.03,float(label_frame.winfo_reqwidth()) * 0.03))
         
     def openMaskWindow(self):
         """
