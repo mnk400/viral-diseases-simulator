@@ -99,6 +99,10 @@ class ButtonsFrame(ttk.Frame):
                                     pady=float(self.label_frame.winfo_reqheight()) * 0.02)
     
     def info_window(self):
+        """
+        Top Level window showing the set configuration and the start button for the simulation;
+        Window is updated to show live simulation;
+        """
         self.newWindow = tk.Toplevel(self.master) 
         self.newWindow.resizable(width=False, height=False)
 
@@ -114,7 +118,7 @@ class ButtonsFrame(ttk.Frame):
         label_frame_top = ttk.LabelFrame(master = window_frame, labelwidget=label_frame_label, height = self.height*2, width = self.width*2)
         label_frame_top.grid(row = 0, column = 0, columnspan=1, pady=self.height * 0.02, padx=(self.width * 0.03, self.width * 0.03))
         
-
+        # Checking the current simulation mode
         if self.simulation_mode.get() == 1:
             initial_label_text = "Rendering for the following settings"
         else:
@@ -192,6 +196,9 @@ class ButtonsFrame(ttk.Frame):
                                     pady=float(self.label_frame.winfo_reqheight()) * 0.02)
 
     def load_covid_data(self):
+        """
+        Method to load config data of the COVID-19 virus
+        """
         config_util = ConfigUtil("config/config.ini")
 
         self.data.k_val.set(str(config_util.getFloatValue("covid.stats","k_value")))
@@ -217,6 +224,9 @@ class ButtonsFrame(ttk.Frame):
         self.update() 
 
     def load_influenza_data(self):
+        """
+        Method to load config data of the influenza virus
+        """
         config_util = ConfigUtil("config/config.ini")
 
         self.data.k_val.set(str(config_util.getFloatValue("influenza.stats","k_value")))
@@ -242,6 +252,10 @@ class ButtonsFrame(ttk.Frame):
         self.update()
 
     def start(self):
+        """
+        Starts the simulation with the requested configuration;
+        Updates the top level window with the simulation in live mode, generates the video file of the simulation in render mode;
+        """
         config_util = ConfigUtil("config/config.ini")
         if self.simulation_mode.get() == 1:
             self.start_sim_button["text"] = "Rendering. Please Wait"
@@ -285,6 +299,9 @@ class ButtonsFrame(ttk.Frame):
             self.start_sim_button["text"] = "Done Rendering."
     
     def about_me(self):
+        """
+        About me window
+        """
         newWindow = tk.Toplevel(self.master) 
         newWindow.resizable(width=False, height=False)
 
