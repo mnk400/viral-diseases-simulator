@@ -39,8 +39,8 @@ def main():
     root.iconphoto(False, photo)
     root.resizable(width=False,height=False)
 
-    height = root.winfo_screenheight() * 0.38
-    width = root.winfo_screenwidth() * 0.45
+    height = root.winfo_screenheight() * 0.46
+    width = root.winfo_screenwidth() * 0.5
     
     # Main application frame
     app = Application(root, height, width)

@@ -51,7 +51,7 @@ class ButtonsFrame(ttk.Frame):
         self.label_frame.grid_propagate(0)
 
         label_frame_label2 = ttk.Label(text="Simulation Mode")
-        label_frame2 = ttk.LabelFrame(master=self.label_frame, labelwidget=label_frame_label2, height=float(self.label_frame.winfo_reqheight())/4.6, width=float(self.label_frame.winfo_reqwidth())*0.9)
+        label_frame2 = ttk.LabelFrame(master=self.label_frame, labelwidget=label_frame_label2, height=float(self.label_frame.winfo_reqheight())/4.8, width=float(self.label_frame.winfo_reqwidth())*0.9)
         label_frame2.grid(row=0, column=0, columnspan=1, sticky='ew', padx=(float(self.label_frame.winfo_reqwidth()) * 0.05,float(self.label_frame.winfo_reqwidth()) * 0.205))
         label_frame2.grid_propagate(0)
 
@@ -63,7 +63,7 @@ class ButtonsFrame(ttk.Frame):
         rb2.grid(row=1,column=0,columnspan=1, padx=float(self.label_frame.winfo_reqwidth()) * 0.10, pady=float(self.label_frame.winfo_reqheight())*0.005, sticky=tk.W)
 
         label_frame_label3 = ttk.Label(text="Preventive Options")
-        label_frame3 = ttk.LabelFrame(master=self.label_frame, labelwidget=label_frame_label3, height=float(self.label_frame.winfo_reqheight())/4.6, width=float(self.label_frame.winfo_reqwidth())*0.9)
+        label_frame3 = ttk.LabelFrame(master=self.label_frame, labelwidget=label_frame_label3, height=float(self.label_frame.winfo_reqheight())/4.8, width=float(self.label_frame.winfo_reqwidth())*0.9)
         label_frame3.grid(row=1, column=0, columnspan=1, sticky='ew', padx=(float(self.label_frame.winfo_reqwidth()) * 0.05,float(self.label_frame.winfo_reqwidth()) * 0.205))
         label_frame3.grid_propagate(0)
 

@@ -18,6 +18,7 @@ class Visualization():
         self.putil = population_util
         mpl.rcParams['toolbar'] = 'None' 
         self.fig = plt.figure(figsize=(6.5,7.5))
+        self.fig.canvas.set_window_title('Simulation')
         spec = gridspec.GridSpec(ncols=1, nrows=3,height_ratios=[2, 1, 0.5])
         self.ax = self.fig.add_subplot(spec[0])
         self.ax1 = self.fig.add_subplot(spec[1])
