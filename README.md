@@ -22,7 +22,7 @@ This is a virus simulation system built as the semester project of INFO6205 FALL
 [Download](link) for the portable windows version. Run by finding and double clicking "Viral Disease Simulator.exe" in the directory.
 
 ### Linux
-[Download](link) for the portable binary for linux. Run by naviagting to the downloaded directory in commandline, and running `./"Viral Disease Simulator`.
+[Download](link) for the portable binary for linux. Run by naviagting to the downloaded directory in commandline, and running `./"Viral Disease Simulator"`.
 
 ## Running from codebase
 Note: For macOS, you need a python version with tkinter version 6.8 or greater, or use the --disable-UI flag to disable UI completely. I recommend python3.8 or above from the [python.org](https://www.python.org/downloads/release/python-386/), please note python versions from brew WILL not work. 

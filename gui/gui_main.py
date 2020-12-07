@@ -38,13 +38,13 @@ def main():
     photo = tk.PhotoImage(file = "assets/icon-512.png")
     root.iconphoto(False, photo)
     root.resizable(width=False,height=False)
-    
+
     height = 420
     width = 750
     
     # Main application frame
     app = Application(root, height, width)
-    app.master.title('Virus Simulator')
+    app.master.title('Viral Diseases Simulator')
     
 
     # Frame holding configuration frame - left
