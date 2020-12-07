@@ -143,8 +143,8 @@ class Visualization():
             if frame == self.putil.enforce_social_distance_at:
                 self.social_distancing_info = "Active"
 
-            self.text.set_text("%i \n%i \n%s \n%s \n%s \n%s" % (frame,len(infected_x), str(len(healthy_x)) + " or " + str(len(healthy_x)*100/self.putil.size) + "%",
-                                str(len(immune_x)) + " or " + str(len(immune_x)*100/self.putil.size) + "%", str(len(dead_x)) + " or " + str(len(dead_x)*100/self.putil.size) + "%",
+            self.text.set_text("%i \n%i \n%s \n%s \n%s \n%s" % (frame,len(infected_x), str(len(healthy_x)) + " or " + str(round(len(healthy_x)*100/self.putil.size,1)) + "%",
+                                str(len(immune_x)) + " or " + str(round(len(immune_x)*100/self.putil.size,1)) + "%", str(len(dead_x)) + " or " + str(round(len(dead_x)*100/self.putil.size,1)) + "%",
                                 self.healthcare_status))
             self.text2.set_text("%s \n%s \n%s \n%s \n%s\n" % (self.putil.size, self.mask_wearing_info, self.social_distancing_info, self.social_distancing_num , total_infected))
             self.scat.set_offsets(data1)
