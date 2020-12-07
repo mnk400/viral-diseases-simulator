@@ -7,9 +7,10 @@
 This is a virus simulation system built as the semester project of INFO6205 FALL 2020.
 
 #
-
-![](assets/example.gif)
-![](assets/screenshot.png)
+<p align="center">
+<img src="assets/example.gif" width=600>
+<img  src="assets/screenshot.png" width=600>
+</p>
 
 #
 
