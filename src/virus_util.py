@@ -1,9 +1,14 @@
+'''
+Created on Nov 29, 2020
+@author: Pallak Singh
+'''
 from pandas.core.tools.numeric import to_numeric
-from config_util import ConfigUtil
-from person import Person
+from src.config_util import ConfigUtil
+from src.population import Population
 import numpy as np
 import math
-import random
+from time import sleep
+import src.person_properties_util as index
 
 class Virus():
     """
@@ -11,66 +16,43 @@ class Virus():
     infecting, healing and dying
     """    
 
-    def __init__(self):
+    def __init__(self, infection_range: float, recovery_time: int, total_healthcare_capacity: int):
         """
         The constructor is responsible for loading the virus statistics from the config file
         """  
-        config = ConfigUtil("config/config.ini")
-        self.infection_range        = config.getFloatValue("virus.stats", "infection_range")
-        self.k_value                = config.getFloatValue("virus.stats", "k_value")
-        self.reproduction_rate      = config.getFloatValue("virus.stats", "reproduction_rate")
-        self.mortality_rate         = config.getFloatValue("virus.stats", "mortality_rate")
-        self.mask_effectiveness     = config.getFloatValue("virus.stats", "mask_effectiveness")
-        self.recovery_time          = config.getFloatValue("virus.stats", "recovery_time")
-
-    def infect(self, persons: Person):
-
-        #Store the persons dataframe in a temporary variable
-        tmp_df = persons.get_dataframe()
+        self.infection_range           = infection_range
+        self.recovery_time             = recovery_time
+        self.total_healthcare_capacity = total_healthcare_capacity
+        
+    def infect(self, population: Population, frame):
 
         #Get the index of all the people who were infected in the previous step
-        infected_idx = persons.get_all_infected()
-        
-        infected_to_be = []
-        print("Number of infected: " + str(len(infected_idx)))
-        #Get the index of all the people within the infection range of the infected persons
+        infected_idx = population.get_all_infected()
+        persons = population.get_person()
+
+        infected_counter = 0
         for idx in infected_idx:
-            x_bounds = [tmp_df.loc[idx]['x_axis'] - math.sqrt(self.infection_range), 
-                            tmp_df.loc[idx]['x_axis'] + math.sqrt(self.infection_range)]
-            y_bounds = [tmp_df.loc[idx]['y_axis'] - math.sqrt(self.infection_range), 
-                            tmp_df.loc[idx]['y_axis'] + math.sqrt(self.infection_range)]
-            
-            #Find the nearby people in the infected person's range
-            nearby_idx = self.find_nearby(persons, x_bounds, y_bounds)
+            infected_counter += 1
+            if(population.get_time_infected(int(idx[0]), frame) >= self.recovery_time):
+                population = self.die_or_immune(population,int(idx[0]))
+     
+            x_bounds = [persons[int(idx[0])][index.x_axis] - math.sqrt(self.infection_range), persons[int(idx[0])][index.x_axis] + math.sqrt(self.infection_range)]
+            y_bounds = [persons[int(idx[0])][index.y_axis] - math.sqrt(self.infection_range), persons[int(idx[0])][index.y_axis] + math.sqrt(self.infection_range)]
+            # print(population.get_time_infected(int(idx[0]), frame))
+            tmp = self.find_nearby(persons, x_bounds, y_bounds)
+            for i in tmp:
+                chance = np.random.uniform(low = 0.0001, high = 1)
+                if chance < persons[int(i)][index.susceptibility] and persons[int(idx[0])][index.g_value] > 0 :
+                    population.persons[int(i)][9] = 1
+                    population.set_infected_at(int(i), frame)
+                    population.persons[int(idx[0])][index.g_value] -= 1
+                    if(len(population.persons[population.persons[:,index.hospitalized] == 1]) < self.total_healthcare_capacity):
+                        population.persons[int(i)][index.hospitalized] = 1
+                        
+        return population
 
-            #Check other healthy and infected in the infection range
-            healthy_index = []
-            infected_index = []       #1 person is already infected
-            
-            for nearby_people in nearby_idx:
-                if tmp_df.loc[nearby_people]['current_state'] == 1:
-                    infected_index.append(nearby_people)
-                elif tmp_df.loc[nearby_people]['current_state'] == 0:
-                    healthy_index.append(nearby_people)
-
-
-            #effective_g_value = int(np.sum(tmp_df.iloc[infected_index]['g_value'].to_numpy()))
-            effective_g_value = 3
-
-            if(len(healthy_index) <= effective_g_value):
-                infected_to_be += healthy_index
-            elif(len(healthy_index) > effective_g_value):
-                infected_to_be += random.sample(healthy_index,effective_g_value)
-        
-        infected_to_be = set(infected_to_be)
-        print("Number of people to infect in this turn : " + str(len(infected_to_be)))
-            
-        tmp_df.loc[list(infected_to_be), 'current_state'] = 1
-        #print(tmp_df.loc[infected_to_be])
-        return tmp_df
-                
     
-    def find_nearby(self, person: Person, x_bounds: list, y_bounds: list) -> list:
+    def find_nearby(self, persons: np.ndarray, x_bounds: list, y_bounds: list) -> list:
         """
         Find the nearby per
 
@@ -88,12 +70,50 @@ class Virus():
         list
             [description]
         """        
-        tmp_df = person.get_dataframe()
-        filter1 = tmp_df['x_axis'].gt(x_bounds[0])
-        filter2 = tmp_df['x_axis'].lt(x_bounds[1])
-        filter3 = tmp_df['y_axis'].gt(y_bounds[0])
-        filter4 = tmp_df['y_axis'].lt(y_bounds[1])
         
-        index_list = tmp_df.index[filter1 & filter2 & filter3 & filter4].tolist()       
-        return index_list
+        selected_rows = persons[:,0][(x_bounds[0]<persons[:, index.x_axis]) &
+                                        (x_bounds[1]>persons[:, index.x_axis]) &
+                                        (y_bounds[0]<persons[:, index.y_axis]) &
+                                        (y_bounds[1]>persons[:, index.y_axis]) &
+                                        (persons[:, index.current_state] == 0) &
+                                        (persons[:, index.current_state] == 0) &
+                                        (persons[:,index.social_distance] == 0)
+                                    ]
+                                    
+        return selected_rows
+
+    def die_or_immune(self, population: Population, infected_person_idx: int) -> bool:
+        """
+        [summary]
+
+        Parameters
+        ----------
+        infected_person_idx         : np.array
+            [description]
+        healthcare_facility_full    : bool
+            [description]
+
+        Returns
+        -------
+        bool
+            [description]
+        """ 
+        chance = np.random.uniform(low = 0.001, high = 1)
+        if population.persons[infected_person_idx][index.hospitalized] == 1: 
+            population.persons[infected_person_idx][index.hospitalized] = 3
+            if(chance < population.persons[infected_person_idx][index.mortality_rate]):
+                population.persons[infected_person_idx][index.current_state] = 3
+            else:
+                population.persons[infected_person_idx][index.current_state] = 2
+        else:
+            #print('here')
+            if(chance < population.persons[infected_person_idx][index.mortality_rate] + 0.2):
+                population.persons[infected_person_idx][index.current_state] = 3
+            else:
+                population.persons[infected_person_idx][index.current_state] = 2
+        return population
+
+        
+
+    
     

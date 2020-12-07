@@ -9,7 +9,8 @@ Created on Jan 22, 2020
 import configparser
 import os
 import logging
-
+import json
+from pathlib import Path
 # Calling and initializing a logger instance
 logging.getLogger("configlog")                          
 
@@ -44,6 +45,7 @@ class ConfigUtil(object):
         ----------
         section_str : str
             The section in the configuration file to get the value from
+            
         key_str : str
             The corresponding key to get the value from
 
@@ -104,6 +106,25 @@ class ConfigUtil(object):
             The float value corresponding to the section and key
         """ 
         return float(self.getValue(section_str, key_str))
+
+    def getDictionary(self, section_str, key_str) -> dict:
+        """
+        Responsible for returning float values from the configuration file, throws an exception
+        if the value is not a float
+
+        Parameters
+        ----------
+        section_str : str
+            The section in the configuration file to get the value from
+        key_str : str
+            The corresponding key to get the value from
+
+        Returns
+        -------
+        dict
+            The dictionary corresponding to the section and key
+        """ 
+        return json.loads(self.getValue(section_str, key_str))
 
     def getBooleanValue(self, section_str, key_str) -> bool:
         """
