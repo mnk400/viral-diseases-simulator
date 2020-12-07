@@ -56,7 +56,8 @@ class DataStore:
 
     @staticmethod
     def get_instance():
-       """ Static method to fetch the current instance.
+       """
+       Static method to fetch the current instance
        """
        if not DataStore.__instance__:
            DataStore()
