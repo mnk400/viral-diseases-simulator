@@ -31,7 +31,7 @@ class ConfigUtil(object):
             Relative path to the configuration file
         """        
         self.parser = configparser.ConfigParser()
-        self.filepath = Path(__file__).parent.parent / path_param
+        self.filepath = path_param
 
         # Path to the configuration file from current dir
         self.configLoaded = False
