@@ -16,19 +16,19 @@ a = Analysis(['main.py'],
              win_no_prefer_redirects=False,
              win_private_assemblies=False,
              cipher=block_cipher,
-             noarchive=True)
+             noarchive=False)
 pyz = PYZ(a.pure, a.zipped_data,
              cipher=block_cipher)
 exe = EXE(pyz,
           a.scripts,
-          [('v', None, 'OPTION')],
+          [],
           exclude_binaries=True,
-          name='main',
-          debug=True,
+          name='Viral Disease Simulator',
+          debug=False,
           bootloader_ignore_signals=False,
           strip=False,
           upx=True,
-          console=True )
+          console=False , icon='assets\\icon-512.ico')
 coll = COLLECT(exe,
                a.binaries,
                a.zipfiles,
@@ -36,4 +36,4 @@ coll = COLLECT(exe,
                strip=False,
                upx=True,
                upx_exclude=[],
-               name='main')
+               name='Virus Simulator')

@@ -346,7 +346,8 @@ class ButtonsFrame(ttk.Frame):
 
         link2 = ttk.Label(master=label_frame_bottom, text="The Conversation", cursor="hand2", style="Blue.TLabel")
         link2.grid(row=1,column=2, padx=(self.width * 0.02, self.width * 0.02), sticky=tk.W)
-        link2.bind("<Button-1>", lambda e: self.callback("https://theconversation.com/is-the-k-number-the-new-r-number-what-you-need-to-know-140286#:~:text=Dispersion%20parameter%2C%20K&text=For%20the%201918%20influenza%2C%20the,this%20proportion%20rises%20to%2070%25"))
+        link2.bind("<Button-1>", lambda e: self.callback("https://theconversation.com/is-the-k-number-the-new-r-number-what-you-need-to-know-140286#:~:text=Dispersion%20parameter%2C%20K&text=For%20the%201918%20influenza%2C%20the,this%20proportion%20rises%20to%2070%25",
+                                                            "https://theconversation.com/can-surgical-masks-protect-you-from-getting-the-flu-125023#:~:text=The%20study%2C%20published%20in%20JAMA,those%20who%20wore%20the%20N95"))
         
         link3 = ttk.Label(master=label_frame_bottom, text="Freepik", cursor="hand2", style="Blue.TLabel")
         link3.grid(row=2,column=1, padx=(self.width * 0.02, self.width * 0.02), sticky=tk.W,pady=(0,self.height*0.02))
@@ -354,3 +355,7 @@ class ButtonsFrame(ttk.Frame):
     
     def callback(self, link):
         webbrowser.open_new(link)
+
+    def callback(self, link, link2):
+        webbrowser.open_new(link)
+        webbrowser.open_new(link2)
