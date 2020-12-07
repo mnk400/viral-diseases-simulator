@@ -14,7 +14,7 @@ import matplotlib as mpl
 
 class Visualization():
 
-    def __init__(self, population_util: PopulationUtil, render_mode: bool = False):
+    def __init__(self, population_util: PopulationUtil, render_mode: bool = False, render_path ="render"):
         self.putil = population_util
         mpl.rcParams['toolbar'] = 'None' 
         self.fig = plt.figure(figsize=(6.5,7.5))
@@ -33,8 +33,9 @@ class Visualization():
         self.ani = FuncAnimation(self.fig, self.update, interval=5, init_func=self.setup_plot, blit=False)
         if render_mode == True:
             self.ani = FuncAnimation(self.fig, self.update, interval=5, frames=1000, init_func=self.setup_plot, blit=False)
+            render_path = render_path + "/render.mp4"
             print("Rendering...")
-            self.ani.save("render/render.mp4", fps=30, dpi=120)
+            self.ani.save(render_path, fps=30, dpi=120)
             print("Render completed.")
         else:
             plt.show()

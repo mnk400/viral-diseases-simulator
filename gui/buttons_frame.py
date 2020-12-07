@@ -6,7 +6,7 @@ Created on 2nd Dec, 2020
 """
 
 import tkinter as tk
-from tkinter import Widget, ttk
+from tkinter import Widget, ttk, filedialog
 import webbrowser
 from gui.ttk_helper import ToolTip, flattenAlpha
 from src.visualization import Visualization
@@ -36,7 +36,7 @@ class ButtonsFrame(ttk.Frame):
         self.height = height
         self.width = width
         self.data = DataStore.get_instance()
-        
+        self.render_dir = None
         
         self.create_widgets()
 
@@ -190,8 +190,14 @@ class ButtonsFrame(ttk.Frame):
         mortality_rate_label_val = ttk.Label(master=label_frame,text=mortality_string)
         mortality_rate_label_val.grid(row=7, column=1, columnspan=1, padx=float(label_frame.winfo_reqwidth()) * 0.02, pady=float(label_frame.winfo_reqheight()) * 0.01, sticky="wn")
 
+        if self.simulation_mode.get() == 1:
+            self.select_path_button = ttk.Button(master=label_frame, text="Select Directory", command=self.directory_selector)
+            self.select_path_button.grid(row=8,column=0,columnspan=2, sticky='ew', 
+                                    padx=(float(self.label_frame.winfo_reqwidth()) * 0.05,float(self.label_frame.winfo_reqwidth()) * 0.05), 
+                                    pady=float(self.label_frame.winfo_reqheight()) * 0.02)
+
         self.start_sim_button = ttk.Button(master=label_frame, text="Start", command=self.start)
-        self.start_sim_button.grid(row=8,column=0,columnspan=2, sticky='ew', 
+        self.start_sim_button.grid(row=9,column=0,columnspan=2, sticky='ew', 
                                     padx=(float(self.label_frame.winfo_reqwidth()) * 0.05,float(self.label_frame.winfo_reqwidth()) * 0.05), 
                                     pady=float(self.label_frame.winfo_reqheight()) * 0.02)
 
@@ -257,6 +263,10 @@ class ButtonsFrame(ttk.Frame):
         Updates the top level window with the simulation in live mode, generates the video file of the simulation in render mode;
         """
         config_util = ConfigUtil("config/config.ini")
+        if self.render_dir == None:
+            self.start_sim_button["text"] = "Please select a directory"
+            return
+
         if self.simulation_mode.get() == 1:
             self.start_sim_button["text"] = "Rendering. Please Wait"
         self.update()
@@ -293,7 +303,7 @@ class ButtonsFrame(ttk.Frame):
             self.newWindow.destroy()
             Visualization(p_util, render_mode=False)
         else:
-            Visualization(p_util, render_mode=True)
+            Visualization(p_util, render_mode=True, render_path=str(self.render_dir))
         
         if self.simulation_mode.get() == 1:
             self.start_sim_button["text"] = "Done Rendering."
@@ -352,7 +362,11 @@ class ButtonsFrame(ttk.Frame):
         link3 = ttk.Label(master=label_frame_bottom, text="Freepik", cursor="hand2", style="Blue.TLabel")
         link3.grid(row=2,column=1, padx=(self.width * 0.02, self.width * 0.02), sticky=tk.W,pady=(0,self.height*0.02))
         link3.bind("<Button-1>", lambda e: self.callback("https://www.flaticon.com/authors/freepik"))
-    
+
+    def directory_selector(self):
+        self.render_dir = filedialog.askdirectory()
+        print(self.render_dir)
+
     def callback(self, link):
         webbrowser.open_new(link)
 
