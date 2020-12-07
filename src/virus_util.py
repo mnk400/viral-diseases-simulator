@@ -2,12 +2,9 @@
 Created on Nov 29, 2020
 @author: Pallak Singh
 '''
-from pandas.core.tools.numeric import to_numeric
-from src.config_util import ConfigUtil
 from src.population import Population
 import numpy as np
 import math
-from time import sleep
 import src.person_properties_util as index
 
 class Virus():
