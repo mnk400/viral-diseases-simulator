@@ -9,7 +9,6 @@ import tkinter as tk
 from tkinter import Widget, ttk, filedialog
 import webbrowser
 import sys
-from gui.ttk_helper import ToolTip, flattenAlpha
 from src.visualization import Visualization
 from sys import platform
 from src.population_util import PopulationUtil
@@ -201,6 +200,15 @@ class ButtonsFrame(ttk.Frame):
         self.start_sim_button.grid(row=9,column=0,columnspan=2, sticky='ew', 
                                     padx=(float(self.label_frame.winfo_reqwidth()) * 0.05,float(self.label_frame.winfo_reqwidth()) * 0.05), 
                                     pady=float(self.label_frame.winfo_reqheight()) * 0.02)
+        
+        if self.simulation_mode.get() == 1:
+            warning_label_text = "Warning: This feature relies on FFMPEG, it will NOT work if system\ndoes not have FFMPEG installed"
+            
+            if platform == "darwin":
+                warning_label_text += "\n\nDISCLAIMER FOR MAC USERS: For renderings to be stored on the\ndisk either you need to explicitly give disk permissions or start the\napplication using root permission using the following command.\n\"sudo open [path\\to\\applicaton.app]\""
+            warning_label = ttk.Label(master=label_frame,text=warning_label_text)
+            warning_label.grid(row=10, column=0, columnspan=2, padx=float(label_frame.winfo_reqwidth()) * 0.02, pady=float(label_frame.winfo_reqheight()) * 0.01, sticky=tk.W)
+
 
     def load_covid_data(self):
         """
