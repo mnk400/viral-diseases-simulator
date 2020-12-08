@@ -4,7 +4,7 @@
 
 ![Build Status](https://github.com/mnk400/virussim/workflows/Build%20Status/badge.svg)
 
-This is a virus simulation system built as the semester project of INFO6205 FALL 2020.
+This is a virus simulation system built as the semester project of INFO6205 for fall 2020.
 
 #
 <p align="center">
@@ -19,7 +19,7 @@ This is a virus simulation system built as the semester project of INFO6205 FALL
 [Download](https://github.com/mnk400/virussim/releases/tag/v0.1) packaged application for macOS. If the application does not open on double click, open by right clicking the application and then clicking open. This is required because this is not a signed binary.
 
 ### Windows
-[Download](https://github.com/mnk400/virussim/releases/tag/v0.1) for the portable windows version. Run by finding and double clicking "Viral Disease Simulator.exe" in the directory.
+[Download](https://github.com/mnk400/virussim/releases/tag/v0.1) for the portable windows version. Run by finding and double clicking "Viral Disease Simulator.exe" in the directory. If windows shows a warning, please click on "More Info" and then "Run Anyways".
 
 ### Linux
 [Download](https://github.com/mnk400/virussim/releases/tag/v0.1) for the portable binary for linux. Run by naviagting to the downloaded directory in commandline, and running `./"Viral Disease Simulator"`.
@@ -36,3 +36,6 @@ To disable the helper GUI, use --disable-UI flag.
 python main.py --disable-UI
 ```
 This will load all the data from *config/config.ini*.  This will default to *covid.stats* portion of the config when it comes to variables that define the characteristics of a virus(stuff like K or R value). Change the values in the *covid.stats* to change virus characteristics.
+
+## References
+Created by [Manik](https://github.com/mnk400), [Pallak Singh](https://github.com/pally2409), and [Yatish Pitta](https://github.com/yatish1231)
