@@ -11,7 +11,7 @@ class Main(object):
 
     def __init__(self) -> None:
         self.config_util = ConfigUtil("config/config.ini")
-        self.load_config()
+        
 
     def load_config(self) -> None:
         self.k                          = self.config_util.getFloatValue("covid.stats", "k_value")
@@ -31,6 +31,7 @@ class Main(object):
 
     def runNoUI(self) -> None:
         print("Running with no UI, loading data from the config file")
+        self.load_config()
         self.population_util = PopulationUtil(k = self.k, r = self.r, min_age = self.min_age, max_age = self.max_age, size = self.size,
                                 mortality_rate = self.mortality_rate, infection_range = self.infection_range, recovery_time = self.recovery_time,
                                 total_healthcare_capacity = self.total_healthcare_capacity, social_distance_per = self.social_distance_per,
@@ -38,6 +39,15 @@ class Main(object):
                                 mask_wearing_at = self.enforce_mask_wearing_at)
         self.visualize = Visualization(self.population_util, render_mode = False)
     
+    def render(self, path: str) -> None:
+        print("Rendering to " + path)
+        self.load_config()
+        self.population_util = PopulationUtil(k = self.k, r = self.r, min_age = self.min_age, max_age = self.max_age, size = self.size,
+                                mortality_rate = self.mortality_rate, infection_range = self.infection_range, recovery_time = self.recovery_time,
+                                total_healthcare_capacity = self.total_healthcare_capacity, social_distance_per = self.social_distance_per,
+                                mask_effectiveness = self.mask_effectiveness, speed=self.speed, social_distancing_at = self.enforce_social_distance_at,
+                                mask_wearing_at = self.enforce_mask_wearing_at)
+        Visualization(self.population_util, render_mode=True, render_path=path)
     def runUI(self) -> None:
         main()
 
@@ -46,6 +56,9 @@ if __name__ == "__main__":
     m = Main()
     if len(sys.argv) > 1 and sys.argv[1] == "--disable-UI":
         m.runNoUI()
+    elif len(sys.argv) > 1 and sys.argv[1] == "--render":
+        path = sys.argv[2]
+        m.render(path=path)
     else:
         m.runUI()
     

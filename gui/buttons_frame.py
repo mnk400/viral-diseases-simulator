@@ -8,6 +8,7 @@ Created on 2nd Dec, 2020
 import tkinter as tk
 from tkinter import Widget, ttk, filedialog
 import webbrowser
+import sys
 from gui.ttk_helper import ToolTip, flattenAlpha
 from src.visualization import Visualization
 from sys import platform
@@ -263,7 +264,7 @@ class ButtonsFrame(ttk.Frame):
         Updates the top level window with the simulation in live mode, generates the video file of the simulation in render mode;
         """
         config_util = ConfigUtil("config/config.ini")
-        if self.render_dir == None:
+        if self.data.render_dir == None and self.simulation_mode.get() == 1:
             self.start_sim_button["text"] = "Please select a directory"
             return
 
@@ -302,10 +303,9 @@ class ButtonsFrame(ttk.Frame):
         if self.simulation_mode.get() == 2:
             self.newWindow.destroy()
             Visualization(p_util, render_mode=False)
-        else:
-            Visualization(p_util, render_mode=True, render_path=str(self.render_dir))
-        
+            
         if self.simulation_mode.get() == 1:
+            Visualization(p_util, render_mode=True, render_path=self.data.render_dir)
             self.start_sim_button["text"] = "Done Rendering."
     
     def about_me(self):
@@ -336,7 +336,7 @@ class ButtonsFrame(ttk.Frame):
         description = ttk.Label(master=label_frame_top_right,text="Virus Simulation system and an accompanying GUI.\nBuild to visualize the spread of a virus based on various different variable factors.")
         description.grid(row=1, column=0, columnspan=1, padx=(self.width * 0.03, self.width * 0.03), pady=self.height * 0.02, sticky=tk.W)
         
-        sentence1 = ttk.Label(master=label_frame_top_right,text="Published under MIT license. Built by,\nManik Kumar, Pallak Singh, and Yatish Pitta")
+        sentence1 = ttk.Label(master=label_frame_top_right,text="v0.1. Published under MIT license. Built by,\nManik Kumar, Pallak Singh, and Yatish Pitta")
         sentence1.grid(row=2, column=0, columnspan=1, padx=(self.width * 0.03, self.width * 0.03), pady=self.height * 0.02, sticky=tk.W)
         
         reference = ttk.Label(master=label_frame_bottom,text="References", style="Bold.TLabel")
@@ -364,8 +364,10 @@ class ButtonsFrame(ttk.Frame):
         link3.bind("<Button-1>", lambda e: self.callback("https://www.flaticon.com/authors/freepik"))
 
     def directory_selector(self):
-        self.render_dir = filedialog.askdirectory()
-        print(self.render_dir)
+        self.data.render_dir = filedialog.askdirectory()
+        print("Path Selected" + self.data.render_dir, file = sys.stdout)
+        self.select_path_button["text"] = str(self.data.render_dir)
+        self.start_sim_button["text"] = "Start"
 
     def callback(self, link):
         webbrowser.open_new(link)

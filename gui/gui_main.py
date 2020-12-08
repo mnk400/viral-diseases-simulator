@@ -32,6 +32,7 @@ class Application(ttk.Frame):
         self.pack_propagate(0)
 
 def main():
+    print("Applicaion Launched")
     # root window widget
     root = tk.Tk() 
     

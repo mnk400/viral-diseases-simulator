@@ -11,10 +11,11 @@ import src.person_properties_util as index
 import numpy as np
 from matplotlib.animation import FuncAnimation
 import matplotlib as mpl
+import sys
 
 class Visualization():
 
-    def __init__(self, population_util: PopulationUtil, render_mode: bool = False, render_path ="render"):
+    def __init__(self, population_util: PopulationUtil, render_mode: bool = False, render_path: str ="/Users/pallaksingh/Desktop"):
         self.putil = population_util
         mpl.rcParams['toolbar'] = 'None' 
         self.fig = plt.figure(figsize=(6.5,7.5))
@@ -34,9 +35,9 @@ class Visualization():
         if render_mode == True:
             self.ani = FuncAnimation(self.fig, self.update, interval=5, frames=1000, init_func=self.setup_plot, blit=False)
             render_path = render_path + "/render.mp4"
-            print("Rendering...")
+            print("Rendering to " + render_path, file = sys.stdout)
             self.ani.save(render_path, fps=30, dpi=120)
-            print("Render completed.")
+            print("Render Completed", file = sys.stdout)
         else:
             plt.show()
 

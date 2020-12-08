@@ -44,7 +44,7 @@ class DataStore:
        self.mortality_rate_seventyplus.set('5.4%')
        self.infection_range                     = tk.StringVar()
        self.infection_range.set('0.001')
-       
+       self.render_dir = None
        self.recovery_time_scale = None
        self.r_value_scale = None
        self.k_value_scale = None
