@@ -10,10 +10,16 @@ class Main(object):
     """
 
     def __init__(self) -> None:
+        """
+        Constructor to initialize a configUtil object
+        """
         self.config_util = ConfigUtil("config/config.ini")
         
 
     def load_config(self) -> None:
+        """
+        Method to load config
+        """
         self.k                          = self.config_util.getFloatValue("covid.stats", "k_value")
         self.r                          = self.config_util.getFloatValue("covid.stats", "r_value")
         self.size                       = self.config_util.getIntegerValue("area.stats", "total_population")
@@ -30,6 +36,9 @@ class Main(object):
         self.enforce_mask_wearing_at    = self.config_util.getIntegerValue("area.stats", "enforce_mask_wearing_at")
 
     def runNoUI(self) -> None:
+        """
+        Function to run with NO UI, loads everyting from config file
+        """
         print("Running with no UI, loading data from the config file")
         self.load_config()
         self.population_util = PopulationUtil(k = self.k, r = self.r, min_age = self.min_age, max_age = self.max_age, size = self.size,
@@ -40,6 +49,9 @@ class Main(object):
         self.visualize = Visualization(self.population_util, render_mode = False)
     
     def render(self, path: str) -> None:
+        """
+        Function to directly render without showing ANY UI
+        """
         print("Rendering to " + path)
         self.load_config()
         self.population_util = PopulationUtil(k = self.k, r = self.r, min_age = self.min_age, max_age = self.max_age, size = self.size,
@@ -48,7 +60,11 @@ class Main(object):
                                 mask_effectiveness = self.mask_effectiveness, speed=self.speed, social_distancing_at = self.enforce_social_distance_at,
                                 mask_wearing_at = self.enforce_mask_wearing_at)
         Visualization(self.population_util, render_mode=True, render_path=path)
+
     def runUI(self) -> None:
+        """
+        Function to execute helper UI
+        """
         main()
 
 

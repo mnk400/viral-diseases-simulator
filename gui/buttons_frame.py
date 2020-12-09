@@ -271,6 +271,7 @@ class ButtonsFrame(ttk.Frame):
         Starts the simulation with the requested configuration;
         Updates the top level window with the simulation in live mode, generates the video file of the simulation in render mode;
         """
+
         config_util = ConfigUtil("config/config.ini")
         if self.data.render_dir == None and self.simulation_mode.get() == 1:
             self.start_sim_button["text"] = "Please select a directory"
@@ -278,7 +279,9 @@ class ButtonsFrame(ttk.Frame):
 
         if self.simulation_mode.get() == 1:
             self.start_sim_button["text"] = "Rendering. Please Wait"
+
         self.update()
+
         k               = self.data.get_k_val()
         r               = self.data.get_r_val()
         size            = self.data.get_population_val()
@@ -320,6 +323,7 @@ class ButtonsFrame(ttk.Frame):
         """
         About me window
         """
+
         newWindow = tk.Toplevel(self.master) 
         newWindow.resizable(width=False, height=False)
 
@@ -372,14 +376,30 @@ class ButtonsFrame(ttk.Frame):
         link3.bind("<Button-1>", lambda e: self.callback("https://www.flaticon.com/authors/freepik"))
 
     def directory_selector(self):
+        """
+        Function which opens the directory selector for render location
+        """
         self.data.render_dir = filedialog.askdirectory()
         print("Path Selected" + self.data.render_dir, file = sys.stdout)
         self.select_path_button["text"] = str(self.data.render_dir)
         self.start_sim_button["text"] = "Start"
 
     def callback(self, link):
+        """
+        Function to open link
+        Parameters
+        ----------
+        :param: link: Link to be opened
+        """
         webbrowser.open_new(link)
 
     def callback(self, link, link2):
+        """
+        Function to open multiple links
+        Parameters
+        ----------
+        :param: link: Link to be opened
+        :param: link2: Link2 to be opened
+        """
         webbrowser.open_new(link)
         webbrowser.open_new(link2)

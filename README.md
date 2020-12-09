@@ -12,6 +12,18 @@ This is a virus simulation system built as the semester project of INFO6205 for 
 <img  src="assets/screenshot.png" width=600>
 </p>
 
+### Example Renders
+
+Some example renders can be found in *render/Examples* or from the following links:
+
+- [Covid with uncontrolled spread.](https://thumbs.gfycat.com/GlassFluidGoldfinch-mobile.mp4)
+
+- [Covid with some social distancing and mask mandates](https://thumbs.gfycat.com/MintyDependentGangesdolphin-mobile.mp4)
+
+- [Imaginary virus with R = 8.21 and K = 0.9 and uncontrolled spread.](https://thumbs.gfycat.com/CompetentReadyAntarcticgiantpetrel-mobile.mp4)
+
+- [Imaginary virus with R = 8.21 and K = 0.9 and some social distancing and mask mandates](https://thumbs.gfycat.com/FlawedWarlikeKitten-mobile.mp4)
+
 #
 
 ## Using pre-built binaries

@@ -7,8 +7,6 @@ Created on 2nd Dec, 2020
 
 import tkinter as tk
 import tkinter.ttk as ttk
-
-from numpy.core.fromnumeric import resize
 import gui.ttk_helper
 from gui.ttk_helper import ToolTip
 from gui.data_store import DataStore
@@ -373,7 +371,13 @@ class SetConfigFrame(ttk.Frame):
 
 
     def enter(self, event, tooltip):
+            """
+            Helper method to show tooltip over hover
+            """
             tooltip.showtip()
 
     def leave(self, event, tooltip):
+            """
+            Helper mehod to hide tooltop when hover over
+            """
             tooltip.hidetip()

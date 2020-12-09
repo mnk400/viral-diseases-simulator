@@ -62,33 +62,58 @@ class Movement():
 
     
     def out_of_bounds(self, persons: np.ndarray, xbounds, ybounds):
+        """
+        Check if the individual is heading out of bounds of the specified bounds.
+
+        Parameters
+        ----------
+        person : np.ndarray
+            The NumPy array containing the details of the individuals
+        xbounds : list
+            List containing bounds for X axis.
+        ybounds : list
+            List containing bounds for Y axis.
+
+        Returns
+        -------
+        np.ndarray
+            The upated NumPy array with updated values
+        """  
+
+        # Store shape of list of people who are heading out of bounds based on X bound [0]
         shp = persons[:,4][(persons[:,2] <= xbounds[:,0]) &
                             (persons[:,4] < 0)].shape
+        # Update them randomly using a normal distribution
         persons[:,4][(persons[:,2] <= xbounds[:,0]) &
                         (persons[:,4] < 0)] = np.clip(np.random.normal(loc = 0.5, 
                                                                             scale = 0.5/3,
                                                                             size = shp),
                                                             a_min = 0.05, a_max = 1)
 
+        # Store shape of list of people who are heading out of bounds based on X bound [1]
         shp = persons[:,4][(persons[:,2] >= xbounds[:,1]) &
                                 (persons[:,4] > 0)].shape
+        # Update them randomly using a normal distribution
         persons[:,4][(persons[:,2] >= xbounds[:,1]) &
                         (persons[:,4] > 0)] = np.clip(-np.random.normal(loc = 0.5, 
                                                                             scale = 0.5/3,
                                                                             size = shp),
                                                             a_min = -1, a_max = -0.05)
 
-        #update y heading
+        # Store shape of list of people who are heading out of bounds based on Y bound [0]
         shp = persons[:,5][(persons[:,3] <= ybounds[:,0]) &
-                                (persons[:,5] < 0)].shape   
+                                (persons[:,5] < 0)].shape  
+        # Update them randomly using a normal distribution 
         persons[:,5][(persons[:,3] <= ybounds[:,0]) &
                         (persons[:,5] < 0)] = np.clip(np.random.normal(loc = 0.5, 
                                                                             scale = 0.5/3,
                                                                             size = shp),
                                                             a_min = 0.05, a_max = 1)
 
+        # Store shape of list of people who are heading out of bounds based on Y bound [1]
         shp = persons[:,5][(persons[:,3] >= ybounds[:,1]) &
                                 (persons[:,5] > 0)].shape
+        # Update them randomly using a normal distribution
         persons[:,5][(persons[:,3] >= ybounds[:,1]) &
                         (persons[:,5] > 0)] = np.clip(-np.random.normal(loc = 0.5, 
                                                                             scale = 0.5/3,
@@ -98,7 +123,21 @@ class Movement():
         return persons
 
     def update_pop(self, persons):
-        
+        """
+        Update function to move people physically in the graph.
+        This function adds the X and Y direction value to the current postion of
+        the individual to move them.
+
+        Parameters
+        ----------
+        person : np.ndarray
+            The NumPy array containing the details of the persons to be updated
+   
+        Returns
+        -------
+        np.ndarray
+            The upated NumPy array with updated values
+        """  
         filter = (persons[:, idx.current_state] != 3) & (persons[:, idx.social_distance] == 0)
         
 

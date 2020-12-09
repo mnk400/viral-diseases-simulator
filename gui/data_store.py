@@ -7,10 +7,14 @@ Created on 4th Dec, 2020
 import tkinter as tk
 
 class DataStore:
+    """
+    Singleton class used to share data between two different classes in real time
+    """
     __instance__ = None
 
     def __init__(self):
-       """ Constructor.
+       """ 
+       Constructor.
        """
        self.population_val                      = tk.StringVar()
        self.population_val.set('1000')
