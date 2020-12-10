@@ -20,7 +20,7 @@ class VirusUtilTest(unittest.TestCase):
     """
 
     def setUp(self) -> None:
-        logging.basicConfig(format='%(asctime)s:%(module)s:%(levelname)s:%(message)s', level=logging.DEBUG)
+        logging.basicConfig(format='\n%(asctime)s:%(module)s:%(levelname)s:%(message)s', level=logging.DEBUG)
         logging.info('Testing virus util class.....')
         self.config_util = ConfigUtil('config/test_config.ini')
         self.k = self.config_util.getFloatValue("virus.stats", "k_value")
@@ -53,8 +53,7 @@ class VirusUtilTest(unittest.TestCase):
 
     def test_infect(self):
         """
-        Test case to test the infect method;
-        Compares the number of infected people before and after calling the infect method
+        Test to test the infect() method; compares the number of infected people before and after calling the infect method to see if healthy people within the infection range get infected
         """
         before_infect_population = self.population.get_all_infected()
         self.population.persons = self.movement.update_persons(self.population.persons, self.size, self.speed, 1)
@@ -80,7 +79,7 @@ class VirusUtilTest(unittest.TestCase):
 
     def test_die_or_immune(self):
         """
-        Test case to test the die_or_immune method
+        Test case to test the die_or_immune() method; check if the people passing the recovery time die or recover according to their mortality rate chance
         """
         dead_frame_1 = self.population.get_all_dead()
         self.assertEqual(len(dead_frame_1), 0)

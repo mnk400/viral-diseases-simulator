@@ -20,7 +20,7 @@ class PopulationClassTest(unittest.TestCase):
         """
         Setup method initializes all necessary variables from the configuration file and also creates an instance of the Population class
         """
-        logging.basicConfig(format='%(asctime)s:%(module)s:%(levelname)s:%(message)s', level=logging.DEBUG)
+        logging.basicConfig(format='\n%(asctime)s:%(module)s:%(levelname)s:%(message)s', level=logging.DEBUG)
         logging.info('Testing population class.....')
         self.config_util = ConfigUtil('config/test_config.ini')
         self.k = self.config_util.getFloatValue("virus.stats", "k_value")
@@ -60,14 +60,14 @@ class PopulationClassTest(unittest.TestCase):
 
     def test_get_people(self):
         """
-        Test to check if the population has been created of a correct size
+        Test to check if the population has been created of a correct size as provided by the config file
         """
         assert isinstance(self.population.get_person(), np.ndarray)
         self.assertEqual(self.size, self.population.get_person()[:, 0].size)
 
     def test_get_all_infected(self):
         """
-        people returned by get_all_infected are actually infected;
+        Test to check if people returned by get_all_infected() are within the infection range of the infected person and are actually infected
         """
         persons = self.population.get_person()
 
@@ -76,7 +76,7 @@ class PopulationClassTest(unittest.TestCase):
 
     def test_get_all_healthy(self):
         """
-        Test to check if the people at indices returned by get_all_healthy are actually healthy;
+        Test to check if the people at indices returned by get_all_healthy() are returned correctly; only healthy people are returned
         """
         persons = self.population.get_person()
 
@@ -85,7 +85,7 @@ class PopulationClassTest(unittest.TestCase):
 
     def test_get_all_recovered(self):
         """
-        Test to check if the people returned by get_all_recovered are actually recovered;
+        Test to check if the people returned by get_all_recovered() are returned correctly; only recovered people are returned
         """
         persons = self.population.get_person()
 
@@ -94,7 +94,7 @@ class PopulationClassTest(unittest.TestCase):
 
     def test_get_all_dead(self):
         """
-        Test to check if the people returned by get_all_dead are dead;
+        Test to check if the people returned by get_all_dead() are returned correctly; only columns of dead people are returned
         """
         persons = self.population.get_person()
 
@@ -103,7 +103,7 @@ class PopulationClassTest(unittest.TestCase):
 
     def test_get_currently_active(self):
         """
-        Test to check if get_currently_active returns correct information
+        Test to check if get_currently_active() returns correct information about the current population; people currently moving towards their destination are returned
         """
         for i in self.population.get_currently_active_info():
             if int(i) != 0 and int(i) != 1:
