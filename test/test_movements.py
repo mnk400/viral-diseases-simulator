@@ -10,12 +10,15 @@ from src.movements import Movement
 import src.person_properties_util as idx
 from src.population import Population
 import numpy as np
+import logging
 
 
 class MovementTest(unittest.TestCase):
 
     def setUp(self) -> None:
         self.pop      = Population(size=10)
+        logging.basicConfig(format='\n%(asctime)s:%(module)s:%(levelname)s:%(message)s', level=logging.DEBUG)
+        logging.info('Testing Movements class')
         self.movement = Movement()
 
     def tearDown(self) -> None:
@@ -25,8 +28,8 @@ class MovementTest(unittest.TestCase):
 
     def test_update_person(self) -> None:
         """
-        Tests update person to check data is getting 
-        updated randomly
+
+        Tests update_person() method of Movement class and movements module to check data is getting updated randomly
         """
 
         self.assertIsInstance(self.movement.update_persons(self.pop.get_person(),len(self.pop.get_person())), np.ndarray)
@@ -40,8 +43,8 @@ class MovementTest(unittest.TestCase):
 
     def test_out_of_bounds(self) -> None:
         """
-        Tests out_of_bounds function to check directions 
-        are updated when a person is heading out of bounds
+        
+        Tests out_of_bounds() method of Movement class and movements module to check directions are updated accordingly to prevent a person from going out of bounds
         """
 
         self.assertIsInstance(self.movement.out_of_bounds(self.pop.get_person(),
@@ -68,9 +71,9 @@ class MovementTest(unittest.TestCase):
 
     def test_update_pop(self) -> None:
         """
-        Tests the update_pop function
+
+        Tests the update_pop() method of Movement class and movements module to check if the position of the population members are getting updated according to the arguments
         """
-        
         self.pop.persons[:,idx.x_dir] = 0.1
         self.pop.persons[:,idx.y_dir] = 0.1
         self.pop.persons[:,idx.speed] = 1

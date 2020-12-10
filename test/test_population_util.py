@@ -17,7 +17,7 @@ class PopulationUtilClassTest(unittest.TestCase):
     """
 
     def setUp(self) -> None:
-        logging.basicConfig(format='%(asctime)s:%(module)s:%(levelname)s:%(message)s', level=logging.DEBUG)
+        logging.basicConfig(format='\n%(asctime)s:%(module)s:%(levelname)s:%(message)s', level=logging.DEBUG)
         logging.info('Testing population util class.....')
         self.config_util = ConfigUtil('config/test_config.ini')
         self.k                          = self.config_util.getFloatValue("virus.stats", "k_value")
@@ -53,7 +53,7 @@ class PopulationUtilClassTest(unittest.TestCase):
 
     def test_move(self):
         """
-        Tests the move method to check if the position of the persons is changing
+        Tests the move() method to check if the position of the persons is changing according to the configurations
         """
 
         try:
