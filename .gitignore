@@ -11,3 +11,5 @@ gui/__pycache__
 dist
 build
 setup.py
+.coverage
+"Viral Disease Simulator.spec"
