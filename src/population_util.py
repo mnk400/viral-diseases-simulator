@@ -74,6 +74,8 @@ class PopulationUtil(object):
         self.population.initialize_g_value(self.r, 1/self.k, self.size)
         self.population.initialize_mortality_rate(self.size, self.mortality_rate) 
         self.population.initialize_susceptibility()
+        self.population.initialize_infected_by()
+        
 
         self.persons[:, 7] = 1
         self.persons[:,10] = 0.1
@@ -84,7 +86,8 @@ class PopulationUtil(object):
 
         self.infected_person = np.random.randint(0,self.size)
         self.persons[self.infected_person, index.g_value] = 3
-        self.population.set_infected_at(62, 0)
+        self.population.set_infected_at(self.infected_person, 0)
+        self.persons[self.infected_person, index.infected_by] = self.infected_person
         self.persons[self.infected_person, index.social_distance] = 0
         self.persons[self.infected_person, 9] = 1
 

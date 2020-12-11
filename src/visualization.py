@@ -12,6 +12,8 @@ import numpy as np
 from matplotlib.animation import FuncAnimation
 import matplotlib as mpl
 import sys
+import networkx as nx
+import matplotlib.patches as mpatches
 
 class Visualization():
 
@@ -61,6 +63,40 @@ class Visualization():
             print("Render Completed", file = sys.stdout)
         # Show animation.
         else:
+            plt.show()
+
+            #Create a digraph showing the infection spread
+            fig = plt.figure()
+            G = nx.Graph()
+            color_map = []
+            size_map = []
+
+            red_patch = mpatches.Patch(color='red', label='First Infection')
+            blue_patch = mpatches.Patch(color='cornflowerblue', label='Infected But Recovered')
+            indigo_patch = mpatches.Patch(color='indigo', label='Dead')
+            orange_patch = mpatches.Patch(color='orange', label='Currently Infected')
+            plt.legend(handles=[red_patch, blue_patch, indigo_patch, orange_patch])
+
+            for i in range(self.putil.size):
+                if(self.putil.population.persons[i, index.infected_by] != i and self.putil.population.persons[i, index.infected_by] != -1): 
+                    if(self.putil.population.persons[i, index.current_state] == 2):
+                        G.add_edge(i,self.putil.population.persons[i, index.infected_by])
+                        color_map.append('cornflowerblue')
+                        size_map.append(15)
+                    elif(self.putil.population.persons[i, index.current_state] == 3):
+                        G.add_edge(i,self.putil.population.persons[i, index.infected_by])
+                        color_map.append('indigo')
+                        size_map.append(15)
+                    else:
+                        G.add_edge(i,self.putil.population.persons[i, index.infected_by])
+                        color_map.append('orange')
+                        size_map.append(15)
+                elif(self.putil.population.persons[i, index.infected_by] == i):
+                    G.add_node(i)
+                    color_map.append('red')
+                    size_map.append(50)
+            nx.draw_spring(G, node_size = size_map, node_color = color_map, edge_color = 'darkgray')
+            fig.canvas.set_window_title('Infection Tracing Visualization')
             plt.show()
 
     def setup_plot(self):
