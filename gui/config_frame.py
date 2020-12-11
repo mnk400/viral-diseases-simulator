@@ -153,7 +153,7 @@ class SetConfigFrame(ttk.Frame):
         k_value_label.bind("<Enter>", lambda event: self.enter(event = event, tooltip = kValueToolTip))
         k_value_label.bind("<Leave>", lambda event: self.leave(event = event, tooltip = kValueToolTip))
 
-        self.data.k_value_scale = ttk.Scale(master=label_frame, orient='horizontal', from_=0, to=3, command=lambda s:self.data.k_val.set('%0.2f' % float(s)))
+        self.data.k_value_scale = ttk.Scale(master=label_frame, orient='horizontal', from_=0, to=10, command=lambda s:self.data.k_val.set('%0.2f' % float(s)))
         self.data.k_value_scale.set(0.1)
         self.data.k_value_scale.grid(row=5, column=2, padx=float(label_frame.winfo_reqwidth()) * 0.05,
                                      pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3,sticky=tk.W+tk.E)
