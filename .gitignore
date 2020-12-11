@@ -12,4 +12,4 @@ dist
 build
 setup.py
 .coverage
-"Viral Disease Simulator.spec"
+Viral Disease Simulator.spec

@@ -65,18 +65,20 @@ class Visualization():
         else:
             plt.show()
 
-            #Create a digraph showing the infection spread
+            # Create a digraph showing the infection spread
             fig = plt.figure()
             G = nx.Graph()
             color_map = []
             size_map = []
 
+            # Label Patches
             red_patch = mpatches.Patch(color='red', label='First Infection')
             blue_patch = mpatches.Patch(color='cornflowerblue', label='Infected But Recovered')
             indigo_patch = mpatches.Patch(color='indigo', label='Dead')
             orange_patch = mpatches.Patch(color='orange', label='Currently Infected')
             plt.legend(handles=[red_patch, blue_patch, indigo_patch, orange_patch])
 
+            # Adding graphs edges
             for i in range(self.putil.size):
                 if(self.putil.population.persons[i, index.infected_by] != i and self.putil.population.persons[i, index.infected_by] != -1): 
                     if(self.putil.population.persons[i, index.current_state] == 2):
@@ -95,6 +97,8 @@ class Visualization():
                     G.add_node(i)
                     color_map.append('red')
                     size_map.append(50)
+            
+            # Show graph
             nx.draw_spring(G, node_size = size_map, node_color = color_map, edge_color = 'darkgray')
             fig.canvas.set_window_title('Infection Tracing Visualization')
             plt.show()

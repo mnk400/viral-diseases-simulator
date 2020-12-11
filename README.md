@@ -8,8 +8,11 @@ This is a virus simulation system built as the semester project of INFO6205 for 
 
 #
 <p align="center">
-<img src="assets/example.gif" width=600>
-<img  src="assets/screenshot.png" width=600>
+<img src="assets/example.gif" width=500>
+<br>
+<img src="assets/screenshot2.png" width=500>
+<br>
+<img  src="assets/screenshot.png" width=500>
 </p>
 
 ### Example Renders

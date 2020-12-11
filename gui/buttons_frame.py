@@ -348,7 +348,7 @@ class ButtonsFrame(ttk.Frame):
         description = ttk.Label(master=label_frame_top_right,text="Virus Simulation system and an accompanying GUI.\nBuild to visualize the spread of a virus based on various different variable factors.")
         description.grid(row=1, column=0, columnspan=1, padx=(self.width * 0.03, self.width * 0.03), pady=self.height * 0.02, sticky=tk.W)
         
-        sentence1 = ttk.Label(master=label_frame_top_right,text="v0.1. Published under MIT license. Built by,\nManik Kumar, Pallak Singh, and Yatish Pitta")
+        sentence1 = ttk.Label(master=label_frame_top_right,text="v0.3. Published under MIT license. Built by,\nManik Kumar, Pallak Singh, and Yatish Pitta")
         sentence1.grid(row=2, column=0, columnspan=1, padx=(self.width * 0.03, self.width * 0.03), pady=self.height * 0.02, sticky=tk.W)
         
         reference = ttk.Label(master=label_frame_bottom,text="References", style="Bold.TLabel")
