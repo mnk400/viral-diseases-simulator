@@ -22,5 +22,7 @@ mask_effectiveness = 15
 infected_at        = 16
 hospitalized       = 17
 social_distance    = 18
+infected_by        = 19
+
 
 
