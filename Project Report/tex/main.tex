@@ -1,5 +1,6 @@
+% Pallu
 % School of Engineering
-% INFO6205 Project Report
+% Machine Learning Assignment
 % Northeastern University
 % Boston, MA 02115
 
@@ -29,7 +30,6 @@
 \geometry{margin=1in}
 \graphicspath{ {} }
 \DeclareMathOperator*{\argmax}{argmax}
-
 
 \setlength{\oddsidemargin}{0 in}
 \setlength{\evensidemargin}{0 in}
@@ -62,13 +62,12 @@ Infectious diseases continue to remain one of the major causes of morbidity in h
 \section{Introduction}
 With the spread of the virus SARS-Cov-2, which has now been named COVID-19 by World Health Organization, the world has found itself struggling on all fronts. From the dwindling economy to the overwhelmed healthcare capacity, this pandemic has been unpredictable and devastating. With the cases still surging and showing different behaviors in different areas, researchers are turning to mathematical models to predict how the disease is spreading. These models take into account different factors related to the virus along with specific population factors and simulate how the virus will behave. Simulation models can be useful not only to researchers, but also to the general public in order to understand a virus without the scientific jargon and visualize the impact of the measures being taken to control its spread. This encouraged us to build a tool that is accessible to a non-scientist and allows them to tweak different factors to see how it impacts the spread and effects of a virus. 
 
+Our application is a Viral Disease Simulator capable of visualizing  the spread of a viral disease, providing real-time graphs and statistics to better understand the simulation. As shown in Figure 1, one can easily visualize how social distancing, mask mandates, hospital capacity affect the statistics. 
+
 \begin{figure}[H]
 \caption{Simulation on the Viral Diseases Simulator}\label{wrap-fig:1}
 \includegraphics[width=8cm]{figures/intro-simulation.png}
 \end{figure} 
-
-Our application is a Viral Disease Simulator capable of visualizing  the spread of a viral disease, providing real-time graphs and statistics to better understand the simulation. As shown in Figure 1, one can easily visualize how social distancing, mask mandates, hospital capacity affect the statistics. 
-
 
 We also provide a helpful UI which allows the user to modify configuration in order to simulate different scenarios. Our application comes with data loaded for the Influenza and COVID-19 disease. Users can customize virus related configurations to create their own scenarios.
 
@@ -85,9 +84,15 @@ Visualization style used in this project was inspired by Paul Val Gent's Covid v
 
 Details for the implementation and the final deliverable can be found in section 4 and section 6. The executable binaries of the application is available for macOS, Windows and Linux on the project repository on GitHub. 
 
+\begin{figure}[H]
+\caption{Network of spread from the first infection.}\label{wrap-fig:1}
+\includegraphics[width=14cm]{figures/infected network.png}
+\end{figure} 
+
 \subsection{Features}
 
-The program provides the functionality to simulate any viral disease by allowing the user to configure different parameters specific to the disease. All parameters available to the user and their respective functions are provided in section 6. All details regarding the algorithm can be found in section 5.
+The program provides the functionality to simulate any viral disease by allowing the user to configure different parameters specific to the disease. All parameters available to the user and their respective functions are provided in section 6. User can also view a network graph showing the spread of the virus from the first infected person once they end the simulation. 
+All details regarding the algorithm can be found in section 5. 
 
 The application comes in built with configuration data for two diseases – 
 \begin{enumerate}
@@ -149,7 +154,7 @@ The UML diagram representing the core modules and how our application is designe
 \subsection{Data Used for Model}
 % Notes about how our algorithm works:
 
-% Starting point: A matrix with 17 columns to store the individual variables for each individual, rows = number of people
+% Starting point: A matrix with 18 columns to store the individual variables for each individual, rows = number of people
 
 % Individual Variables : 
 % 1. Individual ID
@@ -204,7 +209,7 @@ The user provides following data-points using which different kinds of simulatio
     \item When would the mask mandates start
 \end{enumerate}
 
-To create a model that was sufficiently fast enough to update in real time and produce a simulation we decided to use matrices to store individual variables. The matrix storing all the data has 17 data columns,
+To create a model that was sufficiently fast enough to update in real time and produce a simulation we decided to use matrices to store individual variables. The matrix storing all the data has 18 data columns,
 \begin{enumerate}
     \item \textbf{ID:} Every individual is assigned a unique ID.
     \item \textbf{Age:} Stores the Age of the individual.
@@ -223,6 +228,7 @@ To create a model that was sufficiently fast enough to update in real time and p
     \item \textbf{Mortality:} Percentage that determines an individuals mortality chance. This value depends upon on the individual's age, how deadly the virus is, and if healthcare capacities are full. If healthcare capacity conditions are extreme, mortality rates rise.
     \item \textbf{Infected At:} Stores when this individual was infected at for algorithmic purposes.
     \item \textbf{Hospitalization Status:} Stores whether or not this person was hospitalized.
+    \item \textbf{Infected By:} Stores who this individual was infected by, this is used to create the virus spread network graph.
 \end{enumerate}
 
 \subsection{How R and K values are being incorporated in the model}
@@ -260,6 +266,7 @@ Using R and K in the normal distribution, using equation 1 and 2, we get,
 
 When initializing the values for the individual infection value, equation 3 is utilized to generate a random normal distribution, while keeping the mean of all the values equal to R while the variance is kept inversely proportional to K. Now this data is used in the algorithm as a metric of how many individual an infected individual can spread the virus to.
 
+\pagebreak
 \section{Algorithm}
 The following depicts and explains the algorithm developed which models the virus spread and simulates it.
 
@@ -375,17 +382,17 @@ From the configuration screen, we can set following things:
 \end{enumerate}
 
 Following are a series of screenshots which depict how the GUI looks, and how a user can go around operating the simulation system.
+
+In the figure below, user can click on "Set Mask Effectiveness" button to set how effective different kinds of masks are, or click on "Set Mortality Rate" to set mortality rates for different age groups. User can also enable/disable mask mandates and social distancing using the radio buttons. 
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=14cm]{figures/ui-vis.png}
     \caption{UI the user is greeted with.}
     \label{fig:main_ui}
 \end{figure}
-In the figure above, user can click on "Set Mask Effectiveness" button to set how effective different kinds of masks are, or click on "Set Mortality Rate" to set mortality rates for different age groups. User can also enable/disable mask mandates and social distancing using the radio buttons. 
 
 Using the "Load Covid-19 Data" and "Load Influenza Data" button can load the virus statistics to the the program. 
-
-After the user has decided the preferences they want to use, they can decide whether they want to render the simulation to a file or view it live, and then use "Start Simulation" button to initialize the simulation.
 
 \begin{figure}[H]
     \centering
@@ -399,6 +406,8 @@ After the user has decided the preferences they want to use, they can decide whe
     \end{subfigure}
     \caption{Dialog boxes in the GUI to edit mortality rates and mask effectiveness}
 \end{figure}
+
+After the user has decided the preferences they want to use, they can decide whether they want to render the simulation to a file or view it live, and then use "Start Simulation" button to initialize the simulation. In live simulation mode, when the user closes the simulation, a network graph of how the virus spread is generated and displayed.
 
 After clicking on the start button, the user is treated to the following dialog boxes, where the set settings are shown to the user for confirmation before simulation execution. In case the user was in render mode, an additional option for deciding the path to store the render and a disclaimer about additional required libraries and elevated access are shown.
 
@@ -470,7 +479,7 @@ In Figure \ref{covid-exponential-nomandate}, one can see that the graph of the t
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=7.5cm]{figures/covid-exponential.png}
+    \includegraphics[width=7cm]{figures/covid-exponential.png}
     \caption{Assuming a virus with R value of 2, the virus grows exponentially}
     \label{covid-exponential}
 \end{figure}
@@ -506,6 +515,22 @@ For R = 3, the curve is spread out although not as much as for R = 1 and the pea
 \end{figure}
 
 For R = 8, the peak is observed way earlier and there comes a point where barely anyone has recovered but the entire population has already contracted the disease. The peak for the currently infected is higher, steeper and reached before the 200$^\text{th}$ frame. This is an extremely devastating scenario for the healthcare facilities as they are much more likely to run out of ICUs and hospital beds causing a higher number of deaths. The number of deaths observed in this scenario is the highest i.e 152 people (15.2\%) which is to be expected. We can conclude that faster the infection spreads, the more likely it is to cause a large number of spreads as hospitals are not able to accommodate every person who may require healthcare facilities. 
+
+When viewing the network graph for R = 1 and R = 8, one can see that for R = 8 where the virus spreads rapidly, the network is more dense as 1 person goes on to infect a lot more people and as opposed to the virus spreading from 1 person to another. This can be seen in Figure \ref{r_value_1}, \ref{r_value_8}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=9.5cm]{figures/r_value_1_network.png}
+    \caption{Virus Spread Network Visualization for R value = 1}
+    \label{r_value_network_1}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=9.5cm]{figures/r_value_8_network.png}
+    \caption{Virus Spread Network Visualization for R value = 8}
+    \label{r_value_network_8}
+\end{figure}
 
 \subsection{K value}
 As also explained in Section 4, K value is the dispersion of individual reproduction value of the virus for a person. For lower K values, the variance is much higher, thereby a person is more likely to either not spread the disease at all or cause superspreader events. Hence, for lower K values, one would expect more superspreader events and faster exponential growth as compared to higher K values for which the the infection curve would be more spread out. Our experiment simulation results can be seen in Figure \ref{k_value_3} and \ref{k_value_0.03}.
@@ -545,18 +570,16 @@ one cannot stress enough the importance that social distancing has played in mai
     \label{social_distancing_150}
 \end{figure}
 
+In Figure \ref{no_social_distancing}, where no one socially distances at all, we observe that the virus grows exponentially until all the population has contracted the disease. 126 (12.6\%) people died in this case and the entire population got the virus. 
+
+In Figure \ref{social_distancing_150}, where social distancing starts at an early stage (150$^\text{th}$ frame), one can see that at one point, at most only 400 (40.0\%) people were infected which greatly impacted the death rates as only 65 (6.5\%) people died in this case. This happened because the healthcare facilities were not overwhelmed by the surge of cases at once and thereby could admit the people who required hospitalizations, thereby reducing the morbidity of the virus. Total number of infections in this case was only 795 (79.5\%) people.
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=10cm]{figures/social_distancing_300.png}
     \caption{Virus Spread with Time for COVID-19 with 50\% of the Population Social Distancing starting at Frame 300}
     \label{social_distancing 300}
 \end{figure}
-
-In Figure \ref{no_social_distancing}, where no one socially distances at all, we observe that the virus grows exponentially until all the population has contracted the disease. 126 (12.6\%) people died in this case and the entire population got the virus. 
-
-
-In Figure \ref{social_distancing_150}, where social distancing starts at an early stage (150$^\text{th}$ frame), one can see that at one point, at most only 400 (40.0\%) people were infected which greatly impacted the death rates as only 65 (6.5\%) people died in this case. This happened because the healthcare facilities were not overwhelmed by the surge of cases at once and thereby could admit the people who required hospitalizations, thereby reducing the morbidity of the virus. Total number of infections in this case was only 795 (79.5\%) people.
-
 
 In Figure \ref{social_distancing 300}, one can see that once social distancing advisory was put into place even at a later stage (300$^\text{th}$ frame), the number of current infections started declining almost immediately. With 858 (85.8\%) total infections and 71 (7.1\%) deaths even with the advisory implemented at a later stage, it is easy to tell how important social distancing is when it comes to controlling the outbreak.
 
@@ -569,12 +592,18 @@ In Figure \ref{social_distancing 300}, one can see that once social distancing a
     \label{social_distancing_20percent}
 \end{figure}
 
+In Figure \ref{social_distancing_20percent}, we can see that since only 20\% of the population was social distancing, the infection curve was spread out but that did not stop the infection from spreading to the entire population. This implies that 20\% of the population social distancing is not enough to control the outbreak. This scenario demonstrates the highest number of deaths i.e 105 (10.5\%).
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=10cm]{figures/social_distancing_50percent.png}
     \caption{Virus Spread with Time for COVID-19 with 50\% of the Population Social Distancing at Frame 200}
     \label{social_distancing_50percent}
 \end{figure}
+
+In Figure \ref{social_distancing_50percent}, there is slight improvement from the above case, where a larger section of the population never contracted the virus at all i.e 114 people (11.4\%). This can be attributed to 50\% of the population social distancing. The total deaths in this case were also lower in comparison i.e 99 (9.9\%). 
+
+In Figure \ref{social_distancing_80percent}, we see the best results, where a big section of the population never contracted the virus at all i.e 587 people (58.7\%). This can be attributed to 80\% of the population social distancing. The total deaths in this case were the lowest i.e 68 (6.8\%). This goes on to show that outbreak control is possible if a larger than half of the population social distances.
 
 \begin{figure}[H]
     \centering
@@ -583,12 +612,7 @@ In Figure \ref{social_distancing 300}, one can see that once social distancing a
     \label{social_distancing_80percent}
 \end{figure}
 
-In Figure \ref{social_distancing_20percent}, we can see that since only 20\% of the population was social distancing, the infection curve was spread out but that did not stop the infection from spreading to the entire population. This implies that 20\% of the population social distancing is not enough to control the outbreak. This scenario demonstrates the highest number of deaths i.e 105 (10.5\%).
 
-
-In Figure \ref{social_distancing_50percent}, there is slight improvement from the above case, where a larger section of the population never contracted the virus at all i.e 114 people (11.4\%). This can be attributed to 50\% of the population social distancing. The total deaths in this case were also lower in comparison i.e 99 (9.9\%). 
-
-In Figure \ref{social_distancing_80percent}, we see the best results, where a big section of the population never contracted the virus at all i.e 587 people (58.7\%). This can be attributed to 80\% of the population social distancing. The total deaths in this case were the lowest i.e 68 (6.8\%). This goes on to show that outbreak control is possible if a larger than half of the population social distances.
 \end{enumerate}
 
 \subsection{Population Density}
@@ -601,14 +625,14 @@ Population density plays a role in how fast the virus spreads. When people are s
     \label{population_denisty_522}
 \end{figure}
 
+In Figure \ref{population_denisty_522}, we can see that the virus spreads slowly as people are distributed on the map in a more sparse manner. With a population size of only 522 distributed evenly on a map, the likelihood of a healthy person coming in contact with an infected person decreases. A small section of the people (30 people/5.7\%) end up not contracting the virus at all. 
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=10cm]{figures/population_density_1000.png}
     \caption{Virus Spread with Time for COVID-19 with Population Size = 1000}
     \label{population_density_1000}
 \end{figure}
-
-In Figure \ref{population_denisty_522}, we can see that the virus spreads slowly as people are distributed on the map in a more sparse manner. With a population size of only 522 distributed evenly on a map, the likelihood of a healthy person coming in contact with an infected person decreases. A small section of the people (30 people/5.7\%) end up not contracting the virus at all. 
 
 \begin{figure}[H]
     \centering
@@ -658,12 +682,20 @@ The capacity of the healthcare facilities can affect the death rates drastically
     \label{hospital_capacity_20percent}
 \end{figure}
 
+In Figure \ref{hospital_capacity_20percent}, we can observe that with the hospital capacity being 20\% of the total population, the number of deaths were quite high i.e 117 people (11.7\%). This implies that a lot of people couldn't get the medical intervention that they needed. 
+
+In Figure \ref{hospital_capacity_50percent}, with the hospital capacity being 50\% of the total population, the number of deaths decreased as the hospital could hold a larger amount of people. The number of deaths in this scenario were 76 people (7.6\%). 
+
+In Figure \ref{hospital_capacity_80percent}, we have hospital capacity to be 80\% of the total population. This is an unlikely scenario because in a normal case, no one would expect more than even 40\% of the people to be hospitalized at the same time. However with the current COVID-19 pandemic, the surges in the infection affecting each individual differently, the hospitals are running at capacity and there are deaths which could've been prevented otherwise. In the Figure
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=10cm]{figures/hospital_capacity_50percent.png}
     \caption{Virus Spread with Time for COVID-19 with Hospital Capacity = 50\%}
     \label{hospital_capacity_50percent}
 \end{figure}
+
+\ref{hospital_capacity_80percent}, one can see that only 35 people or 3.5\% of the population died as everyone got the medical intervention they needed because the hospital capacity was 80\% of the total population.
 
 \begin{figure}[H]
     \centering
@@ -672,14 +704,10 @@ The capacity of the healthcare facilities can affect the death rates drastically
     \label{hospital_capacity_80percent}
 \end{figure}
 
-In Figure \ref{hospital_capacity_20percent}, we can observe that with the hospital capacity being 20\% of the total population, the number of deaths were quite high i.e 117 people (11.7\%). This implies that a lot of people couldn't get the medical intervention that they needed. 
-
-In Figure \ref{hospital_capacity_50percent}, with the hospital capacity being 50\% of the total population, the number of deaths decreased as the hospital could hold a larger amount of people. The number of deaths in this scenario were 76 people (7.6\%). 
-
-In Figure \ref{hospital_capacity_80percent}, we have hospital capacity to be 80\% of the total population. This is an unlikely scenario because in a normal case, no one would expect more than even 40\% of the people to be hospitalized at the same time. However with the current COVID-19 pandemic, the surges in the infection affecting each individual differently, the hospitals are running at capacity and there are deaths which could've been prevented otherwise. In the Figure \ref{hospital_capacity_80percent}, one can see that only 35 people or 3.5\% of the population died as everyone got the medical intervention they needed because the hospital capacity was 80\% of the total population.
-
 \subsection{Outbreak Control} 
 After seeing our analysis above, one may ask: how can we control the outbreak as the vaccine is still not widely available to us? We here following the WHO guidelines\cite{who_guidelines} try to show that if social distancing and mask mandates are implemented early and followed by a large portion of the population, it is very much possible to be safe from the most devastating of outbreaks. For this experiment, we create a virus with a higher R value = 8, a lower K value (0.1) which means that there are more chances of superspreader events and 1 person can go on infect 8 people on an average. However, we make more than 50\% of the population practice social distancing and wear masks from an early stage. Our results are reported in Figure \ref{outbreak control}. 
+
+The results in Figure \ref{outbreak control} is quite an optimistic but hopeful way of showing that even with a disease with a reproduction value (R value) = 8 and K value = 0.1, if more than 50\% of the people social distance and wear masks from an early stage of the outbreak, the number of cases can be controlled. One can also see that the current cases always remained under the hospital capacity and only 7 (0.7\%) people died. In our section for the R values, where no one was social distancing or wearing masks and the R value was 8 (please see Figure \ref{r_value_8}), the entire population got the infection before frame 200 and 152 people died (15.2\%). Here, 60\% of the population started social distancing from Frame 150, and started wearing masks at Frame 70. This immensely helped control the spread.
 
 \begin{figure}[H]
     \centering
@@ -687,8 +715,6 @@ After seeing our analysis above, one may ask: how can we control the outbreak as
     \caption{Virus Spread with Time for a Virus with R value = 8, K value = 0.1, 60\% of the Population Social Distancing Starting at Frame 150 and Mask Mandate starting at Frame 70}
     \label{outbreak control}
 \end{figure}
-
-The results in Figure \ref{outbreak control} is quite an optimistic but hopeful way of showing that even with a disease with a reproduction value (R value) = 8 and K value = 0.1, if more than 50\% of the people social distance and wear masks from an early stage of the outbreak, the number of cases can be controlled. One can also see that the current cases always remained under the hospital capacity and only 7 (0.7\%) people died. In our section for the R values, where no one was social distancing or wearing masks and the R value was 8 (please see Figure \ref{r_value_8}), the entire population got the infection before frame 200 and 152 people died (15.2\%). Here, 60\% of the population started social distancing from Frame 150, and started wearing masks at Frame 70. This immensely helped control the spread.
 
 \subsection{Influenza vs COVID-19}
 In our application, we have pre-loaded data for Influenza\cite{influ_ref}\cite{k_val} and COVID-19\cite{cov_ref}\cite{k_val}. These two viral diseases have very different characteristics. The tables are given in Table \ref{analysis-rk}, \ref{analysis-mortality}. 
@@ -717,6 +743,8 @@ Influenza & 0.02\%               & 0.05\%                & 0.06\%               
 
 We provide an analysis for both by running the simulation. Our results are reported in Figure \ref{covid-analysis}, \ref{influenza-analysis}. 
 
+The results of our experiment simulations were as expected. As one can see, in COVID-19 virus (SARS-CoV-2), with a high R value and a low K value, there are more superspreader events and the virus grows rapidly. The entire population gets infected and the death toll 13.6\% of the total population or 136 people. In case of Influenza, with a R value of 1.8 and K value 0.9, the spread of the disease is much slower. Influenza having lower mortality rates brings the death toll to a comparatively very low number of only 0.4\% or 4 people.
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=10cm]{figures/covid-analysis.png}
@@ -731,7 +759,6 @@ We provide an analysis for both by running the simulation. Our results are repor
     \label{influenza-analysis}
 \end{figure}
 
-The results of our experiment simulations were as expected. As one can see, in COVID-19 virus (SARS-CoV-2), with a high R value and a low K value, there are more superspreader events and the virus grows rapidly. The entire population gets infected and the death toll 13.6\% of the total population or 136 people. In case of Influenza, with a R value of 1.8 and K value 0.9, the spread of the disease is much slower. Influenza having lower mortality rates brings the death toll to a comparatively very low number of only 0.4\% or 4 people.
 \section{Conclusion} 
 We developed an application capable of simulating a virus spread that took into account various factors such as the virus specific characteristics (R value, K value, recovery time, mortality rates, mask effectiveness) and population specific characteristics (population size, social distancing, mask mandates) to demonstrate an outbreak and its impact. From our analysis above, we found that the simulation model demonstrated results which were on par with our expectations, observations in real world, and our research. Some of the conclusions that can be made using our simulation models are:
 \begin{enumerate}
