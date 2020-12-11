@@ -4,7 +4,7 @@
 
 ![Build Status](https://github.com/mnk400/virussim/workflows/Build%20Status/badge.svg)
 
-This is a virus simulation system built as the semester project of INFO6205 for fall 2020. Details about the simulation and the project can be found in the [Project Report](https://github.com/mnk400/virus-sim-team-12/blob/master/Project%20Report/INFO6205_Project_Report.pdf)
+This is a virus simulation system built as the semester project of INFO6205 for fall 2020. Details about the simulation and the project can be found in the [Project Report.](https://github.com/mnk400/virus-sim-team-12/blob/master/Project%20Report/INFO6205_Project_Report.pdf)
 
 #
 <p align="center">
