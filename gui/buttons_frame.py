@@ -234,7 +234,7 @@ class ButtonsFrame(ttk.Frame):
         mask_dict = config_util.getDictionary("covid.stats","mask_effectiveness")
         self.data.mask_effectiveness_cloth_mask.set(str(mask_dict["cloth_mask"]) + "%")
         self.data.mask_effectiveness_surgical_mask.set(str(mask_dict["surgery_mask"]) + "%")
-        self.data.mask_effectiveness_n95_mask.set(str(mask_dict["n95"]) + "%")
+        self.data.mask_effectiveness_n95_mask.set(str(mask_dict["n95_mask"]) + "%")
 
         self.update() 
 
@@ -262,7 +262,7 @@ class ButtonsFrame(ttk.Frame):
         mask_dict = config_util.getDictionary("influenza.stats","mask_effectiveness")
         self.data.mask_effectiveness_cloth_mask.set(str(mask_dict["cloth_mask"]) + "%")
         self.data.mask_effectiveness_surgical_mask.set(str(mask_dict["surgery_mask"]) + "%")
-        self.data.mask_effectiveness_n95_mask.set(str(mask_dict["n95"]) + "%")
+        self.data.mask_effectiveness_n95_mask.set(str(mask_dict["n95_mask"]) + "%")
 
         self.update()
 

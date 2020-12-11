@@ -40,6 +40,7 @@ class PopulationUtil(object):
         """        
         self.population                 = Population(size) 
         self.virus                      = Virus(infection_range, recovery_time, total_healthcare_capacity)
+        self.recovery_time              = recovery_time
         self.total_healthcare_capacity  = total_healthcare_capacity
         self.movement                   = Movement()
         self.size                       = size
