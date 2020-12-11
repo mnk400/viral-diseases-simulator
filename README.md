@@ -4,7 +4,7 @@
 
 ![Build Status](https://github.com/mnk400/virussim/workflows/Build%20Status/badge.svg)
 
-This is a virus simulation system built as the semester project of INFO6205 for fall 2020.
+This is a virus simulation system built as the semester project of INFO6205 for fall 2020. Details about the simulation and the project can be found in the [Project Report](https://github.com/mnk400/virus-sim-team-12/blob/master/Project%20Report/INFO6205_Project_Report.pdf)
 
 #
 <p align="center">
@@ -17,7 +17,7 @@ This is a virus simulation system built as the semester project of INFO6205 for 
 
 ### Example Renders
 
-Some example renders can be found in *render/Examples* or from the following links:
+Some example renders can be found in *data/Example Renders* or from the following links:
 
 - [Covid with uncontrolled spread.](https://thumbs.gfycat.com/GlassFluidGoldfinch-mobile.mp4)
 
