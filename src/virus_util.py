@@ -41,6 +41,7 @@ class Virus():
                 chance = np.random.uniform(low = 0.0001, high = 1)
                 if chance < persons[int(i)][index.susceptibility] and persons[int(idx[0])][index.g_value] > 0 :
                     population.persons[int(i)][9] = 1
+                    population.persons[int(i)][index.infected_by] = idx[0]
                     population.set_infected_at(int(i), frame)
                     population.persons[int(idx[0])][index.g_value] -= 1
                     if(len(population.persons[population.persons[:,index.hospitalized] == 1]) < self.total_healthcare_capacity):
