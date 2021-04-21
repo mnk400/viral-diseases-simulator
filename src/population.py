@@ -8,8 +8,8 @@ import numpy as np
 
 class Population(object):
     """
-    This class provides abstraction to all individual person related properties and the dataframe
-    holding all persons
+    This class provides abstraction to all individual person related
+    properties and the dataframe holding all persons
     """
 
     def __init__(self, size):
