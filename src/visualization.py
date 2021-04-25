@@ -3,6 +3,7 @@ Created on Jan 29, 2020
 @author: manik
 '''
 
+from typing import Tuple
 from src.population_util import PopulationUtil
 from matplotlib import gridspec
 import matplotlib.pyplot as plt
@@ -45,17 +46,17 @@ class Visualization():
 
         # Initialize 3 subplots
         spec = gridspec.GridSpec(ncols=1, nrows=3, height_ratios=[2, 1, 0.5])
-        self.ax = self.fig.add_subplot(spec[0])
-        self.ax1 = self.fig.add_subplot(spec[1])
-        self.ax2 = self.fig.add_subplot(spec[2])
+        self.scatter = self.fig.add_subplot(spec[0])
+        self.line_graph = self.fig.add_subplot(spec[1])
+        self.text_info = self.fig.add_subplot(spec[2])
 
         # Set X and Y limits and other settings on subplots
-        self.ax.set_xlim(self.putil.x_bounds[0], self.putil.x_bounds[1])
-        self.ax.set_ylim(self.putil.y_bounds[0], self.putil.y_bounds[1])
-        self.ax1.set_xlim(0, 1000)
-        self.ax1.set_ylim(0, self.putil.size)
-        self.ax.axis('off')
-        self.ax2.axis('off')
+        self.scatter.set_xlim(self.putil.x_bounds[0], self.putil.x_bounds[1])
+        self.scatter.set_ylim(self.putil.y_bounds[0], self.putil.y_bounds[1])
+        self.line_graph.set_xlim(0, 1000)
+        self.line_graph.set_ylim(0, self.putil.size)
+        self.scatter.axis('off')
+        self.text_info.axis('off')
 
         # Initialize the animation
         self.ani = FuncAnimation(self.fig, self.update, interval=5,
@@ -129,7 +130,7 @@ class Visualization():
                 fig.canvas.set_window_title('Infection Tracing Visualization')
                 plt.show()
 
-    def setup_plot(self) -> list:
+    def setup_plot(self) -> Tuple:
         """
         Method to setup how the initial plot and visualization looks like
 
@@ -153,14 +154,17 @@ class Visualization():
         self.healthcare_status = "Normal"
 
         # Scatter plots to plot people
-        self.scat = self.ax.scatter(healthy_x, healthy_y, vmin=0, vmax=1,
-                                    cmap="jet", c="lightsteelblue", s=10)
-        self.scat2 = self.ax.scatter(infected_x, infected_y, vmin=0, vmax=1,
-                                     cmap="jet", c="indianred", s=10)
-        self.scat3 = self.ax.scatter(immune_x, immune_y, vmin=0, vmax=1,
-                                     cmap="jet", c="mediumseagreen", s=10)
-        self.scat4 = self.ax.scatter(dead_x, dead_y, vmin=0, vmax=1,
-                                     cmap="jet", c="indigo", s=10)
+        self.scatter_1 = self.scatter.scatter(healthy_x, healthy_y, vmin=0,
+                                              vmax=1, cmap="jet",
+                                              c="lightsteelblue", s=10)
+        self.scatter_2 = self.scatter.scatter(infected_x, infected_y, vmin=0,
+                                              vmax=1, cmap="jet",
+                                              c="indianred", s=10)
+        self.scatter_3 = self.scatter.scatter(immune_x, immune_y, vmin=0,
+                                              vmax=1, cmap="jet",
+                                              c="mediumseagreen", s=10)
+        self.scatter_4 = self.scatter.scatter(dead_x, dead_y, vmin=0, vmax=1,
+                                              cmap="jet", c="indigo", s=10)
         # Lists for line graph
         self.infected = []
         self.infected_total = []
@@ -174,22 +178,23 @@ class Visualization():
         self.frames.append(0)
 
         # Line graph plotting number
-        self.total_infected, = self.ax1.plot(self.frames,
-                                             self.infected_total)
-        self.currently_infected, = self.ax1.plot(self.frames, self.infected,
-                                                 c="indianred",
-                                                 label='Currently Infected')
-        self.total_deaths, = self.ax1.plot(self.frames, self.deaths,
-                                           c="indigo", label='Total Dead')
-        self.total_immune, = self.ax1.plot(self.frames, self.immunes,
-                                           c="mediumseagreen",
-                                           label='Total Immune')
+        self.total_infected, = self.line_graph.plot(self.frames,
+                                                    self.infected_total)
+        self.currently_infected, = self.line_graph \
+            .plot(self.frames, self.infected, c="indianred",
+                  label='Currently Infected')
+        self.total_deaths, = self.line_graph.plot(self.frames, self.deaths,
+                                                  c="indigo",
+                                                  label='Total Dead')
+        self.total_immune, = self.line_graph.plot(self.frames, self.immunes,
+                                                  c="mediumseagreen",
+                                                  label='Total Immune')
 
         # Code below prints statistics
         if(self.putil.enforce_social_distance_at > 0):
-            self.ax1.plot([self.putil.enforce_social_distance_at] * 2,
-                          [0, self.putil.size], c="gold",
-                          label="Social Distancing")
+            self.line_graph.plot([self.putil.enforce_social_distance_at] * 2,
+                                 [0, self.putil.size], c="gold",
+                                 label="Social Distancing")
             self.social_distancing_info = "At frame " + \
                 str(self.putil.enforce_social_distance_at)
             self.social_distancing_num = \
@@ -200,31 +205,51 @@ class Visualization():
             self.social_distancing_num = "0 or 0%"
 
         if(self.putil.enforce_mask_wearing_at > 0):
-            self.ax1.plot([self.putil.enforce_mask_wearing_at]*2,
-                          [0, self.putil.size], c="hotpink",
-                          label="Mask Mandate")
+            self.line_graph.plot([self.putil.enforce_mask_wearing_at]*2,
+                                 [0, self.putil.size], c="hotpink",
+                                 label="Mask Mandate")
             self.mask_wearing_info = "At frame " + \
                 str(self.putil.enforce_mask_wearing_at)
         else:
             self.mask_wearing_info = "Disabled"
 
-        self.ax1.tick_params(axis="y", direction="in", pad=3)
-        self.ax1.plot([0, 10000],
-                      [self.putil.virus.total_healthcare_capacity] * 2,
-                      c="silver")
-        self.ax1.get_xaxis().set_visible(False)
-        self.ax1.legend(prop={'size': 8}, loc='upper right')
-        self.ax2.text(0, 1, "Statistics", fontsize='large', fontweight='bold')
-        self.ax2.text(0, -0.5, "Frame:\nCurrently Infected:\nHealthy People:\nImmune People:\nTotal Deaths:\nHealthcare Conditions:")
-        self.ax2.text(0.54, -0.5, "Population:\nMasks Wearing:\nSocial Distancing:\nPeople Distancing:\nTotal Infected:\n")
-        self.ax.text(0, 1.06, "Simulation", fontsize='xx-large', fontweight='bold')
-        self.text = self.ax2.text(0.33, -0.5, "%i \n%i \n%s \n%s \n%s \n%s" %(0,len(infected_x),str(len(healthy_x)) + " or 0%", str(len(immune_x)) + " or 0%",str(len(dead_x)) + " or 0%",self.healthcare_status))
-        self.text2 = self.ax2.text(0.81, -0.5, "%d \n%s \n%s \n%s \n%s\n" % (self.putil.size, self.mask_wearing_info, self.social_distancing_info, self.social_distancing_num , total_infected))
+        self.line_graph.tick_params(axis="y", direction="in", pad=3)
+        self.line_graph.plot([0, 10000],
+                             [self.putil.virus.total_healthcare_capacity] * 2,
+                             c="silver")
+        self.line_graph.get_xaxis().set_visible(False)
+        self.line_graph.legend(prop={'size': 8}, loc='upper right')
 
-        return self.scat, self.scat2, self.scat3, self.scat4, \
-            self.currently_infected, self.total_infected,
+        self.text_info.text(0, 1, "Statistics", fontsize='large',
+                            fontweight='bold')
+        text_str = "Frame:\nCurrently Infected:\nHealthy People:\n" + \
+                   "Immune People:\nTotal Deaths:\nHealthcare Conditions:"
+        self.text_info.text(0, -0.5, text_str)
+        text_str = "Population:\nMasks Wearing:\nSocial Distancing:\n" + \
+                   "People Distancing:\nTotal Infected:\n"
+        self.text_info.text(0.54, -0.5, text_str)
 
-    def update(self, frame):
+        self.scatter.text(0, 1.06, "Simulation", fontsize='xx-large',
+                          fontweight='bold')
+        self.text_col1 = self.text_info.text(0.33, -0.5,
+                                             "%i \n%i \n%s \n%s \n%s \n%s" %
+                                             (0, len(infected_x),
+                                              str(len(healthy_x)) + " or 0%",
+                                              str(len(immune_x)) + " or 0%",
+                                              str(len(dead_x)) + " or 0%",
+                                              self.healthcare_status))
+        self.text_col2 = self.text_info.text(0.81, -0.5,
+                                             "%d \n%s \n%s \n%s \n%s\n" %
+                                             (self.putil.size,
+                                              self.mask_wearing_info,
+                                              self.social_distancing_info,
+                                              self.social_distancing_num,
+                                              total_infected))
+
+        return self.scatter_1, self.scatter_2, self.scatter_3, \
+            self.scatter_4, self.currently_infected, self.total_infected,
+
+    def update(self, frame) -> Tuple:
         """
         Similar to the setup function but this updates the simulation
 
@@ -261,7 +286,6 @@ class Visualization():
             dead_y = self.putil.population \
                 .get_all_dead()[:, index.y_axis]
             total_infected = self.putil.size - len(healthy_x)
-            total_hospitalized = len(self.putil.persons[self.putil.persons[:, index.hospitalized] == 3])
             currently_infected = len(infected_x)
 
             # Update healthcare status
@@ -287,16 +311,29 @@ class Visualization():
                 self.social_distancing_info = "Active"
 
             if frame % 1000 == 0:
-                self.ax1.set_xlim(0, frame + 1000)
+                self.line_graph.set_xlim(0, frame + 1000)
 
-            self.text.set_text("%i \n%i \n%s \n%s \n%s \n%s" % (frame,len(infected_x), str(len(healthy_x)) + " or " + str(round(len(healthy_x)*100/self.putil.size,1)) + "%",
-                                str(len(immune_x)) + " or " + str(round(len(immune_x)*100/self.putil.size,1)) + "%", str(len(dead_x)) + " or " + str(round(len(dead_x)*100/self.putil.size,1)) + "%",
-                                self.healthcare_status))
-            self.text2.set_text("%s \n%s \n%s \n%s \n%s\n" % (self.putil.size, self.mask_wearing_info, self.social_distancing_info, self.social_distancing_num , total_infected))
-            self.scat.set_offsets(data1)
-            self.scat2.set_offsets(data2)
-            self.scat3.set_offsets(data3)
-            self.scat4.set_offsets(data4)
+            self.text_col1.set_text("%i \n%i \n%s \n%s \n%s \n%s" %
+                                    (frame, len(infected_x),
+                                     str(len(healthy_x)) + " or " +
+                                     str(round(len(healthy_x) *
+                                         100/self.putil.size, 1)) + "%",
+                                     str(len(immune_x)) + " or " +
+                                     str(round(len(immune_x) *
+                                         100/self.putil.size, 1)) + "%",
+                                     str(len(dead_x)) + " or " +
+                                     str(round(len(dead_x) *
+                                         100/self.putil.size, 1)) + "%",
+                                     self.healthcare_status))
+            self.text_col2.set_text("%s \n%s \n%s \n%s \n%s\n" %
+                                    (self.putil.size, self.mask_wearing_info,
+                                     self.social_distancing_info,
+                                     self.social_distancing_num,
+                                     total_infected))
+            self.scatter_1.set_offsets(data1)
+            self.scatter_2.set_offsets(data2)
+            self.scatter_3.set_offsets(data3)
+            self.scatter_4.set_offsets(data4)
 
             self.infected.append(len(infected_x))
             self.infected_total.append(self.putil.size - len(healthy_x))
@@ -313,8 +350,8 @@ class Visualization():
             self.total_immune.set_ydata(self.immunes)
             self.total_immune.set_xdata(self.frames)
 
-        return self.scat, self.scat2, self.scat3, self.scat4, \
-            self.currently_infected,
+        return self.scatter_1, self.scatter_2, self.scatter_3, \
+            self.scatter_4, self.currently_infected,
 
 
 if __name__ == "__main__":
