@@ -1,5 +1,6 @@
 """
-Load Config Window application window for Virussim application, built using Tkinter
+Load Config Window application window for Virussim application, built using
+Tkinter
 
 Created on 2nd Dec, 2020
 @author Yatish Pitta
@@ -7,7 +8,6 @@ Created on 2nd Dec, 2020
 
 import tkinter as tk
 import tkinter.ttk as ttk
-import gui.ttk_helper
 from gui.ttk_helper import ToolTip
 from gui.data_store import DataStore
 
@@ -38,108 +38,205 @@ class SetConfigFrame(ttk.Frame):
         """
         Creates slider and button widgets for configuring simulation
         """
-        
+
         # Main label frame to hold widgets
         style = ttk.Style(self)
         style.configure("Bold.TLabel", font=("Helvetica", 19, "bold"))
-        label_frame_label = ttk.Label(text="Modify Configuration", style="Bold.TLabel")
-        label_frame = ttk.LabelFrame(master=self, labelwidget=label_frame_label, height=self.height * 0.95,
-                                    width=self.width * 0.95)
+        label_frame_label = ttk.Label(text="Modify Configuration",
+                                      style="Bold.TLabel")
+        label_frame = ttk.LabelFrame(master=self,
+                                     labelwidget=label_frame_label,
+                                     height=self.height * 0.95,
+                                     width=self.width * 0.95)
 
-        label_frame.grid(row=0, column=0, pady=self.height * 0.02, padx=(self.width * 0.03, 0))
+        label_frame.grid(row=0, column=0, pady=self.height * 0.02,
+                         padx=(self.width * 0.03, 0))
         label_frame.grid_propagate(0)
-        
+
         # Population value slider
-        population_label = ttk.Label(master=label_frame, anchor=tk.E, text='Population:')
-        population_label.grid(row=0, column=0, columnspan=1, sticky=tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.03)
-        popToolTip = ToolTip(widget = population_label, text = "The size of the population for the simulation")
+        population_label = ttk.Label(master=label_frame, anchor=tk.E,
+                                     text='Population:')
+        population_label.grid(row=0, column=0, columnspan=1, sticky=tk.W,
+                              padx=float(label_frame.winfo_reqwidth()) * 0.03)
+        popToolTip = ToolTip(widget=population_label,
+                             text="The size of the population for the" +
+                                  "simulation")
 
-        population_label.bind("<Enter>", lambda event: self.enter(event = event, tooltip = popToolTip))
-        population_label.bind("<Leave>", lambda event: self.leave(event = event, tooltip = popToolTip))
+        population_label.bind("<Enter>",
+                              lambda event: self
+                              .enter(event=event, tooltip=popToolTip))
+        population_label.bind("<Leave>",
+                              lambda event: self
+                              .leave(event=event, tooltip=popToolTip))
 
-        population_scale = ttk.Scale(master=label_frame, orient='horizontal', from_=200, to=3000, 
-                                     command=lambda s:self.data.population_val.set('%d' % int(float(s))))
+        population_scale = ttk.Scale(master=label_frame, orient='horizontal',
+                                     from_=200, to=3000,
+                                     command=lambda s: self.data.population_val
+                                     .set('%d' % int(float(s))))
         population_scale.set(1000)
-        population_scale.grid(row=0, column=2, padx=float(label_frame.winfo_reqwidth()) * 0.05,
-                              pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3,sticky=tk.W+tk.E)
+        population_scale.grid(row=0, column=2,
+                              padx=float(label_frame.winfo_reqwidth()) * 0.05,
+                              pady=float(label_frame.winfo_reqheight()) * 0.01,
+                              columnspan=3, sticky=tk.W + tk.E)
 
-        population_scale_val_label = ttk.Label(label_frame, textvariable=self.data.population_val)
-        # population_scale_val_label.place(in_=population_scale, bordermode='outside', x=0, y=0, anchor='s')
-        population_scale_val_label.grid(row=0, column=1, columnspan=1, sticky = tk.W)
+        population_scale_val_label = \
+            ttk.Label(label_frame, textvariable=self.data.population_val)
 
+        population_scale_val_label.grid(row=0, column=1, columnspan=1,
+                                        sticky=tk.W)
 
         # Social distancing value slider
-        social_distancing_label = ttk.Label(master=label_frame, text='Social Distancing:')
+        social_distancing_label = ttk.Label(master=label_frame,
+                                            text='Social Distancing:')
 
-        social_distancing_label.grid(row=1, column=0, columnspan=1, sticky=tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.03)
-        socToolTip = ToolTip(widget = social_distancing_label, text = "The percentage of the total population who will be social distancing")
+        social_distancing_label.grid(row=1, column=0, columnspan=1,
+                                     sticky=tk.W,
+                                     padx=float(label_frame.winfo_reqwidth())
+                                     * 0.03)
+        socToolTip = ToolTip(widget=social_distancing_label,
+                             text="The percentage of the total population " +
+                             "who will be social distancing")
 
-        social_distancing_label.bind("<Enter>", lambda event: self.enter(event = event, tooltip = socToolTip))
-        social_distancing_label.bind("<Leave>", lambda event: self.leave(event = event, tooltip = socToolTip))
+        social_distancing_label.bind("<Enter>", lambda event: self
+                                     .enter(event=event, tooltip=socToolTip))
+        social_distancing_label.bind("<Leave>", lambda event: self
+                                     .leave(event=event, tooltip=socToolTip))
 
-        social_distance_scale = ttk.Scale(master=label_frame, orient='horizontal', from_=0, to=100, command=lambda s:self.data.social_distancing_val.set('%d%%' % int(float(s))))
+        social_distance_scale = ttk.Scale(master=label_frame,
+                                          orient='horizontal',
+                                          from_=0, to=100,
+                                          command=lambda s: self.data
+                                          .social_distancing_val
+                                          .set('%d%%' % int(float(s))))
         social_distance_scale.set(50)
-        social_distance_scale.grid(row=1, column=2, padx=float(label_frame.winfo_reqwidth()) * 0.05,
-                                   pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3,sticky=tk.W+tk.E)
+        social_distance_scale.grid(row=1, column=2,
+                                   padx=float(label_frame
+                                              .winfo_reqwidth()) * 0.05,
+                                   pady=float(label_frame
+                                              .winfo_reqheight()) * 0.01,
+                                   columnspan=3, sticky=tk.W + tk.E)
 
-        distancing_val_label = ttk.Label(label_frame, textvariable=self.data.social_distancing_val)
+        distancing_val_label = ttk.Label(label_frame,
+                                         textvariable=self.data
+                                         .social_distancing_val)
 
-        distancing_val_label.grid(row=1, column=1, columnspan=1, sticky = tk.W)
+        distancing_val_label.grid(row=1, column=1, columnspan=1,
+                                  sticky=tk.W)
 
         # Hospital capacity value slider
-        hostpital_capacity_label = ttk.Label(master=label_frame, text='Healthcare Capacity:')
-        hostpital_capacity_label.grid(row=2, column=0, columnspan=1, sticky = tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.03)
+        hostpital_capacity_label = ttk.Label(master=label_frame,
+                                             text='Healthcare Capacity:')
+        hostpital_capacity_label.grid(row=2, column=0, columnspan=1,
+                                      sticky=tk.W,
+                                      padx=float(label_frame
+                                                 .winfo_reqwidth()) * 0.03)
 
-        hosToolTip = ToolTip(widget = hostpital_capacity_label, 
-                    text = "The hospital capacity as a percentage of the population. \nWe found in our research that the hospital capacity is generally a function of the population.")
+        hosToolTip = ToolTip(widget=hostpital_capacity_label,
+                             text="The hospital capacity as a percentage " +
+                             "of the population. \nWe found in our research" +
+                             " that the hospital capacity is generally a " +
+                             "function of the population.")
 
-        hostpital_capacity_label.bind("<Enter>", lambda event: self.enter(event = event, tooltip = hosToolTip))
-        hostpital_capacity_label.bind("<Leave>", lambda event: self.leave(event = event, tooltip = hosToolTip))
+        hostpital_capacity_label.bind("<Enter>", lambda event: self
+                                      .enter(event=event, tooltip=hosToolTip))
+        hostpital_capacity_label.bind("<Leave>", lambda event: self
+                                      .leave(event=event, tooltip=hosToolTip))
 
-        hospital_capacity_scale = ttk.Scale(master=label_frame, orient='horizontal', from_=0, to=100, command=lambda s:self.data.hospital_capacity_val.set('%d%%' % int(float(s))))
+        hospital_capacity_scale = ttk.Scale(master=label_frame,
+                                            orient='horizontal', from_=0,
+                                            to=100, command=lambda s: self
+                                            .data.hospital_capacity_val
+                                            .set('%d%%' % int(float(s))))
         hospital_capacity_scale.set(20)
-        hospital_capacity_scale.grid(row=2, column=2, padx=float(label_frame.winfo_reqwidth()) * 0.05,
-                                     pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3,sticky=tk.W+tk.E)
-        
-        hospital_capacity_val_label = ttk.Label(label_frame, textvariable=self.data.hospital_capacity_val)
+        hospital_capacity_scale.grid(row=2, column=2,
+                                     padx=float(label_frame.winfo_reqwidth())
+                                     * 0.05,
+                                     pady=float(label_frame.winfo_reqheight())
+                                     * 0.01,
+                                     columnspan=3, sticky=tk.W+tk.E)
 
-        hospital_capacity_val_label.grid(row=2, column=1, columnspan=1, sticky=tk.W)
+        hospital_capacity_val_label = ttk.Label(label_frame,
+                                                textvariable=self.data
+                                                .hospital_capacity_val)
+
+        hospital_capacity_val_label.grid(row=2, column=1, columnspan=1,
+                                         sticky=tk.W)
 
         # Recovery time value slider
-        recovery_time_label = ttk.Label(master=label_frame, text='Recovery Time:')
-        recovery_time_label.grid(row=3, column=0, columnspan=1, sticky=tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.03)
+        recovery_time_label = ttk.Label(master=label_frame,
+                                        text='Recovery Time:')
+        recovery_time_label.grid(row=3, column=0, columnspan=1, sticky=tk.W,
+                                 padx=float(label_frame.winfo_reqwidth())
+                                 * 0.03)
 
-        recoveryToolTip = ToolTip(widget = recovery_time_label, 
-                    text = "The time a person needs to recover from the virus in unit of frames. \nThis takes into account both if the person is recovering without medical attention or if they needed hospitalization. \nIn our simulation, 1 day roughly amounts to 5 frames.")
+        recoveryToolTip = ToolTip(widget=recovery_time_label,
+                                  text="The time a person needs to " +
+                                  "recover from the virus in unit of frames." +
+                                  "\nThis takes into account both if the " +
+                                  "person is recovering without medical " +
+                                  "attention or if they needed " +
+                                  "hospitalization. \nIn our simulation, " +
+                                  "1 day roughly amounts to 5 frames.")
 
-        recovery_time_label.bind("<Enter>", lambda event: self.enter(event = event, tooltip = recoveryToolTip))
-        recovery_time_label.bind("<Leave>", lambda event: self.leave(event = event, tooltip = recoveryToolTip))
+        recovery_time_label.bind("<Enter>", lambda event: self
+                                 .enter(event=event, tooltip=recoveryToolTip))
+        recovery_time_label.bind("<Leave>", lambda event: self
+                                 .leave(event=event, tooltip=recoveryToolTip))
 
-        self.data.recovery_time_scale = ttk.Scale(master=label_frame, orient='horizontal', from_=50, to=500, command=lambda s:self.data.recovery_time_val.set('%d' % int(float(s))))
+        self.data.recovery_time_scale = ttk.Scale(master=label_frame,
+                                                  orient='horizontal',
+                                                  from_=50, to=500,
+                                                  command=lambda s: self.
+                                                  data.recovery_time_val
+                                                  .set('%d' % int(float(s))))
         self.data.recovery_time_scale.set(120)
-        self.data.recovery_time_scale.grid(row=3, column=2, padx=float(label_frame.winfo_reqwidth()) * 0.05,
-                                     pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3,sticky=tk.W+tk.E)
-        
-        recovery_time_val_label = ttk.Label(label_frame, textvariable=self.data.recovery_time_val)
+        self.data.recovery_time_scale.grid(row=3, column=2,
+                                           padx=float(label_frame
+                                                      .winfo_reqwidth())
+                                           * 0.05,
+                                           pady=float(label_frame
+                                                      .winfo_reqheight())
+                                           * 0.01,
+                                           columnspan=3, sticky=tk.W + tk.E)
 
-        recovery_time_val_label.grid(row = 3, column=1, columnspan=1, sticky=tk.W)
+        recovery_time_val_label = ttk.Label(label_frame,
+                                            textvariable=self.data
+                                            .recovery_time_val)
+
+        recovery_time_val_label.grid(row=3, column=1, columnspan=1,
+                                     sticky=tk.W)
 
         # R value setter button
         r_value_label = ttk.Label(master=label_frame, text='R value:')
-        r_value_label.grid(row=4, column=0, columnspan=1, sticky=tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.03)
+        r_value_label.grid(row=4, column=0, columnspan=1, sticky=tk.W,
+                           padx=float(label_frame.winfo_reqwidth()) * 0.03)
 
-        rValueToolTip = ToolTip(widget = r_value_label, 
-                    text = "The reproduction rate or the R value of the virus. \nThis is defined as the average number of people an infected person goes on to infect.")
+        rValueToolTip = ToolTip(widget=r_value_label,
+                                text="The reproduction rate or the R value " +
+                                "of the virus. \nThis is defined as the " +
+                                "average number of people an infected " +
+                                "person goes on to infect.")
 
-        r_value_label.bind("<Enter>", lambda event: self.enter(event = event, tooltip = rValueToolTip))
-        r_value_label.bind("<Leave>", lambda event: self.leave(event = event, tooltip = rValueToolTip))
+        r_value_label.bind("<Enter>", lambda event: self
+                           .enter(event=event, tooltip=rValueToolTip))
+        r_value_label.bind("<Leave>", lambda event: self
+                           .leave(event=event, tooltip=rValueToolTip))
 
-        self.data.r_value_scale = ttk.Scale(master=label_frame, orient='horizontal', from_=0, to=10, command=lambda s:self.data.r_val.set('%0.2f' % float(s)))
+        self.data.r_value_scale = ttk.Scale(master=label_frame,
+                                            orient='horizontal',
+                                            from_=0, to=10,
+                                            command=lambda s: self.data
+                                            .r_val.set('%0.2f' % float(s)))
         self.data.r_value_scale.set(3.00)
-        self.data.r_value_scale.grid(row=4, column=2, padx=float(label_frame.winfo_reqwidth()) * 0.05,
-                                     pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3,sticky=tk.W+tk.E)
-        
-        r_value_val_label = ttk.Label(label_frame, textvariable=self.data.r_val)
+        self.data.r_value_scale.grid(row=4, column=2,
+                                     padx=float(label_frame.winfo_reqwidth())
+                                     * 0.05,
+                                     pady=float(label_frame.winfo_reqheight())
+                                     * 0.01,
+                                     columnspan=3, sticky=tk.W + tk.E)
+
+        r_value_val_label = ttk.Label(label_frame,
+                                      textvariable=self.data.r_val)
 
         r_value_val_label.grid(row=4, column=1, columnspan=1, sticky=tk.W)
 
