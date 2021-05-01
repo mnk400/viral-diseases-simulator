@@ -242,239 +242,501 @@ class SetConfigFrame(ttk.Frame):
 
         # K value setter button
         k_value_label = ttk.Label(master=label_frame,  text='K value:')
-        k_value_label.grid(row=5, column=0, columnspan=1, sticky=tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.03)
+        k_value_label.grid(row=5, column=0, columnspan=1, sticky=tk.W,
+                           padx=float(label_frame.winfo_reqwidth()) * 0.03)
 
-        kValueToolTip = ToolTip(widget = r_value_label, 
-                    text = "The K value of the virus. \nThis is defined as the dispersion rate of the R value of the virus.")
+        kValueToolTip = ToolTip(widget=r_value_label,
+                                text="The K value of the virus. \nThis is " +
+                                "defined as the dispersion rate of the R " +
+                                "value of the virus.")
 
-        k_value_label.bind("<Enter>", lambda event: self.enter(event = event, tooltip = kValueToolTip))
-        k_value_label.bind("<Leave>", lambda event: self.leave(event = event, tooltip = kValueToolTip))
+        k_value_label.bind("<Enter>", lambda event: self
+                           .enter(event=event, tooltip=kValueToolTip))
+        k_value_label.bind("<Leave>", lambda event: self
+                           .leave(event=event, tooltip=kValueToolTip))
 
-        self.data.k_value_scale = ttk.Scale(master=label_frame, orient='horizontal', from_=0, to=10, command=lambda s:self.data.k_val.set('%0.2f' % float(s)))
+        self.data.k_value_scale = ttk.Scale(master=label_frame,
+                                            orient='horizontal',
+                                            from_=0, to=10,
+                                            command=lambda s: self.data
+                                            .k_val.set('%0.2f' % float(s)))
         self.data.k_value_scale.set(0.1)
-        self.data.k_value_scale.grid(row=5, column=2, padx=float(label_frame.winfo_reqwidth()) * 0.05,
-                                     pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3,sticky=tk.W+tk.E)
-        
-        k_value_val_label = ttk.Label(label_frame, textvariable=self.data.k_val)
+        self.data.k_value_scale.grid(row=5, column=2,
+                                     padx=float(label_frame.winfo_reqwidth())
+                                     * 0.05,
+                                     pady=float(label_frame.winfo_reqheight())
+                                     * 0.01,
+                                     columnspan=3, sticky=tk.W + tk.E)
+
+        k_value_val_label = ttk.Label(label_frame,
+                                      textvariable=self.data.k_val)
 
         k_value_val_label.grid(row=5, column=1, columnspan=1, sticky=tk.W)
-        
 
-        #Enforce Social Distancing At
-        enforce_social_distancing_label = ttk.Label(master=label_frame,  text='Social Distancing Starts:')
-        enforce_social_distancing_label.grid(row=6, column=0, columnspan=1, sticky=tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.03)
+        # Enforce Social Distancing At
+        enforce_social_distancing_label = \
+            ttk.Label(master=label_frame, text='Social Distancing Starts:')
+        enforce_social_distancing_label.grid(row=6, column=0, columnspan=1,
+                                             sticky=tk.W,
+                                             padx=float(label_frame
+                                                        .winfo_reqwidth())
+                                             * 0.03)
 
-        enforceSocToolTip = ToolTip(widget = enforce_social_distancing_label, 
-                    text = "The time at which the city officials decided to announce the social distancing advisory. \nTo enable or disable social distancing, select the checkbox on the right. \nIn our simulation, 1 day roughly amounts to 5 frames.")
+        enforceSocToolTip = ToolTip(widget=enforce_social_distancing_label,
+                                    text="The time at which the city " +
+                                    "officials decided to announce the " +
+                                    "social distancing advisory. \nTo " +
+                                    "enable or disable social distancing, " +
+                                    "select the checkbox on the right. \nIn " +
+                                    "our simulation, 1 day roughly amounts " +
+                                    "to 5 frames.")
 
-        enforce_social_distancing_label.bind("<Enter>", lambda event: self.enter(event = event, tooltip = enforceSocToolTip))
-        enforce_social_distancing_label.bind("<Leave>", lambda event: self.leave(event = event, tooltip = enforceSocToolTip))
+        enforce_social_distancing_label.bind("<Enter>", lambda event: self
+                                             .enter(event=event,
+                                                    tooltip=enforceSocToolTip))
+        enforce_social_distancing_label.bind("<Leave>", lambda event: self
+                                             .leave(event=event,
+                                                    tooltip=enforceSocToolTip))
 
-        enforce_social_distancing_scale = ttk.Scale(master=label_frame, orient='horizontal', from_=0, to=1000, command=lambda s:self.data.social_distancing_starting_at_val.set('%d' % int(float(s))))
+        enforce_social_distancing_scale = \
+            ttk.Scale(master=label_frame, orient='horizontal', from_=0,
+                      to=1000, command=lambda s: self.data
+                      .social_distancing_starting_at_val
+                      .set('%d' % int(float(s))))
         enforce_social_distancing_scale.set(200)
-        enforce_social_distancing_scale.grid(row=6, column=2, padx=float(label_frame.winfo_reqwidth()) * 0.05,
-                                     pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3, sticky=tk.W+tk.E)
-        
-        enforce_social_distancing_val_label = ttk.Label(label_frame, textvariable=self.data.social_distancing_starting_at_val)
-        enforce_social_distancing_val_label.grid(row=6, column=1, columnspan=1, sticky=tk.W)
+        enforce_social_distancing_scale.grid(row=6, column=2,
+                                             padx=float(label_frame
+                                                        .winfo_reqwidth())
+                                             * 0.05,
+                                             pady=float(label_frame
+                                                        .winfo_reqheight())
+                                             * 0.01,
+                                             columnspan=3, sticky=tk.W + tk.E)
 
-        #Mask Wearing Starts At
-        enforce_mask_wearing_label = ttk.Label(master=label_frame,  text='Mask Mandate Starts:')
-        enforce_mask_wearing_label.grid(row=7, column=0, columnspan=1, sticky=tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.03)
+        enforce_social_distancing_val_label = \
+            ttk.Label(label_frame,
+                      textvariable=self.data.social_distancing_starting_at_val)
+        enforce_social_distancing_val_label.grid(row=6, column=1, columnspan=1,
+                                                 sticky=tk.W)
 
-        enforceMaskToolTip = ToolTip(widget = enforce_mask_wearing_label, 
-                    text = "The time at which the city officials decided to announce the mask mandate. \nTo enable or disable mask mandates, select the checkbox on the right. \nIn our simulation, 1 day roughly amounts to 5 frames.")
+        # Mask Wearing Starts at
+        enforce_mask_wearing_label = ttk.Label(master=label_frame,
+                                               text='Mask Mandate Starts:')
+        enforce_mask_wearing_label.grid(row=7, column=0, columnspan=1,
+                                        sticky=tk.W,
+                                        padx=float(label_frame
+                                                   .winfo_reqwidth())
+                                        * 0.03)
 
-        enforce_mask_wearing_label.bind("<Enter>", lambda event: self.enter(event = event, tooltip = enforceMaskToolTip))
-        enforce_mask_wearing_label.bind("<Leave>", lambda event: self.leave(event = event, tooltip = enforceMaskToolTip))
+        enforceMaskToolTip = ToolTip(widget=enforce_mask_wearing_label,
+                                     text="The time at which the city " +
+                                     "officials decided to announce the " +
+                                     "mask mandate. \nTo enable or disable " +
+                                     "mask mandates, select the checkbox on " +
+                                     "the right. \nIn our simulation, 1 day " +
+                                     "roughly amounts to 5 frames.")
 
-        enforce_mask_wearing_scale = ttk.Scale(master=label_frame, orient='horizontal', from_=0, to=1000,
-                                           length=float(label_frame.winfo_reqwidth()) * 0.35, command=lambda s:self.data.mask_mandate_starting_at_val.set('%d' % int(float(s))))
+        enforce_mask_wearing_label.bind("<Enter>", lambda event: self
+                                        .enter(event=event,
+                                               tooltip=enforceMaskToolTip))
+        enforce_mask_wearing_label.bind("<Leave>", lambda event: self
+                                        .leave(event=event,
+                                               tooltip=enforceMaskToolTip))
+
+        enforce_mask_wearing_scale = ttk.Scale(master=label_frame,
+                                               orient='horizontal', from_=0,
+                                               to=1000,
+                                               length=float(label_frame
+                                                            .winfo_reqwidth())
+                                               * 0.35,
+                                               command=lambda s: self.data
+                                               .mask_mandate_starting_at_val
+                                               .set('%d' % int(float(s))))
         enforce_mask_wearing_scale.set(320)
-        enforce_mask_wearing_scale.grid(row=7, column=2, padx=float(label_frame.winfo_reqwidth()) * 0.05,
-                                     pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3)
-        
-        enforce_mask_wearing_val_label = ttk.Label(label_frame, textvariable=self.data.mask_mandate_starting_at_val)
-        enforce_mask_wearing_val_label.grid(row=7, column=1, columnspan=1, sticky=tk.W)
+        enforce_mask_wearing_scale.grid(row=7, column=2,
+                                        padx=float(label_frame
+                                                   .winfo_reqwidth())
+                                        * 0.05,
+                                        pady=float(label_frame
+                                                   .winfo_reqheight())
+                                        * 0.01,
+                                        columnspan=3)
 
-        #Set mask effectiveness
-        mask_effectiveness_label = ttk.Label(master=label_frame,  text='Mask Effectiveness:')
-        mask_effectiveness_label.grid(row=8, column=0, columnspan=1, sticky=tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.03)
+        enforce_mask_wearing_val_label = \
+            ttk.Label(label_frame,
+                      textvariable=self.data.mask_mandate_starting_at_val)
+        enforce_mask_wearing_val_label.grid(row=7, column=1, columnspan=1,
+                                            sticky=tk.W)
 
-        maskEffToolTip = ToolTip(widget = mask_effectiveness_label, 
-                    text = "Set the mask effectiveness in protecting an individual from a virus when they come in contact with an infected person. \nWe take into account 3 types of masks that are commonly used by people: cloth masks, surgical masks, N95 masks")
+        # Set mask effectiveness
+        mask_effectiveness_label = ttk.Label(master=label_frame,
+                                             text='Mask Effectiveness:')
+        mask_effectiveness_label.grid(row=8, column=0, columnspan=1,
+                                      sticky=tk.W,
+                                      padx=float(label_frame.winfo_reqwidth())
+                                      * 0.03)
 
-        mask_effectiveness_label.bind("<Enter>", lambda event: self.enter(event = event, tooltip = maskEffToolTip))
-        mask_effectiveness_label.bind("<Leave>", lambda event: self.leave(event = event, tooltip = maskEffToolTip))
+        maskEffToolTip = ToolTip(widget=mask_effectiveness_label,
+                                 text="Set the mask effectiveness in " +
+                                 "protecting an individual from a virus " +
+                                 "when they come in contact with an " +
+                                 "infected person. \nWe take into account " +
+                                 "3 types of masks that are commonly used " +
+                                 "by people: cloth masks, surgical masks, " +
+                                 "N95 masks")
 
-        mask_effectiveness_set_button = ttk.Button(label_frame, text="Set Mask Effectiveness", command=self.openMaskWindow)
-        mask_effectiveness_set_button.grid(row=8, column=1, pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3, sticky='we', padx=(float(label_frame.winfo_reqwidth()) * 0.03,float(label_frame.winfo_reqwidth()) * 0.03))
+        mask_effectiveness_label.bind("<Enter>", lambda event: self
+                                      .enter(event=event,
+                                             tooltip=maskEffToolTip))
+        mask_effectiveness_label.bind("<Leave>", lambda event: self
+                                      .leave(event=event,
+                                             tooltip=maskEffToolTip))
 
-        #Set mortality rate
-        mortality_rate_label = ttk.Label(master=label_frame,  text='Mortality Rate:')
-        mortality_rate_label.grid(row=9, column=0, columnspan=1, sticky=tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.03)
+        mask_effectiveness_set_button = \
+            ttk.Button(label_frame, text="Set Mask Effectiveness",
+                       command=self.openMaskWindow)
+        mask_effectiveness_set_button.grid(row=8, column=1,
+                                           pady=float(label_frame
+                                                      .winfo_reqheight())
+                                           * 0.01, columnspan=3,
+                                           sticky='we',
+                                           padx=(float(label_frame
+                                                       .winfo_reqwidth())
+                                                 * 0.03,
+                                                 float(label_frame
+                                                       .winfo_reqwidth())
+                                                 * 0.03))
 
-        mortalityRateToolTip = ToolTip(widget = mortality_rate_label, 
-                    text = "Set the mortality rate of the virus according to the age group that a person belongs to. \nWe take into account 4 standard age groups while determining the mortality rate: 0-19, 20-49, 50-69, 70+")
+        # Set mortality rate
+        mortality_rate_label = ttk.Label(master=label_frame,
+                                         text='Mortality Rate:')
+        mortality_rate_label.grid(row=9, column=0, columnspan=1, sticky=tk.W,
+                                  padx=float(label_frame.winfo_reqwidth())
+                                  * 0.03)
 
-        mortality_rate_label.bind("<Enter>", lambda event: self.enter(event = event, tooltip = mortalityRateToolTip))
-        mortality_rate_label.bind("<Leave>", lambda event: self.leave(event = event, tooltip = mortalityRateToolTip))
+        mortalityRateToolTip = ToolTip(widget=mortality_rate_label,
+                                       text="Set the mortality rate of the " +
+                                       "virus according to the age group " +
+                                       "that a person belongs to. \nWe take " +
+                                       "into account 4 standard age groups " +
+                                       "while determining the mortality " +
+                                       "rate: 0-19, 20-49, 50-69, 70+")
 
-        mortality_rate_set_button = ttk.Button(label_frame, text="Set Mortality Rate", command=self.openMortalityWindow)
-        mortality_rate_set_button.grid(row=9, column=1, pady=float(label_frame.winfo_reqheight()) * 0.01,  columnspan=3, sticky='we', padx=(float(label_frame.winfo_reqwidth()) * 0.03,float(label_frame.winfo_reqwidth()) * 0.03))
-        
+        mortality_rate_label.bind("<Enter>", lambda event: self
+                                  .enter(event=event,
+                                         tooltip=mortalityRateToolTip))
+        mortality_rate_label.bind("<Leave>", lambda event: self
+                                  .leave(event=event,
+                                         tooltip=mortalityRateToolTip))
+
+        mortality_rate_set_button = \
+            ttk.Button(label_frame, text="Set Mortality Rate",
+                       command=self.openMortalityWindow)
+        mortality_rate_set_button.grid(row=9, column=1,
+                                       pady=float(label_frame
+                                                  .winfo_reqheight())
+                                       * 0.01,
+                                       columnspan=3, sticky='we',
+                                       padx=(float(label_frame
+                                                   .winfo_reqwidth())
+                                             * 0.03,
+                                             float(label_frame
+                                                   .winfo_reqwidth())
+                                             * 0.03))
+
     def openMaskWindow(self):
         """
-        Top level window with sliders to adjust the mask effectiveness related configuration
+        Top level window with sliders to adjust the mask effectiveness related
+        configuration.
         """
 
-        newWindow = tk.Toplevel(self.master) 
-        
+        newWindow = tk.Toplevel(self.master)
+
         newWindow.resizable(width=False, height=False)
 
-        photo = tk.PhotoImage(file = "assets/icon-512.png")
+        photo = tk.PhotoImage(file="assets/icon-512.png")
         newWindow.iconphoto(False, photo)
-        newWindow.resizable(width=False,height=False)
+        newWindow.resizable(width=False, height=False)
 
         window_frame = ttk.LabelFrame(master=newWindow)
-        window_frame.grid(row=0,column=0)
+        window_frame.grid(row=0, column=0)
 
         style = ttk.Style(self)
         style.configure("Bold.TLabel", font=("Helvetica", 19, "bold"))
-        label_frame_label = ttk.Label(master = window_frame, text="Set Mask Effectiveness", style = "Bold.TLabel")
-        label_frame = ttk.LabelFrame(master = window_frame, labelwidget=label_frame_label, height = self.height*2, width = self.width*1)
-        label_frame.grid(row = 0, column = 0, columnspan=1, pady=self.height * 0.02, padx=(self.width * 0.03, self.width * 0.03))
-        mask_type_header_label = ttk.Label(master=label_frame,  text='Mask Type')
-        mask_effectivenss_header_label = ttk.Label(master=label_frame,  text='Mask Effectiveness')
-        empty_label_1  = ttk.Label(master=label_frame,  text='        ')
-        mask_type_header_label.grid(row = 1, column = 0, columnspan=1, sticky = tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.02)
-        empty_label_1.grid(row = 1, column = 1, columnspan=1)
-        mask_effectivenss_header_label.grid(row = 1, column = 2, columnspan=1)
+        label_frame_label = ttk.Label(master=window_frame,
+                                      text="Set Mask Effectiveness",
+                                      style="Bold.TLabel")
+        label_frame = ttk.LabelFrame(master=window_frame,
+                                     labelwidget=label_frame_label,
+                                     height=self.height*2,
+                                     width=self.width*1)
+        label_frame.grid(row=0, column=0, columnspan=1,
+                         pady=self.height * 0.02,
+                         padx=(self.width * 0.03, self.width * 0.03))
+        mask_type_header_label = ttk.Label(master=label_frame,
+                                           text='Mask Type')
+        mask_effectivenss_header_label = ttk.Label(master=label_frame,
+                                                   text='Mask Effectiveness')
+        empty_label_1 = ttk.Label(master=label_frame, text='        ')
+        mask_type_header_label.grid(row=1, column=0, columnspan=1, sticky=tk.W,
+                                    padx=float(label_frame.winfo_reqwidth())
+                                    * 0.02)
+        empty_label_1.grid(row=1, column=1, columnspan=1)
+        mask_effectivenss_header_label.grid(row=1, column=2, columnspan=1)
 
-        #Cloth Mask
-        cloth_mask_effectiveness = ttk.Label(master=label_frame,  text='Cloth Mask:')
-        cloth_mask_effectiveness.grid(row = 2, column = 0, columnspan=1, sticky = tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.02)
+        # Cloth Mask
+        cloth_mask_effectiveness = ttk.Label(master=label_frame,
+                                             text='Cloth Mask:')
+        cloth_mask_effectiveness.grid(row=2, column=0, columnspan=1,
+                                      sticky=tk.W,
+                                      padx=float(label_frame.winfo_reqwidth())
+                                      * 0.02)
 
-        cloth_mask_effectiveness_scale = ttk.Scale(master=label_frame, orient='horizontal', from_=0, to=100,
-                                           length=float(label_frame.winfo_reqwidth()) * 0.35, command=lambda s:self.data.mask_effectiveness_cloth_mask.set('%d%%' % int(float(s))))
-        cloth_mask_effectiveness_scale.set(self.data.get_mask_effectiveness_cloth_mask())
-        cloth_mask_effectiveness_scale.grid(row=2, column=2, padx=float(label_frame.winfo_reqwidth()) * 0.05,
-                                     pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3)
-        
-        cloth_mask_effectiveness_val_label = ttk.Label(label_frame, textvariable=self.data.mask_effectiveness_cloth_mask)
-        cloth_mask_effectiveness_val_label.grid(row=2, column=1, columnspan=1, sticky=tk.W)
+        cloth_mask_effectiveness_scale = \
+            ttk.Scale(master=label_frame, orient='horizontal', from_=0, to=100,
+                      length=float(label_frame.winfo_reqwidth()) * 0.35,
+                      command=lambda s: self.data.mask_effectiveness_cloth_mask
+                      .set('%d%%' % int(float(s))))
+        cloth_mask_effectiveness_scale \
+            .set(self.data.get_mask_effectiveness_cloth_mask())
+        cloth_mask_effectiveness_scale.grid(row=2, column=2,
+                                            padx=float(label_frame
+                                                       .winfo_reqwidth())
+                                            * 0.05,
+                                            pady=float(label_frame
+                                                       .winfo_reqheight())
+                                            * 0.01,
+                                            columnspan=3)
 
-        #Surgical Mask
-        surgical_mask_effectiveness = ttk.Label(master=label_frame,  text='Surgical Mask:')
-        surgical_mask_effectiveness.grid(row = 3, column = 0, columnspan=1, sticky = tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.02)
+        cloth_mask_effectiveness_val_label = \
+            ttk.Label(label_frame,
+                      textvariable=self.data.mask_effectiveness_cloth_mask)
+        cloth_mask_effectiveness_val_label.grid(row=2, column=1, columnspan=1,
+                                                sticky=tk.W)
 
-        surgical_mask_effectiveness_scale = ttk.Scale(master=label_frame, orient='horizontal', from_=0, to=100,
-                                           length=float(label_frame.winfo_reqwidth()) * 0.35, command=lambda s:self.data.mask_effectiveness_surgical_mask.set('%d%%' % int(float(s))))
-        surgical_mask_effectiveness_scale.set(self.data.get_mask_effectiveness_surgical_mask())
-        surgical_mask_effectiveness_scale.grid(row=3, column=2, padx=float(label_frame.winfo_reqwidth()) * 0.05,
-                                     pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3)
-        
-        surgical_mask_effectiveness_val_label = ttk.Label(label_frame, textvariable=self.data.mask_effectiveness_surgical_mask)
-        surgical_mask_effectiveness_val_label.grid(row=3, column=1, columnspan=1, sticky=tk.W)
+        # Surgical Mask
+        surgical_mask_effectiveness = ttk.Label(master=label_frame,
+                                                text='Surgical Mask:')
+        surgical_mask_effectiveness.grid(row=3, column=0, columnspan=1,
+                                         sticky=tk.W,
+                                         padx=float(label_frame
+                                                    .winfo_reqwidth()) * 0.02)
 
-        #N95 Mask
-        n95_mask_effectiveness = ttk.Label(master=label_frame,  text='N95 Mask:')
-        n95_mask_effectiveness.grid(row = 4, column = 0, columnspan=1, sticky = tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.02)
+        surgical_mask_effectiveness_scale = \
+            ttk.Scale(master=label_frame, orient='horizontal', from_=0, to=100,
+                      length=float(label_frame.winfo_reqwidth()) * 0.35,
+                      command=lambda s: self.data
+                      .mask_effectiveness_surgical_mask
+                      .set('%d%%' % int(float(s))))
+        surgical_mask_effectiveness_scale \
+            .set(self.data.get_mask_effectiveness_surgical_mask())
+        surgical_mask_effectiveness_scale.grid(row=3, column=2,
+                                               padx=float(label_frame
+                                                          .winfo_reqwidth())
+                                               * 0.05,
+                                               pady=float(label_frame
+                                                          .winfo_reqheight())
+                                               * 0.01,
+                                               columnspan=3)
 
-        n95_mask_effectiveness_scale = ttk.Scale(master=label_frame, orient='horizontal', from_=0, to=100,
-                                           length=float(label_frame.winfo_reqwidth()) * 0.35, command=lambda s:self.data.mask_effectiveness_n95_mask.set('%d%%' % int(float(s))))
-        n95_mask_effectiveness_scale.set(self.data.get_mask_effectiveness_n95_mask())
-        n95_mask_effectiveness_scale.grid(row=4, column=2, padx=float(label_frame.winfo_reqwidth()) * 0.05,
-                                     pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3)
-        
-        n95_mask_effectiveness_val_label = ttk.Label(label_frame, textvariable=self.data.mask_effectiveness_n95_mask)
-        n95_mask_effectiveness_val_label.grid(row=4, column=1, columnspan=1, sticky=tk.W)
+        surgical_mask_effectiveness_val_label = \
+            ttk.Label(label_frame,
+                      textvariable=self.data.mask_effectiveness_surgical_mask)
+        surgical_mask_effectiveness_val_label.grid(row=3, column=1,
+                                                   columnspan=1,
+                                                   sticky=tk.W)
 
-    def openMortalityWindow(self): 
+        # N95 Mask
+        n95_mask_effectiveness = ttk.Label(master=label_frame,
+                                           text='N95 Mask:')
+        n95_mask_effectiveness.grid(row=4, column=0, columnspan=1, sticky=tk.W,
+                                    padx=float(label_frame.winfo_reqwidth())
+                                    * 0.02)
+
+        n95_mask_effectiveness_scale = \
+            ttk.Scale(master=label_frame, orient='horizontal', from_=0, to=100,
+                      length=float(label_frame.winfo_reqwidth()) * 0.35,
+                      command=lambda s: self.data.mask_effectiveness_n95_mask
+                      .set('%d%%' % int(float(s))))
+        n95_mask_effectiveness_scale \
+            .set(self.data.get_mask_effectiveness_n95_mask())
+        n95_mask_effectiveness_scale.grid(row=4, column=2,
+                                          padx=float(label_frame
+                                                     .winfo_reqwidth())
+                                          * 0.05,
+                                          pady=float(label_frame
+                                                     .winfo_reqheight())
+                                          * 0.01,
+                                          columnspan=3)
+
+        n95_mask_effectiveness_val_label = \
+            ttk.Label(label_frame, textvariable=self.data
+                      .mask_effectiveness_n95_mask)
+        n95_mask_effectiveness_val_label.grid(row=4, column=1, columnspan=1,
+                                              sticky=tk.W)
+
+    def openMortalityWindow(self):
         """
         Top level window to adjust the mortality related configuration
         """
-        newWindow = tk.Toplevel(self.master) 
+        newWindow = tk.Toplevel(self.master)
         newWindow.resizable(width=False, height=False)
 
-        photo = tk.PhotoImage(file = "assets/icon-512.png")
+        photo = tk.PhotoImage(file="assets/icon-512.png")
         newWindow.iconphoto(False, photo)
-        newWindow.resizable(width=False,height=False)
+        newWindow.resizable(width=False, height=False)
 
         window_frame = ttk.LabelFrame(master=newWindow)
-        window_frame.grid(row=0,column=0)
+        window_frame.grid(row=0, column=0)
 
         style = ttk.Style(self)
         style.configure("Bold.TLabel", font=("Helvetica", 19, "bold"))
-        label_frame_label = ttk.Label(master = window_frame, text="Set Mortality Rate", style = "Bold.TLabel")
-        label_frame = ttk.LabelFrame(master=window_frame, labelwidget=label_frame_label, height = self.height*2, width = self.width*1)
-        label_frame.grid(row = 0, column = 0, columnspan=1, pady=self.height * 0.02, padx=(self.width * 0.03, self.width * 0.03))
-        mask_type_header_label = ttk.Label(master=label_frame,  text='Age Group')
-        mask_effectivenss_header_label = ttk.Label(master=label_frame,  text='Mortality Rate')
-        empty_label_1  = ttk.Label(master=label_frame,  text='        ')
-        mask_type_header_label.grid(row = 1, column = 0, columnspan=1, sticky = tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.02)
-        empty_label_1.grid(row = 1, column = 1, columnspan=1)
-        mask_effectivenss_header_label.grid(row = 1, column = 2, columnspan=1)
+        label_frame_label = ttk.Label(master=window_frame,
+                                      text="Set Mortality Rate",
+                                      style="Bold.TLabel")
+        label_frame = ttk.LabelFrame(master=window_frame,
+                                     labelwidget=label_frame_label,
+                                     height=self.height*2, width=self.width*1)
+        label_frame.grid(row=0, column=0, columnspan=1,
+                         pady=self.height * 0.02,
+                         padx=(self.width * 0.03, self.width * 0.03))
+        mask_type_header_label = ttk.Label(master=label_frame,
+                                           text='Age Group')
+        mask_effectivenss_header_label = ttk.Label(master=label_frame,
+                                                   text='Mortality Rate')
+        empty_label_1 = ttk.Label(master=label_frame, text='        ')
+        mask_type_header_label.grid(row=1, column=0, columnspan=1, sticky=tk.W,
+                                    padx=float(label_frame.winfo_reqwidth())
+                                    * 0.02)
+        empty_label_1.grid(row=1, column=1, columnspan=1)
+        mask_effectivenss_header_label.grid(row=1, column=2, columnspan=1)
 
-        #0-19 Age Group
-        zeronineteen_mortality_rate = ttk.Label(master=label_frame,  text='0-19:')
-        zeronineteen_mortality_rate.grid(row = 2, column = 0, columnspan=1, sticky = tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.02)
-        zeronineteen_mortality_rate_scale = ttk.Scale(master=label_frame, orient='horizontal', from_=0.001, to=10,
-                                           length=float(label_frame.winfo_reqwidth()) * 0.35, command=lambda s:self.data.mortality_rate_zero_to_nineteen.set('%0.03f%%' % float(s)))
-        zeronineteen_mortality_rate_scale.set(self.data.get_mortality_rate_zero_to_nineteen())
-        zeronineteen_mortality_rate_scale.grid(row=2, column=2, padx=float(label_frame.winfo_reqwidth()) * 0.05,
-                                     pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3)
-        
-        zeronineteen_mortality_rate_val_label = ttk.Label(label_frame, textvariable=self.data.mortality_rate_zero_to_nineteen)
-        zeronineteen_mortality_rate_val_label.grid(row=2, column=1, columnspan=1, sticky=tk.W)
+        # 0-19 Age Group
+        zeronineteen_mortality_rate = ttk.Label(master=label_frame,
+                                                text='0-19:')
+        zeronineteen_mortality_rate.grid(row=2, column=0, columnspan=1,
+                                         sticky=tk.W,
+                                         padx=float(label_frame
+                                                    .winfo_reqwidth())
+                                         * 0.02)
+        zeronineteen_mortality_rate_scale = \
+            ttk.Scale(master=label_frame, orient='horizontal', from_=0.001,
+                      to=10, length=float(label_frame.winfo_reqwidth()) * 0.35,
+                      command=lambda s: self.data
+                      .mortality_rate_zero_to_nineteen
+                      .set('%0.03f%%' % float(s)))
+        zeronineteen_mortality_rate_scale \
+            .set(self.data.get_mortality_rate_zero_to_nineteen())
+        zeronineteen_mortality_rate_scale.grid(row=2, column=2,
+                                               padx=float(label_frame
+                                                          .winfo_reqwidth())
+                                               * 0.05,
+                                               pady=float(label_frame
+                                                          .winfo_reqheight())
+                                               * 0.01,
+                                               columnspan=3)
 
-        #20-49 Age Group
-        twentyfortynine_mortality_rate = ttk.Label(master=label_frame,  text='20-49:')
-        twentyfortynine_mortality_rate.grid(row = 3, column = 0, columnspan=1, sticky = tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.02)
-        twentyfortynine_mortality_rate_scale = ttk.Scale(master=label_frame, orient='horizontal', from_=0.001, to=10,
-                                           length=float(label_frame.winfo_reqwidth()) * 0.35, command=lambda s:self.data.mortality_rate_twenty_to_fortynine.set('%0.03f%%' % float(s)))
-        twentyfortynine_mortality_rate_scale.set(self.data.get_mortality_rate_twenty_to_fortynine())
-        twentyfortynine_mortality_rate_scale.grid(row=3, column=2, padx=float(label_frame.winfo_reqwidth()) * 0.05,
-                                     pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3)
-        
-        twentyfortynine_mortality_rate_val_label = ttk.Label(label_frame, textvariable=self.data.mortality_rate_twenty_to_fortynine)
-        twentyfortynine_mortality_rate_val_label.grid(row=3, column=1, columnspan=1, sticky=tk.W)
+        zeronineteen_mortality_rate_val_label = \
+            ttk.Label(label_frame,
+                      textvariable=self.data.mortality_rate_zero_to_nineteen)
+        zeronineteen_mortality_rate_val_label.grid(row=2, column=1,
+                                                   columnspan=1, sticky=tk.W)
 
-        #50-69 Age Group
-        fiftysixtynine_mortality_rate = ttk.Label(master=label_frame,  text='50-69:')
-        fiftysixtynine_mortality_rate.grid(row = 4, column = 0, columnspan=1, sticky = tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.02)
+        # 20-49 Age Group
+        twentyfortynine_mortality_rate = ttk.Label(master=label_frame,
+                                                   text='20-49:')
+        twentyfortynine_mortality_rate.grid(row=3, column=0, columnspan=1,
+                                            sticky=tk.W,
+                                            padx=float(label_frame
+                                                       .winfo_reqwidth())
+                                            * 0.02)
+        twentyfortynine_mortality_rate_scale = \
+            ttk.Scale(master=label_frame, orient='horizontal', from_=0.001,
+                      to=10, length=float(label_frame.winfo_reqwidth()) * 0.35,
+                      command=lambda s: self.data
+                      .mortality_rate_twenty_to_fortynine
+                      .set('%0.03f%%' % float(s)))
+        twentyfortynine_mortality_rate_scale \
+            .set(self.data.get_mortality_rate_twenty_to_fortynine())
+        twentyfortynine_mortality_rate_scale \
+            .grid(row=3, column=2,
+                  padx=float(label_frame.winfo_reqwidth()) * 0.05,
+                  pady=float(label_frame.winfo_reqheight()) * 0.01,
+                  columnspan=3)
 
-        fiftysixtynine_mortality_rate_scale = ttk.Scale(master=label_frame, orient='horizontal', from_=0.001, to=10,
-                                           length=float(label_frame.winfo_reqwidth()) * 0.35, command=lambda s:self.data.mortality_rate_fifty_to_sixtynine.set('%0.03f%%' % float(s)))
-        fiftysixtynine_mortality_rate_scale.set(self.data.get_mortality_rate_fifty_to_sixtynine())
-        fiftysixtynine_mortality_rate_scale.grid(row=4, column=2, padx=float(label_frame.winfo_reqwidth()) * 0.05,
-                                     pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3)
-        
-        fiftysixtynine_mortality_rate_val_label = ttk.Label(label_frame, textvariable=self.data.mortality_rate_fifty_to_sixtynine)
-        fiftysixtynine_mortality_rate_val_label.grid(row=4, column=1, columnspan=1, sticky=tk.W)
+        twentyfortynine_mortality_rate_val_label = \
+            ttk.Label(label_frame,
+                      textvariable=self.data
+                      .mortality_rate_twenty_to_fortynine)
+        twentyfortynine_mortality_rate_val_label \
+            .grid(row=3, column=1, columnspan=1, sticky=tk.W)
 
-        #70 > Age Group
-        seventyplus_mortality_rate = ttk.Label(master=label_frame,  text='70-100:')
-        seventyplus_mortality_rate.grid(row = 5, column = 0, columnspan=1, sticky = tk.W, padx=float(label_frame.winfo_reqwidth()) * 0.02)
+        # 50-69 Age Group
+        fiftysixtynine_mortality_rate = ttk.Label(master=label_frame,
+                                                  text='50-69:')
+        fiftysixtynine_mortality_rate.grid(row=4, column=0, columnspan=1,
+                                           sticky=tk.W,
+                                           padx=float(label_frame
+                                                      .winfo_reqwidth())
+                                           * 0.02)
 
-        seventyplus_mortality_rate_scale = ttk.Scale(master=label_frame, orient='horizontal', from_=0.001, to=10,
-                                           length=float(label_frame.winfo_reqwidth()) * 0.35, command=lambda s:self.data.mortality_rate_seventyplus.set('%0.03f%%' % float(s)))
-        seventyplus_mortality_rate_scale.set(self.data.get_mortality_rate_seventyplus())
-        seventyplus_mortality_rate_scale.grid(row=5, column=2, padx=float(label_frame.winfo_reqwidth()) * 0.05,
-                                     pady=float(label_frame.winfo_reqheight()) * 0.01, columnspan=3)
-        
-        seventyplus_mortality_rate_val_label = ttk.Label(label_frame, textvariable=self.data.mortality_rate_seventyplus)
-        seventyplus_mortality_rate_val_label.grid(row=5, column=1, columnspan=1, sticky=tk.W)
+        fiftysixtynine_mortality_rate_scale = \
+            ttk.Scale(master=label_frame, orient='horizontal', from_=0.001,
+                      to=10, length=float(label_frame.winfo_reqwidth()) * 0.35,
+                      command=lambda s: self.data
+                      .mortality_rate_fifty_to_sixtynine
+                      .set('%0.03f%%' % float(s)))
+        fiftysixtynine_mortality_rate_scale \
+            .set(self.data.get_mortality_rate_fifty_to_sixtynine())
+        fiftysixtynine_mortality_rate_scale \
+            .grid(row=4, column=2,
+                  padx=float(label_frame.winfo_reqwidth()) * 0.05,
+                  pady=float(label_frame.winfo_reqheight()) * 0.01,
+                  columnspan=3)
 
+        fiftysixtynine_mortality_rate_val_label = \
+            ttk.Label(label_frame,
+                      textvariable=self.data.mortality_rate_fifty_to_sixtynine)
+        fiftysixtynine_mortality_rate_val_label.grid(row=4, column=1,
+                                                     columnspan=1, sticky=tk.W)
+
+        # 70 > Age Group
+        seventyplus_mortality_rate = ttk.Label(master=label_frame,
+                                               text='70-100:')
+        seventyplus_mortality_rate.grid(row=5, column=0, columnspan=1,
+                                        sticky=tk.W,
+                                        padx=float(label_frame
+                                                   .winfo_reqwidth())
+                                        * 0.02)
+
+        seventyplus_mortality_rate_scale = \
+            ttk.Scale(master=label_frame, orient='horizontal', from_=0.001,
+                      to=10, length=float(label_frame.winfo_reqwidth()) * 0.35,
+                      command=lambda s: self.data.mortality_rate_seventyplus
+                      .set('%0.03f%%' % float(s)))
+        seventyplus_mortality_rate_scale \
+            .set(self.data.get_mortality_rate_seventyplus())
+        seventyplus_mortality_rate_scale \
+            .grid(row=5, column=2,
+                  padx=float(label_frame.winfo_reqwidth()) * 0.05,
+                  pady=float(label_frame.winfo_reqheight()) * 0.01,
+                  columnspan=3)
+
+        seventyplus_mortality_rate_val_label = \
+            ttk.Label(label_frame,
+                      textvariable=self.data.mortality_rate_seventyplus)
+        seventyplus_mortality_rate_val_label.grid(row=5, column=1,
+                                                  columnspan=1,
+                                                  sticky=tk.W)
 
     def enter(self, event, tooltip):
-            """
-            Helper method to show tooltip over hover
-            """
-            tooltip.showtip()
+        """
+        Helper method to show tooltip over hover
+        """
+        tooltip.showtip()
 
     def leave(self, event, tooltip):
-            """
-            Helper mehod to hide tooltop when hover over
-            """
-            tooltip.hidetip()
+        """
+        Helper mehod to hide tooltop when hover over
+        """
+        tooltip.hidetip()
