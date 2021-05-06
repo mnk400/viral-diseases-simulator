@@ -11,7 +11,7 @@ class Population(object):
     properties and the dataframe holding all persons
     """
 
-    def __init__(self, size):
+    def __init__(self, size: int) -> None:
         """
         Initializes the NumPy array holding all persons with their specific
         properties.
@@ -80,7 +80,7 @@ class Population(object):
         # size = 12
         self.persons = np.zeros((size, 20))
 
-    def set_age(self, data: list):
+    def set_age(self, data: list) -> None:
         """
         Sets the age of all the persons in the dataframe
 
@@ -93,7 +93,7 @@ class Population(object):
         """
         self.persons[:, 1] = data
 
-    def set_x_axis(self, data: list):
+    def set_x_axis(self, data: list) -> None:
         """
         Sets the x coordinate of each person on the map
 
@@ -106,7 +106,7 @@ class Population(object):
         """
         self.persons[:, 2] = data
 
-    def set_current_state(self, data: list):
+    def set_current_state(self, data: list) -> None:
         """
         Sets/updates the current state of each person in the population
 
@@ -119,7 +119,7 @@ class Population(object):
         """
         self.persons[:, 8] = data
 
-    def set_y_axis(self, data: list):
+    def set_y_axis(self, data: list) -> None:
         """
         Sets the y coordinate of each person on the map.
 
@@ -132,7 +132,7 @@ class Population(object):
         """
         self.persons[:, 3] = data
 
-    def set_g_value(self, data: list):
+    def set_g_value(self, data: list) -> None:
         """
         Set the g value for the individual; the g value refers to the
         reproduction of the rate of the individual derived from the K and R
@@ -145,7 +145,7 @@ class Population(object):
         """
         self.persons[:, 12] = data
 
-    def set_speed(self, data: list):
+    def set_speed(self, data: list) -> None:
         """
         Set the speed for the individual; the speed refers to the offset by
         which the indivdual moves on the space
@@ -157,7 +157,7 @@ class Population(object):
         """
         self.persons[:, 6] = data
 
-    def set_at_destination(self, data: list):
+    def set_at_destination(self, data: list) -> None:
         """
         Sets whether the individual is at the destination;
             0: Not at Destination
@@ -171,7 +171,7 @@ class Population(object):
         """
         self.persons[:, 8] = data
 
-    def set_active(self, data: list):
+    def set_active(self, data: list) -> None:
         """
         Sets whether the individual is currently moving towards destination;
             0: Random Movement
@@ -186,7 +186,7 @@ class Population(object):
         """
         self.persons[:, 7] = data
 
-    def set_x_dir(self, data):
+    def set_x_dir(self, data: list) -> None:
         """
         Sets the x coordinate of where the person is heading on the space
 
@@ -199,7 +199,7 @@ class Population(object):
         """
         self.persons[:, 4] = data
 
-    def set_y_dir(self, data):
+    def set_y_dir(self, data: list) -> None:
         """
         Sets the y coordinate of where the person is heading on the space
 
@@ -212,7 +212,7 @@ class Population(object):
         """
         self.persons[:, 5] = data
 
-    def set_infected_at(self, index: int, frame: int):
+    def set_infected_at(self, index: int, frame: int) -> None:
         """
         Sets the time unit (in this case, a frame) at which a person got
         infected.
@@ -226,7 +226,7 @@ class Population(object):
         """
         self.persons[index][16] = frame
 
-    def set_mask_effectiveness(self, data):
+    def set_mask_effectiveness(self, data: list) -> None:
         """
         Sets the mask effectiveness for the persons
 
@@ -237,7 +237,7 @@ class Population(object):
         """
         self.persons[:, 15] = data
 
-    def get_x_axis(self) -> np.array:
+    def get_x_axis(self) -> np.ndarray:
         """
         Returns the current x coordinate of all the persons in the population
 
@@ -249,7 +249,7 @@ class Population(object):
         """
         return self.persons[:, 2]
 
-    def get_y_axis(self) -> np.array:
+    def get_y_axis(self) -> np.ndarray:
         """
         Returns the current y coordinate of all the persons in the population
 
@@ -261,7 +261,7 @@ class Population(object):
         """
         return self.persons[:, 3]
 
-    def get_current_state(self) -> np.array:
+    def get_current_state(self) -> np.ndarray:
         """
         Returns the current state of all the persons in the population
 
@@ -361,7 +361,8 @@ class Population(object):
         """
         return current_frame - self.persons[index][16]
 
-    def get_since_infected_all(self, current_frame: int, recovery_time: int):
+    def get_since_infected_all(self, current_frame: int,
+                               recovery_time: int) -> None:
         """
         Get all infected people since for a recovery time wrt current frame.
 
@@ -374,7 +375,7 @@ class Population(object):
         return self \
             .persons[(current_frame - self.persons[:, 16] > recovery_time)]
 
-    def initialize_id(self, low: int, high: int):
+    def initialize_id(self, low: int, high: int) -> None:
         """
         Initialize the ID for all the individuals in the population
 
@@ -387,7 +388,8 @@ class Population(object):
         ID = list(range(low, high))
         self.persons[:, 0] = ID
 
-    def initialize_ages(self, min_age: int, max_age: int, size: int):
+    def initialize_ages(self, min_age: int, max_age: int,
+                        size: int) -> None:
         """
         Initialize the ages of all the individuals in the population. Uses
         uniform distribution to generate random ages.
@@ -403,7 +405,8 @@ class Population(object):
                                           size=size))
         self.set_age(ages)
 
-    def initialize_positions(self, x_bounds: list, y_bounds: list, size: int):
+    def initialize_positions(self, x_bounds: list, y_bounds: list,
+                             size: int) -> None:
         """
         Initialize the x positions for all persons in the population.
 
@@ -423,7 +426,8 @@ class Population(object):
         self.set_x_axis(x_bound_list)
         self.set_y_axis(y_bound_list)
 
-    def initialize_g_value(self, mean: float, std_dev: float, size: int):
+    def initialize_g_value(self, mean: float, std_dev: float,
+                           size: int) -> None:
         """
         Initialize the g value for all persons in the population. The g value
         refers to the reproduction of the rate of the individual derived from
@@ -441,7 +445,8 @@ class Population(object):
         g_value[g_value < 0] = 0.00000
         self.set_g_value(g_value.astype(int))
 
-    def initialize_mask_eff(self, size: int, mask_effective_range: dict):
+    def initialize_mask_eff(self, size: int,
+                            mask_effective_range: dict) -> None:
         """
         Initializing mask effectiveness for all the people in the population.
         Randomly assigning the mask effectiveness from values 0, 60, 80, 90.
@@ -462,7 +467,7 @@ class Population(object):
 
         self.set_mask_effectiveness(tmp)
 
-    def initialize_susceptibility(self):
+    def initialize_susceptibility(self) -> None:
         """
         Initialize the susceptibilty to the virus, depends an individual wears
         a mask, practices good hygiene, and age.
@@ -481,7 +486,8 @@ class Population(object):
         tmp2 = np.multiply(tmp, tmp2)
         self.persons[:, 13] = tmp2
 
-    def initialize_mortality_rate(self, size: int, fatality_rate: dict):
+    def initialize_mortality_rate(self, size: int,
+                                  fatality_rate: dict) -> None:
         """
         Initialize the mortality rate of the virus, depends on the age of the
         person. However, may differ according to healthcare capacity.
@@ -499,7 +505,8 @@ class Population(object):
                                 (self.persons[:, 1] < age_group_upper_bound)] \
                 = float(fatality_rate[age_groups])
 
-    def initialize_social_distancing(self, social_distancing_per: float):
+    def initialize_social_distancing(self,
+                                     social_distancing_per: float) -> None:
         """
         Initialize the mortality rate of the virus, depends on the age of the
         person. However, may differ according to healthcare capacity.
@@ -516,7 +523,7 @@ class Population(object):
                                                     social_distancing_per])
         self.persons[:, 18] = random_social_distancing
 
-    def initialize_infected_by(self):
+    def initialize_infected_by(self) -> None:
         """
         Initialize the value for infected by for each individual in the
         population. This will be set to -1 initially as everyone is healthy.

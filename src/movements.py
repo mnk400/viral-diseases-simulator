@@ -68,7 +68,8 @@ class Movement():
         # Return the updated array
         return persons
 
-    def out_of_bounds(self, persons: np.ndarray, xbounds, ybounds):
+    def out_of_bounds(self, persons: np.ndarray, xbounds: list,
+                      ybounds: list) -> np.ndarray:
         """
         Check if the individual is heading out of bounds of the specified
         bounds.
@@ -131,7 +132,7 @@ class Movement():
 
         return persons
 
-    def update_pop(self, persons):
+    def update_pop(self, persons: np.ndarray):
         """
         Update function to move people physically in the graph.
         This function adds the X and Y direction value to the current postion

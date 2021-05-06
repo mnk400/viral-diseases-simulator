@@ -19,7 +19,7 @@ class PopulationUtil(object):
                  infection_range: float, recovery_time: int,
                  total_healthcare_capacity: int, mask_effectiveness: dict,
                  speed: float, social_distancing_at: int,
-                 mask_wearing_at: int):
+                 mask_wearing_at: int) -> None:
         """
         Constructor used for initializing the bound for the x axis, y axis,
         the k and R value for the particular population.
@@ -65,7 +65,7 @@ class PopulationUtil(object):
         self.mask_wearing_enforced = False
         self.initialize_persons()
 
-    def initialize_persons(self):
+    def initialize_persons(self) -> None:
         """
         Method which initializes the person list in the population and further
         calls another method to update other properties of the individual
@@ -98,7 +98,11 @@ class PopulationUtil(object):
         self.persons[self.infected_person, index.social_distance] = 0
         self.persons[self.infected_person, 9] = 1
 
-    def move(self, frame):
+    def move(self, frame: int) -> None:
+        """
+        Method to randomly move selected people a certain amount depending
+        upon the speed they're set at.
+        """
         if frame == self.enforce_mask_wearing_at:
             self.population.initialize_mask_eff(self.size,
                                                 self.mask_effectiveness)

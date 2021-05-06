@@ -249,7 +249,7 @@ class Visualization():
         return self.scatter_1, self.scatter_2, self.scatter_3, \
             self.scatter_4, self.currently_infected, self.total_infected,
 
-    def update(self, frame) -> Tuple:
+    def update(self, frame: int) -> Tuple:
         """
         Similar to the setup function but this updates the simulation
 

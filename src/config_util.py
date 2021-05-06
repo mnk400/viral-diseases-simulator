@@ -70,7 +70,7 @@ class ConfigUtil(object):
             logging.error("Config File not loaded")
             return False
 
-    def getIntegerValue(self, section_str, key_str) -> int:
+    def getIntegerValue(self, section_str: str, key_str: str) -> int:
         """
         Responsible for returning int values from the configuration file,
         throws an exception if the value is not an integer.
@@ -89,7 +89,7 @@ class ConfigUtil(object):
         """
         return int(self.getValue(section_str, key_str))
 
-    def getFloatValue(self, section_str, key_str) -> float:
+    def getFloatValue(self, section_str: str, key_str: str) -> float:
         """
         Responsible for returning float values from the configuration file,
         throws an exception if the value is not a float.
@@ -108,7 +108,7 @@ class ConfigUtil(object):
         """
         return float(self.getValue(section_str, key_str))
 
-    def getDictionary(self, section_str, key_str) -> dict:
+    def getDictionary(self, section_str: str, key_str: str) -> dict:
         """
         Responsible for returning float values from the configuration file,
         throws an exception if the value is not a float.
@@ -127,7 +127,7 @@ class ConfigUtil(object):
         """
         return json.loads(self.getValue(section_str, key_str))
 
-    def getBooleanValue(self, section_str, key_str) -> bool:
+    def getBooleanValue(self, section_str: str, key_str: str) -> bool:
         """
         Responsible for returning bool values from the configuration file,
         throws an exception if the value is not a bool.
@@ -187,7 +187,7 @@ class ConfigUtil(object):
             # return false if the file has not been loaded
             return False
 
-    def loadConfigData(self):
+    def loadConfigData(self) -> bool:
         """
         Method responsible for loading the config file.
 
